@@ -1,6 +1,5 @@
 #include <iostream>
-#include "graphicsdisplay.h"
-#include "info.h"
+#include "graphicsDisplay.h"
 #include "subject.h"
 using namespace std;
 
@@ -10,7 +9,7 @@ GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize):
 }
 
 
-void GraphicsDisplay::notify(Subject<Info, State> &whoNotified) {
+void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
   auto info = whoNotified.getInfo();
   int cellSize = winSize / gridSize;
   switch(info.colour) {

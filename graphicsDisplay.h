@@ -2,19 +2,18 @@
 #define GRAPHICSDISPLAY_H
 #include <iostream>
 #include <vector>
-#include "observer.h"
-#include "state.h"
-#include "window.h"
 #include "info.h"
+#include "observer.h"
+#include "window.h"
 class Cell;
 
-class GraphicsDisplay: public Observer<Info, State> {
+class GraphicsDisplay: public Observer<Info> {
   const int gridSize, winSize;
   Xwindow xw;
 
  public:
   GraphicsDisplay(int gridSize, int winSize);
 
-  void notify(Subject<Info, State> &whoNotified) override;
+  void notify(Subject<Info> &whoNotified) override;
 };
 #endif
