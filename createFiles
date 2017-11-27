@@ -1,0 +1,8 @@
+#!/bin/bash
+
+suite=$1
+for file in $(cat $suite)
+do
+	touch $file.h
+	touch $file.cc
+done
