@@ -3,9 +3,13 @@
 #include <cstddef>
 #include "state.h"
 
+enum class StateType { NONE, MOVING, STATIC };
+enum class BlockType { I, J, L, O, S, T, Z };
+
 struct Info {
   size_t row, col;
-  Colour colour;
+  StateType state;
+  BlockType block;
 };
 
 #endif
