@@ -1,50 +1,76 @@
 #include <iostream>
 #include <string>
-// You may include other allowed headers, as needed
-#include "grid.h"
-#include "state.h"
-#include "graphicsdisplay.h"
+#include <sstream>
+
 using namespace std;
 
-// Do not remove any code; do not add code other than where indicated.
+// -text runs the program in text only mode (no graphics) defult is ns show both text and graphics
+// -seed number, sets the random number generator's seed to xxx
+// -screiptfile xxx, use xxx instead of sequence as a source of blocks for level 0
+// - startleevl n, starts the game in level n... otherwise default is zero
+
 
 int main(int argc, char *argv[]) {
+
+  const int MIN_LEVEL = 0;
+  const int MAX_LEVEL = 4;
+
   cin.exceptions(ios::eofbit|ios::failbit);
-  string cmd;
-  Grid g;
+  bool textOnly = false;
+  int seed = 0;
+  string scriptFile = "sequence.txt";
+  int startLevel = 0;
 
-  Colour current = Colour::Black;
-  GraphicsDisplay *gd;
+  for (int i = 1; i < argc; ++i) {
+    string cmd = argv[i];
 
-  try {
-  while (true) {
-    cin >> cmd;
-    if (cmd == "new") {
-      int n;
-      cin >> n;
-      gd = new GraphicsDisplay(n, 500);
-      g.setObserver(gd);
-      g.init(n);
-      current = Colour::Black;
-      cout << g;
+    if (cmd == "-text") {
+      textOnly = true;
     }
-    else if (cmd == "play") {
-      int r = 0, c = 0;
-      cin >> r >> c;
-      try {
-        g.setPiece(r, c, current);
-        cout << g;
-        if(current==Colour::Black) current = Colour::White;
-        else current = Colour::Black;
-        if(g.isFull()) break;
-      } catch (InvalidMove &x) {}
+    else if (cmd == "-seed") {
+      if (i + 1 == argc) {
+        // there is no seed argument
+      }
+      else {
+        // make sure it sucessful converts to int
+        istringstream iss{argv[i+1]};
+        if (!(iss >> seed)) {
+          cerr << "seed is not number" << endl;
+          return 1;
+        }
+        i++;
+        
+      }
     }
+    else if (cmd == "-scriptfile") {
+      if (i + 1 == arg) {
+        // no 
+        cerr << "no scriptfile field" << endl;
+      }
+      else {
+        scriptFile = argv[i + 1];
+        i++;
+      }
+
+    } 
+    else if (cmd == "-startlevel") {
+      if (i + 1 == arg) {
+        // no start
+        istringstream iss {arg[i + 1]};
+        if (!(iss >> startLevel) && 
+          (startLevel > MAX_LEVEL || startLevel < MIN_LEVEL )) {
+          cerr << "wrong level" << endl;
+          return 1;
+        }
+
+      }
+      i++;
+
+    }
+
   }
-  Colour winner = g.whoWon();
-  if(winner==Colour::White) cout << "White wins!" << endl;
-  else if(winner==Colour::Black) cout << "Black wins!" << endl;
-  else cout << "Tie!" << endl;
-  delete gd;
-  }
+
+  Inter
+
   catch (ios::failure &) {}  // Any I/O failure quits
 }
