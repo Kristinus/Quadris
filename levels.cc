@@ -6,11 +6,19 @@ Level0::Level0() {
 
 Block Level0::createBlock() {
     char b;
-    myfile >> b;
+    seq >> b;
+    if (b == 'I' || b =='J' || b == 'L' || b == 'O' || b == 'S' || b == 'T' || b == 'Z')
+        return Block(b);
+    //Invalid file.txt
 }
 
-~Level0::Level0() {
+Level0::~Level0() {
     seq.close();
+}
+
+//***************************************************************************************//
+
+Level1::Level1():selector{std::vector<Block>{Block('I'), Block('I'), Block('I'), Block('I'), Block('I'), Block('I'), Block('I'), Block('I'), Block('I')}} {
 }
 
 Block Level1::createBlock() {
