@@ -9,6 +9,7 @@ class Cell: public Subject<Info> {
    Cell(Info info);
    void setBlock(BlockType block);
    void setState(StateType state);
-   Info getInfo();
+   void setCoords(size_t, size_t);
+   Info getInfo() const;
 }
 #endif

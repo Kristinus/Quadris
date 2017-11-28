@@ -7,6 +7,7 @@
 #include "block.h"
 #include "grid.h"
 #include "graphicsdisplay.h"
+#include "interpreterimpl.h"
 #include "window.h"
 using namespace std;
 
@@ -79,11 +80,10 @@ ProccessedInput parseCommand(string command) {
 void Interpreter::run(){
 
     string s;
-    while(*in >> s){
+    while(*in >> s) {
         ProcessedInput processedCommand = parseCommand(s);
         string cmd = processedCommand.command;
         int mult = processedCommand.multiplier;
-
         Command *c;
         Block *currentBlock;
 
@@ -91,7 +91,11 @@ void Interpreter::run(){
 
         for (int i = 0; i < mult; i++) {
 
+        	// the Grid calls left // the Grid calls right
 
+
+        	getKey(hasmah, "left")
+        	m.find(cmd).execute();
 
 	        if (cmd == "left") c = new LeftCommand();
 	        else if (cmd == "right") c = new RightCommand();
@@ -116,6 +120,3 @@ void Interpreter::run(){
 }
 
 
-void Interpreter::parseCommand() {
-
-}

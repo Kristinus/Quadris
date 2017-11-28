@@ -4,12 +4,14 @@
 #include "textDisplay.h"
 #include "cell.h"
 #include "level.h"
+
 class Grid {
    vector<vector<Cell>> theGrid;
    TextDisplay *td;
    GraphicsDisplay *gd;
    
    public:
+   void initGrid();
    bool isOver();
    void deleteRow();
    void left();
