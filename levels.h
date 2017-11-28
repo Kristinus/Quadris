@@ -2,6 +2,7 @@
 #define LEVELS_H
 #include "level.h"
 #include <iostream>
+#include <cstdlib>
 #include <fstream>
 
 class Level0: public Level {
