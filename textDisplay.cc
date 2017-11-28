@@ -1,6 +1,7 @@
 #include "textDisplay.h"
+#include "constants.h"
 
-TextDisplay::createDict() {
+void TextDisplay::createDict() {
   dict[BlockType::I] = 'I';
   dict[BlockType::J] = 'J';
   dict[BlockType::L] = 'L';
@@ -10,9 +11,8 @@ TextDisplay::createDict() {
   dict[BlockType::Z] = 'Z';
 }
 
-TextDisplay::TextDisplay(Grid &grid): 
-  theDisplay{std::vector<std::vector<char>>(n, std::vector<char>(n, '-'))},
-  grid{grid} {
+TextDisplay::TextDisplay(): 
+  theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, '-'))} {
       createDict();
 }
 
@@ -27,9 +27,9 @@ void TextDisplay::notify(Subject<Info> &whoNotified) {
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   //Outputs the scoreboard
-  out << "Level:\t\t" << t.level << std::endl;
-  out << "Score:\t\t" << t.score << std::endl;
-  out << "Hi Score\t\t" << t.hiScore << std::endl;
+  out << "Level:\t\t" << td.score.level << std::endl;
+  out << "Score:\t\t" << td.score.score << std::endl;
+  out << "Hi Score\t\t" << td.score.hiScore << std::endl;
   out << "-----------" << std::end;
 
   //Outputs the Grid
@@ -43,5 +43,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   //Outputs Next Block
   out << "-----------" << std::end;
   out << "Next:" << std::endl;
-  out << *(t.nextBlock) << std::endl;
+  // out << *(td.nextBlock) << std::endl;
+
+  return out;
 }

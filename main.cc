@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
       }
     }
     else if (cmd == "-scriptfile") {
-      if (i + 1 == arg) {
+      if (i + 1 == argc) {
         // no 
         cerr << "no scriptfile field" << endl;
       }
@@ -54,9 +54,9 @@ int main(int argc, char *argv[]) {
 
     } 
     else if (cmd == "-startlevel") {
-      if (i + 1 == arg) {
+      if (i + 1 == argc) {
         // no start
-        istringstream iss {arg[i + 1]};
+        istringstream iss {argv[i + 1]};
         if (!(iss >> startLevel) && 
           (startLevel > MAX_LEVEL || startLevel < MIN_LEVEL )) {
           cerr << "wrong level" << endl;
@@ -71,5 +71,5 @@ int main(int argc, char *argv[]) {
   }
 
 
-  catch (ios::failure &) {}  // Any I/O failure quits
+  // catch (ios::failure &) {}  // Any I/O failure quits
 }
