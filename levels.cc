@@ -6,12 +6,13 @@ Level0::Level0() {
 
 Block Level0::createBlock() {
     char b;
-    myfile >> b;
+    //myfile >> b;
 }
 
-~Level0::Level0() {
+/*
+Level0::~Level0() {
     seq.close();
-}
+} */
 
 Block Level1::createBlock() {
     

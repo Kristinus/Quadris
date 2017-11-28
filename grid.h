@@ -5,10 +5,11 @@
 #include "cell.h"
 #include "level.h"
 
+
 class Grid {
-   vector<vector<Cell>> theGrid;
-   TextDisplay *td;
-   GraphicsDisplay *gd;
+   std::vector<std::vector<Cell>> theGrid;
+ //  TextDisplay *td;
+ //  GraphicsDisplay *gd;
    
    public:
    void initGrid();
@@ -25,6 +26,6 @@ class Grid {
    void levelDown();
    void random();
    void hint();
-}
+};
 #endif
 

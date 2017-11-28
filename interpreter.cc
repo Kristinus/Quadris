@@ -1,20 +1,24 @@
+#include <string>
+#include <iostream>
 #include <vector>
 #include <sstream>
 #include <fstream>
 #include "level.h"
 #include "block.h"
 #include "grid.h"
+
 #include "interpreter.h"
 using namespace std;
 
 struct ProcessedInput {
 	int multiplier;
 	string command;
+
 };
 
 Interpreter::Interpreter(string seed, bool textOnly, string scriptFile, int startLevel) {
 	if (textOnly == false) {
-		gd = new GraphicsDisplay(500);
+	//	gd = new GraphicsDisplay(500);
 	}
 	// grid = new Grid(seed, gd, startLevel);
 }
@@ -41,21 +45,21 @@ ProcessedInput parseCommand(string command) {
 	vector<string> possibleCommands {"left", "right", "down", "levelup", "leveldown", "norandom", "random", "sequence", "clockwise", "counterclockwise", "drop", "restart", "hint", "I", "J", "L", "O", "S", "Z", "T", "quit",};
     cmd = command.substr(i);
      
-    for(int i = commands.size() - 1; i >= 0; i--) {
+    for (int i = possibleCommands.size() - 1; i >= 0; i--) {
 
-        string possibleCommand = commands[i];
+        string possibleCommand = possibleCommands[i];
         int partialCommandLen = cmd.length();
-        if (cmd != possibleCommand(0, partialCommandLen)) {
+        if (cmd != possibleCommand.substr(0, partialCommandLen)) {
         	possibleCommands.erase(possibleCommands.begin() + i);
         }
 
     }
 
-    if (commands.size() == 0) {
+    if (possibleCommands.size() == 0) {
         	// throw an error
     }
 
-    else if (commands.size() > 1) {
+    else if (possibleCommands.size() > 1) {
     	// throw an error: ambigious command
     }
 
@@ -65,7 +69,7 @@ ProcessedInput parseCommand(string command) {
 
 	istringstream iss{bd};
 	iss >> res; // throw an exception
-	return ProcessedInput(res, cmd);
+	return ProcessedInput{res, possibleCommands[0]};
 
 }
 
@@ -88,8 +92,8 @@ void Interpreter::run(){
         	// the Grid calls left // the Grid calls right
 
 
-        	getKey(hasmah, "left")
-        	m.find(cmd).execute();
+  //      	getKey(hasmah, "left")
+    //    	m.find(cmd).execute();
 
 	        // if (cmd == "left") c = new LeftCommand();
 	        // else if (cmd == "right") c = new RightCommand();
