@@ -1,20 +1,16 @@
 #include "interpreter.h"
 using namespace std;
 
-Interpreter::Interpreter(string seed, bool textOnly, string scriptFile, int startLevel) {
-	if (textOnly == false) {
-		w = new Xwindow;
-		gd = new GraphicsDisplay(w);
-	}
-	grid = new Grid(seed, gd, startLevel);
-
-
-
-}
-
 struct ProcessedInput {
 	int multiplier;
 	string command;
+};
+
+Interpreter::Interpreter(string seed, bool textOnly, string scriptFile, int startLevel) {
+	if (textOnly == false) {
+		gd = new GraphicsDisplay(500);
+	}
+	// grid = new Grid(seed, gd, startLevel);
 }
 
 bool isDigit(char c) {
@@ -22,12 +18,12 @@ bool isDigit(char c) {
 	else return false;
 }
 
-ProccessedInput parseCommand(string command) {
+ProcessedInput parseCommand(string command) {
 	string bd = "";
 	string cmd;
 	int res;
-	if (!isDigit(command[i])) return ProcessedInput(1, command);
-	int i;
+	// if (!isDigit(command[i])) return ProcessedInput(1, command);
+	size_t i;
 	for (i = 0; i < command.length(); i++) {
 		if (isDigit(command[i])) {
 			bd += command[i];
@@ -75,8 +71,8 @@ void Interpreter::run(){
         string cmd = processedCommand.command;
         int mult = processedCommand.multiplier;
 
-        Command *c;
-        Block *currentBlock;
+        // Command *c;
+        // Block *currentBlock;
 
         // parse command // get the integer if there is an integer
 
@@ -102,9 +98,4 @@ void Interpreter::run(){
 	        // c->execute(currentBlock, m);
 	    }
     }
-}
-
-
-void Interpreter::parseCommand() {
-
 }

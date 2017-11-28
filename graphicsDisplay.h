@@ -12,7 +12,7 @@ class GraphicsDisplay: public Observer<Info> {
   Xwindow xw;
 
  public:
-  GraphicsDisplay(int gridSize, int winSize);
+  GraphicsDisplay(int winSize);
 
   void notify(Subject<Info> &whoNotified) override;
 };

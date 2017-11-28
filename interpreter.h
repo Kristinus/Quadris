@@ -2,18 +2,16 @@
 #define __INTERPRETER_H__
 #include <string>
 #include <iostream>
-#include "level.h"
-#include "block.h"
-#include "grid.h"
+// #include "level.h"
+// #include "block.h"
+// #include "grid.h"
 #include "graphicsDisplay.h"
-#include "window.h"
 
 class Interpreter {
 	std::istream *in = &std::cin;
-    Xwindow w;
-    GraphicsDisplay gd;
-    Grid grid;
-    Level level;
+    GraphicsDisplay *gd;
+    // Grid grid;
+    // Level level;
 
 
 	public:

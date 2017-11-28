@@ -3,9 +3,9 @@
 #include "subject.h"
 using namespace std;
 
-GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize):
- gridSize{gridSize}, winSize{winSize}, xw{winSize, winSize} {
-  xw.fillRectangle(0, 0, winSize, winSize, Xwindow::Blue);
+GraphicsDisplay::GraphicsDisplay(int winSize):
+ gridSize{11}, winSize{winSize}, xw{winSize, winSize} {
+  xw.fillRectangle(0, 0, winSize, winSize, Xwindow::White);
 }
 
 
