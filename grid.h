@@ -27,3 +27,4 @@ class Grid {
    void hint();
 }
 #endif
+
