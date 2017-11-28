@@ -10,5 +10,5 @@ class Cell: public Subject<Info> {
    void setBlock(BlockType block);
    void setState(StateType state);
    Info getInfo();
-}
+};
 #endif

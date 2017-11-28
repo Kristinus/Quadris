@@ -5,12 +5,15 @@
 #include "level.h"
 #include "block.h"
 #include "grid.h"
-#include "graphicsdisplay.h"
+#include "graphicsDisplay.h"
 #include "window.h"
 
 class Interpreter {
 	std::istream *in = &std::cin;
-
+    Xwindow w;
+    GraphicsDisplay gd;
+    Grid grid;
+    Level level;
 
 
 	public:
@@ -18,6 +21,6 @@ class Interpreter {
     ~Interpreter();
     void run();
 
-}
+};
 
 #endif
