@@ -24,3 +24,4 @@ Info Cell::getInfo() const {
 	return info;
 } 
 
+

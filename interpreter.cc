@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <string>
 #include <iostream>
 #include <vector>
@@ -9,22 +10,19 @@
 #include "graphicsdisplay.h"
 #include "interpreterimpl.h"
 #include "window.h"
+#include "interpreter.h"
 using namespace std;
-
-Interpreter::Interpreter(string seed, bool textOnly, string scriptFile, int startLevel) {
-	if (textOnly == false) {
-		w = new Xwindow;
-		gd = new GraphicsDisplay(w);
-	}
-	grid = new Grid(seed, gd, startLevel);
-
-
-
-}
 
 struct ProcessedInput {
 	int multiplier;
 	string command;
+};
+
+Interpreter::Interpreter(string seed, bool textOnly, string scriptFile, int startLevel) {
+	if (textOnly == false) {
+		gd = new GraphicsDisplay(500);
+	}
+	// grid = new Grid(seed, gd, startLevel);
 }
 
 bool isDigit(char c) {
@@ -32,12 +30,12 @@ bool isDigit(char c) {
 	else return false;
 }
 
-ProccessedInput parseCommand(string command) {
+ProcessedInput parseCommand(string command) {
 	string bd = "";
 	string cmd;
 	int res;
-	if (!isDigit(command[i])) return ProcessedInput(1, command);
-	int i;
+	// if (!isDigit(command[i])) return ProcessedInput(1, command);
+	size_t i;
 	for (i = 0; i < command.length(); i++) {
 		if (isDigit(command[i])) {
 			bd += command[i];
@@ -46,7 +44,7 @@ ProccessedInput parseCommand(string command) {
 		}
 	}
 
-	vector<string> possibleCommands {"left", "right", "down", "levelup", "leveldown", "norandom", "random", "sequence", "clockwise", "counterclockwise", "drop", "restart", "hint", "I", "J", "L", "O", "S", "Z", "T", "pass", "quit",};
+	vector<string> possibleCommands {"left", "right", "down", "levelup", "leveldown", "norandom", "random", "sequence", "clockwise", "counterclockwise", "drop", "restart", "hint", "I", "J", "L", "O", "S", "Z", "T", "quit",};
     cmd = command.substr(i);
      
     for(int i = commands.size() - 1; i >= 0; i--) {
@@ -84,8 +82,10 @@ void Interpreter::run(){
         ProcessedInput processedCommand = parseCommand(s);
         string cmd = processedCommand.command;
         int mult = processedCommand.multiplier;
-        Command *c;
-        Block *currentBlock;
+
+
+        // Command *c;
+        // Block *currentBlock;
 
         // parse command // get the integer if there is an integer
 
@@ -97,26 +97,23 @@ void Interpreter::run(){
         	getKey(hasmah, "left")
         	m.find(cmd).execute();
 
-	        if (cmd == "left") c = new LeftCommand();
-	        else if (cmd == "right") c = new RightCommand();
-	        else if (cmd == "down") c = new DownCommand();
-		    else if(c == "clockwise") c = new CWCommand();
-		    else if(c == "counterclockwise") c = new CCWCommand();
-		    else if(c == "drop") c = new DropCommand();
-		    else if(c == "levelup") c = new LevelUpCommand();  
-		    else if(c == "leveldown") c = new LevelDownCommand();
-		    else if(c == "norandom" && level > 2) norandom(); c = new LevelDownCommand();
-		    else if(c == "random" && level > 2) c = new RandomCommand();
-		    else if(c == "restart") c = new RestartCommand();
-		    else if(c == "hint") c = new LevelDownCommand();
-		    else if (c == "pass") c = new PassCommand();
-		    else if (c == "sequence") c = new SequenceCommand();
-		    else if(c.length() == 1) c = new ReplaceBlock();
-	        if (c == "quit")
-	            break;
-	        c->execute(currentBlock, m);
+	        // if (cmd == "left") c = new LeftCommand();
+	        // else if (cmd == "right") c = new RightCommand();
+	        // else if (cmd == "down") c = new DownCommand();
+		    // else if(c == "clockwise") c = new CWCommand();
+		    // else if(c == "counterclockwise") c = new CCWCommand();
+		    // else if(c == "drop") c = new DropCommand();
+		    // else if(c == "levelup") c = new LevelUpCommand();  
+		    // else if(c == "leveldown") c = new LevelDownCommand();
+		    // else if(c == "norandom") c = new LevelDownCommand();
+		    // else if(c == "random") c = new RandomCommand();
+		    // else if(c == "restart") c = new RestartCommand();
+		    // else if(c == "hint") c = new LevelDownCommand();
+		    // else if(c.length() == 1) c = new ReplaceBlock();
+	        // if (c == "quit")
+	        //     break;
+	        // c->execute(currentBlock, m);
 	    }
     }
 }
-
 
