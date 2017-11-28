@@ -3,7 +3,7 @@
 #include <cstddef>
 
 enum class StateType { NONE, MOVING, STATIC };
-enum class BlockType { I, J, L, O, S, T, Z };
+enum class BlockType { NONE, I, J, L, O, S, T, Z };
 
 struct Info {
   size_t row, col;

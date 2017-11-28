@@ -9,7 +9,7 @@
 
 class Interpreter {
 	std::istream *in = &std::cin;
-    GraphicsDisplay *gd;
+   // GraphicsDisplay *gd;
     // Grid grid;
     // Level level;
 
