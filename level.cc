@@ -3,3 +3,5 @@
 void Level::setSeed(int seed) {
     this->seed = seed;
 }
+
+Level::~Level() {}
