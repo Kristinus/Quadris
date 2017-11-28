@@ -7,7 +7,7 @@ class Level {
 public:
     void setSeed(int);
     virtual Block createBlock();
-    virtual ~Level();  
+    virtual ~Level();
 };
 
 #endif

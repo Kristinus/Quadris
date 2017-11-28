@@ -11,6 +11,6 @@ class Cell: public Subject<Info> {
    void setState(StateType state);
    void setCoords(size_t, size_t);
    Info getInfo() const;
-}
+};
 
 #endif

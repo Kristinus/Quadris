@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-#include <string>
-#include <iostream>
 #include <vector>
 #include <sstream>
 #include <fstream>
 #include "level.h"
 #include "block.h"
 #include "grid.h"
-#include "graphicsdisplay.h"
-#include "interpreterimpl.h"
-#include "window.h"
 #include "interpreter.h"
 using namespace std;
 
