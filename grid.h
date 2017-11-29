@@ -15,6 +15,8 @@ class Grid {
   Block *nextBlock;
   TextDisplay *td;
   GraphicsDisplay *gd;
+ 
+
    
   public:
   Grid();

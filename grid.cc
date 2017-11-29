@@ -89,8 +89,7 @@ void Grid::deleteRow() {
 
 			// if all the cells of blocks  have been removed, then delete the block from set blocks and calculate the score
 			if (block->cells.size() == 0) {
-				int points = pow((setBlocks[i]->level + 1),2);
-				score += points;
+				theScore += pow((setBlocks[i]->level + 1),2);
 				delete setBlocks[i];
 				setBlocks.erase(setBlocks.begin() + i);
 			}
@@ -181,6 +180,17 @@ void Grid::drop(int x) {
 }
 
 void Grid::restart() {
+	for (auto b : setBlocks) {
+		delete b;
+	}
+
+    delete currentBlock;
+    delete nextBlock;
+    // note: level doesn't change
+    initGrid(); 
+    currentBlock = theLevel->createBlock();
+    nextBlock = theLevel->createBlock();
+    theScore = 0;  
 
 }
 void Grid::rotateCW(int x) {
@@ -190,6 +200,12 @@ void Grid::rotateCCW(int x) {
 
 }
 void Grid::levelUp(int x) {
+	int shift = 0;
+	while (shift < x && shift <= 4) {
+		Level *temp = theLevel->levelUp();
+        if (temp != theLevel) delete theLevel; // free current level pointer
+        theLevel = temp;
+	}
 
 }
 void Grid::levelDown(int x) {
