@@ -7,6 +7,6 @@ public:
 	virtual ~Block() = 0;
 	Block(int, int, bool);
 
-}
+};
 
 #endif
