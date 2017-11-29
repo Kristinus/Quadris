@@ -23,6 +23,7 @@ public:
 };
 
 class CounterClockwiseCommand: public Command {
+	
 public:
 	void execute(int m=1) override;
 };

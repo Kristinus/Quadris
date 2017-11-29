@@ -1,4 +1,5 @@
 #include "grid.h"
+#include <cmath>
 #include "cell.h"
 #include <vector>
 
@@ -17,6 +18,7 @@ void Grid::initGrid() {
 			info.block = BlockType::None;
 			info.state = StateType::None;
 			Cell c = Cell(info);
+			c.parentBlock = nullptr;
 			//c.attach(td)
 			row.emplace_back(Cell(info));
 		}
@@ -68,39 +70,111 @@ void Grid::deleteRow() {
 		theGrid.insert(theGrid.begin(), row);
 	}
 
+	// iterate through each block pointer
+	for (int i = setBlocks.size() - 1; i >= 0; i--) {
+		// iterate through each block's cells
+		for (int i = block->cells.size() - 1; i >= 0; i--) {
+			// if the row goes out of bounds, then erase the cell
+			if (block->cells.info.row - rowsToDelete < 0) {
+				block->cells.erase(block->cells.begin() + i);
+			} else {
+				// decrement each setBlock's 
+				block->cells.info.row -= rowsToDelete;
+			}
+
+			// if all the cells of blocks  have been removed, then delete the block from set blocks and calculate the score
+			if (block->cells.size() == 0) {
+				int points = pow((setBlocks[i]->level + 1),2);
+				score += points;
+				delete setBlocks[i];
+				setBlocks.erase(setBlocks.begin() + i);
+			}
+
+		}
+	
+	}
+
 }
 
-void Grid::left() {
+bool isValidMove(vector<Cells> theCells, int offsetX, int offsetY) {
+	for (auto cell: theCells) {
+		if !((cell.info.x + offsetX >= 0 && (cell.info.x + offsetX <= 11) 
+			&& (cell.info.y + offsetY >= 0))) {
+			return false;
+		}
+	}
+	return true;
+}
+
+// updates each cell of setblocks by the offset, depending on left, right, down
+void updateSetBlockIndices(vector<Cells> &theCells, int offsetX, int offsetY) {
+	for (auto &cell: theCells) {
+		cell.info.row += offsetX;
+		cell.info.col += offsetY;
+	}
+}
+
+void Grid::left(int x) {
+	// check if valid move
+	// update the current block's cells
+	int shift = 0;
+	while (shift < x) {
+		if (!isValidMove(currentBlock->cells, -1, 0)) {
+			break;
+		}
+		shift++;
+	}
+
+	updateSetBlockIndices(currentBlock->cells, -shift, 0);
 
 }
-void Grid::right() {
+
+void Grid::right(int x) {
+
+	int shift = 0;
+	while (shift < x) {
+		if (!isValidMove(currentBlock->cells, 1, 0)) {
+			break;
+		}
+		shift++;
+	}
+
+	updateSetBlockIndices(currentBlock->cells, shift, 0);
 
 }
-void Grid::down() {
+void Grid::down(int x) {
+	int shift = 0;
+	while (shift < x) {
+		if (!isValidMove(currentBlock->cells, 0, -1)) {
+			break;
+		}
+		shift++;
+	}
+	updateSetBlockIndices(currentBlock->cells, 0, -shift);
 
 }
-void Grid::drop() {
+void Grid::drop(int x) {
 
 }
 void Grid::restart() {
 
 }
-void Grid::rotateCW() {
+void Grid::rotateCW(int x) {
 
 }
-void Grid::rotateCCW() {
+void Grid::rotateCCW(int x) {
 
 }
-void Grid::levelUp() {
+void Grid::levelUp(int x) {
 
 }
-void Grid::levelDown(){
+void Grid::levelDown(int x) {
 
 }
-void Grid::random(){
+void Grid::random() {
 
 }
-void Grid::hint(){
+void Grid::hint() {
 
 }
 

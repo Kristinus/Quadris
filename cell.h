@@ -2,8 +2,11 @@
 #define CELL_H
 #include "subject.h"
 #include "info.h"
+#include "block.h"
+
 class Cell: public Subject<Info> {
    Info info;
+   //Block *parentBlock;
 
    public:
    Cell(Info info);

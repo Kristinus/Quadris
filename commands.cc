@@ -22,6 +22,6 @@ void CounterClockwiseCommand::execute(int m) {
 }
 
 void DropCommand::execute(int m) {
-    grid->drop(m)
+    grid->drop(m);
 }
 
