@@ -1,5 +1,6 @@
 #include "levels.h"
 #include "constants.h"
+#include <algorithm>
 
 Level0::Level0() {
     seq.open(sourceFile);
@@ -8,8 +9,8 @@ Level0::Level0() {
 Block Level0::createBlock() {
     char b;
     seq >> b;
-    if (BLOCK_MAP.count(b))
-        return Block(BLOCK_MAP.find(b));
+    if (std::find(BLOCKS.begin(), BLOCKS.end(), b) !=BLOCKS.end())
+        return Block(b);
     //Invalid file.txt
 }
 
