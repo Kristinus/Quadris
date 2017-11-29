@@ -118,15 +118,8 @@ void initCommandMap() {
 
 
     
-    while(1) {
-        string c;
-        cin >> c;
-        if(map.count(c)) {
-            auto i = map.find(c);
-            (*i->second).execute();
-        } 
-    }
-}
+    
+
 
 
 
