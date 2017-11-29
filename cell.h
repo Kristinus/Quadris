@@ -13,6 +13,7 @@ public:
    void setBlock(BlockType block);
    void setState(StateType state);
    void setCoords(size_t, size_t);
+   void moveDown(size_t);
    Info getInfo() const;
 };
 

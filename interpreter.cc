@@ -107,13 +107,36 @@ void Interpreter::run() {
 
         if (commandMap.count(cmd)) {
            auto i = commandMap.find(cmd);
-           (i->second)->execute(mult);
 
+           (i->second)->execute(mult);
         } 
     }
 }
 
 
+
+std::map<string, Command *> Interpreter::initCommandMap() {
+    map<string, Command *> map;
+    map["left"] = new LeftCommand();
+    map["right"] = new RightCommand();
+    map["down"] = new DownCommand();
+    map["levelup"] = new LevelUpCommand();
+    map["leveldown"] = new LevelDownCommand();
+    map["norandom"] = new NoRandomCommand();
+    map["sequence"] = new SequenceCommand();
+    map["clockwise"] = new ClockwiseCommand();
+    map["counterclockwise"] = new CounterClockwiseCommand();
+    map["drop"] = new DropCommand();
+    map["restart"] = new RestartCommand();
+    map["I"] = new ICommand();
+    map["J"] = new JCommand();
+    map["L"] = new LCommand();
+    map["O"] = new OCommand();
+    map["T"] = new TCommand();
+    map["Z"] = new ZCommand();
+    map["S"] = new SCommand();
+    return map;
+}
 
 
     

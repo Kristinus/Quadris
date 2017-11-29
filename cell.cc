@@ -16,6 +16,10 @@ void Cell::setCoords(size_t r, size_t c) {
 	info.col = c;
 }
 
+void Cell::moveDown(size_t x) {
+	info.row = info.row - x;
+}
+
 void Cell::setState(StateType state) {
 	info.state = state;
 }

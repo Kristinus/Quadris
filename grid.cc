@@ -85,32 +85,22 @@ void Grid::deleteRow() {
 		theGrid.insert(theGrid.begin(), row);
 	}
 
-	//Delete Cells from Block if in deleted row
-	//Decrement cell.row in each block
-	//(TODO) make a block function that does this (deleteCell(int row), decrementCells(int row))
-	// // iterate through each block pointer
-	// for (auto &block: setBlocks) {
-	// 	// iterate through each block's cells
-	// 	for (int i = block->cells.size() - 1; i >= 0; i--) {
-	// 		// if the row goes out of bounds, then erase the cell
-	// 		if (block->cells.getInfo().row - rowsToDelete < 0) {
-	// 			block->cells.erase(block->cells.begin() + i);
-	// 		} else {
-	// 			// decrement each setBlock's
-	// 			//(TODO)
-	// 			// block->cells.block->cells.getInfo().row - rowsToDelete;
-	// 		}
+//	Delete Cells from Block if in deleted row
+//	Decrement cell.row in each block
 
-	// 		// if all the cells of blocks  have been removed, then delete the block from set blocks and calculate the score
-	// 		if (block->cells.size() == 0) {
-	// 			theScore->addToCurrentScore(pow((setBlocks[i]->level + 1), 2));
-	// 			delete setBlocks[i];
-	// 			setBlocks.erase(setBlocks.begin() + i);
-	// 		}
 
-	// 	}
+	 // iterate through each block pointer
+	 for (auto &block: setBlocks) {
+	 	// iterate through each block's cells
+	 	// removes cells that are out of bounds, or sets them to the new location
+	 	block.updateSetCells();
+	 	if (block.getBlockCells().size() == 0) {
+	 		theScore->addToCurrentScore(pow((block->level + 1), 2));
+	 		delete setBlocks[i];
+	 		setBlocks.erase(setBlocks.begin() + i);
+	 	}
 	
-	// }
+	 }
 
 	theScore->addToCurrentScore(pow(theLevel->getLevel() + rowsToDelete, 2));
 

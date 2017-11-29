@@ -22,6 +22,26 @@ vector<Cell> Block::getBlockCells() {
    return cells;
 }
 
+
+void Block::updateSetCells(int rowsToDelete) {
+	for (int i = cells.size() - 1; i >= 0; i--) {
+	 		// if the row goes out of bounds, then erase the cell
+	 		if (cells.getInfo().row - rowsToDelete < 0) {
+	 			cells.erase(cells.begin() + i);
+
+	 		} else {
+	 			// decrement each setBlock's
+
+	 			cell.moveDown(rowsToDelete);	
+	 			// block->cells.block->cells.getInfo().row - rowsToDelete;
+	 		}
+	 	}
+}
+
+std::vector<Cell> Block::getBlockCells() {
+	return cells;
+}
+
 bool Block::isBlockHeavy(){
    return isHeavy;
 }
@@ -29,6 +49,8 @@ bool Block::isBlockHeavy(){
 int Block::getLevel(){
    return level;
 }
+
+void Block::deleteBlock()
 
 void Block::move(int offsetX, int offsetY) {
 	for (auto &c : cells) {

@@ -2,6 +2,7 @@
 #define __INTERPRETER_H__
 #include <string>
 #include <iostream>
+#include <map>
 // #include "level.h"
 // #include "block.h"
 // #include "grid.h"
@@ -11,6 +12,7 @@ class Grid;
 class Interpreter {
 	std::istream *in = &std::cin;
     std::map<std::string, Command *> commandMap;
+
    // GraphicsDisplay *gd;
     Grid *grid = nullptr;
     // Level level;
