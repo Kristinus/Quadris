@@ -8,6 +8,7 @@
 // #include "grid.h"
 // #include "graphicsDisplay.h"
 class Grid;
+class Command;
 
 class Interpreter {
 	std::istream *in = &std::cin;
@@ -19,7 +20,7 @@ class Interpreter {
 
     void initCommandMap();
 public:
-    Interpreter(std::string, bool, std::string, int);
+    Interpreter(int, bool, std::string, int);
     ~Interpreter();
     void run();
 

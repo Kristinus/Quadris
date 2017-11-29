@@ -37,7 +37,7 @@ void Interpreter::initCommandMap() {
     commandMap["S"] = new SCommand(grid);
 }
 
-Interpreter::Interpreter(string seed, bool textOnly, string scriptFile, int startLevel) {
+Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLevel) {
 	initCommandMap();
 	if (textOnly == false) {
 	//	gd = new GraphicsDisplay(500);

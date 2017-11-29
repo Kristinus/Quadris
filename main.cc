@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include "constants.h"
+#include "interpreter.h"
 
 using namespace std;
 
@@ -70,6 +71,9 @@ int main(int argc, char *argv[]) {
     }
 
   }
+
+  Interpreter in = Interpreter(seed, textOnly, scriptFile, startLevel);
+  in.run();
 
 
   // catch (ios::failure &) {}  // Any I/O failure quits
