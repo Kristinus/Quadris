@@ -125,7 +125,7 @@ void Grid::left(int x) {
 	// update the current block's cells
 	int shift = 0;
 	while (shift < x) {
-		if (isValidMove(currentBlock->cells, -1, 0)) {
+		if (isValidMove(currentBlock->getBlockCells(), -1, 0)) {
 			currentBlock->left();
 		} else {
 			break;
@@ -140,7 +140,7 @@ void Grid::right(int x) {
 
 	int shift = 0;
 	while (shift < x) {
-		if (isValidMove(currentBlock->cells, 1, 0)) {
+		if (isValidMove(currentBlock->getBlockCells(), 1, 0)) {
 			currentBlock->right();
 		} else {
 			break;
@@ -152,7 +152,7 @@ void Grid::right(int x) {
 void Grid::down(int x) {
 	int shift = 0;
 	while (shift < x) {
-		if (isValidMove(currentBlock->cells, 0, -1)) {
+		if (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
 			currentBlock->down();
 		} else {
 			break;
@@ -162,7 +162,7 @@ void Grid::down(int x) {
 }
 
 void setBlock(Block *curBlock) {
-	for (auto cell : currentBlock->cells) {
+	for (auto cell : currentBlock->getBlockCells()) {
 		theGrid[cell.info.row][cell.info.col].setState(StateType::STATIC);
 	}
 	setBlocks.emplace_back(currentBlock);
@@ -170,8 +170,11 @@ void setBlock(Block *curBlock) {
 
 void Grid::drop(int x) {
 	int shift = 0;
-	while (isValidMove(currentBlock->cells, 0, -shift)) {
-		updateCurblockIndices(currentBlock->cells, 0, -1);
+
+	while (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
+			currentBlock->down();
+
+		shift++;
 	}
 	setBlock(currentBlock);
 	//currentBlock = nextBlock;
