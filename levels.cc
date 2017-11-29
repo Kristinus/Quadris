@@ -1,4 +1,5 @@
 #include "levels.h"
+#include "constants.h"
 
 Level0::Level0() {
     seq.open(sourceFile);
@@ -7,8 +8,8 @@ Level0::Level0() {
 Block Level0::createBlock() {
     char b;
     seq >> b;
-    if (b == 'I' || b =='J' || b == 'L' || b == 'O' || b == 'S' || b == 'T' || b == 'Z')
-        return Block(b);
+    if (BLOCK_MAP.count(b))
+        return Block(BLOCK_MAP.find(b));
     //Invalid file.txt
 }
 

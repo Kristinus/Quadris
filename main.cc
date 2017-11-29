@@ -12,8 +12,6 @@ using namespace std;
 
 
 int main(int argc, char *argv[]) {
-  cout << Constants::GRID_H << endl;
-  cout << "testing hashmap " << Constants::my_map.find(BlockType::L) << endl;
 
   const int MIN_LEVEL = 0;
   const int MAX_LEVEL = 4;
