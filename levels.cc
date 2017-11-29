@@ -1,6 +1,7 @@
 #include "levels.h"
 #include "constants.h"
 #include <algorithm>
+#include "blocks.h"
 
 Level0::Level0() {
     seq.open(sourceFile);

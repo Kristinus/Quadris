@@ -3,6 +3,9 @@
 #include "cell.h"
 #include <vector>
 
+Grid::Grid():td{new TextDisplay()} {
+}
+
 
 void Grid::initGrid() {
 	theGrid.clear();
@@ -19,7 +22,7 @@ void Grid::initGrid() {
 			info.state = StateType::None;
 			Cell c = Cell(info);
 			c.parentBlock = nullptr;
-			//c.attach(td)
+			c.attach(td)
 			row.emplace_back(Cell(info));
 		}
 		// adds each row to the beginning so the bottom left is the ORIGIN (0,0)
@@ -34,6 +37,7 @@ bool Grid::isOver() {
 
 }
 
+//Checks if the row is filled
 bool isFilled(std::vector row) {
 	for (auto c : row) {
 		if (c.info.state != StateType::STATIC) return false;
@@ -56,6 +60,7 @@ void Grid::deleteRow() {
 		}
 	}
 
+	//Recreate Rows
 	for (int i = rowsToDelete - 1; i >= 0; i++) {
 		vector<Cell> row;
 		for (int j = 0; j < 11; j++) {
