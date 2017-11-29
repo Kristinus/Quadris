@@ -4,7 +4,7 @@
 #include "textDisplay.h"
 #include "cell.h"
 #include "level.h"
-#include "blocks.h"
+
 template <typename InfoType> class Observer;
 
 class Grid {
@@ -12,14 +12,13 @@ class Grid {
   Level *theLevel;
   Score* theScore;
   std::vector<Block *> setBlocks;
-  Block *currentBlock;
-  Block *nextBlock;
+  Block *currentBlock = nullptr;
+  Block *nextBlock = nullptr;
   TextDisplay *td;
   Observer<Info> *ob;
  
-
-   
-  public:
+  bool isValidMove(std::vector<Cell>, int, int);
+public:
   Grid();
   void initGrid();
   bool isOver();

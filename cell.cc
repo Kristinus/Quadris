@@ -4,7 +4,7 @@
 
 // recall info holds row, col, state, and blcoktype
 
-Cell::Cell(Info info): info{info} {}
+Cell::Cell(Info &info): info{info} {}
 
 void Cell::setBlock(BlockType block) {
 	info.block = block;
