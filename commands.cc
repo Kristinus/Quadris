@@ -26,3 +26,34 @@ void DropCommand::execute(int m) {
     grid->drop(m);
 }
 
+
+void LCommand::execute(int m=1) {
+}
+
+
+void ICommand::execute(int m=1) {
+
+}
+
+
+
+void JCommand::execute(int m=1) {
+
+}
+
+void OCommand::execute(int m=1) {
+
+}
+
+void SCommand::execute(int m=1) {
+
+}
+
+void ZCommand::execute(int m=1) {
+
+}
+
+void TCommand::execute(int m=1) {
+
+}
+

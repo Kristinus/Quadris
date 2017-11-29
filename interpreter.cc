@@ -6,7 +6,7 @@
 #include "level.h"
 #include "block.h"
 #include "grid.h"
-
+#include "commands.h"
 #include "interpreter.h"
 using namespace std;
 
@@ -73,83 +73,60 @@ ProcessedInput parseCommand(string command) {
 
 }
 
-void Interpreter::run(){
-
+void Interpreter::run() {
+	std::map<string, Command*> map = initCommandMap();
     string s;
     while(*in >> s) {
         ProcessedInput processedCommand = parseCommand(s);
         string cmd = processedCommand.command;
         int mult = processedCommand.multiplier;
+        if (cmd == "quit") {
+        	break;
+        }
 
+        if (map.count(cmd)) {
+           auto i = map.find(c);
+           (i->second)->execute(mult);
 
-        // Command *c;
-        // Block *currentBlock;
-
-        // parse command // get the integer if there is an integer
-
-        for (int i = 0; i < mult; i++) {
-
-        	// the Grid calls left // the Grid calls right
-
-
-  //      	getKey(hasmah, "left")
-    //    	m.find(cmd).execute();
-
-	        // if (cmd == "left") c = new LeftCommand();
-	        // else if (cmd == "right") c = new RightCommand();
-	        // else if (cmd == "down") c = new DownCommand();
-		    // else if(c == "clockwise") c = new CWCommand();
-		    // else if(c == "counterclockwise") c = new CCWCommand();
-		    // else if(c == "drop") c = new DropCommand();
-		    // else if(c == "levelup") c = new LevelUpCommand();  
-		    // else if(c == "leveldown") c = new LevelDownCommand();
-		    // else if(c == "norandom") c = new LevelDownCommand();
-		    // else if(c == "random") c = new RandomCommand();
-		    // else if(c == "restart") c = new RestartCommand();
-		    // else if(c == "hint") c = new LevelDownCommand();
-		    // else if(c.length() == 1) c = new ReplaceBlock();
-	        // if (c == "quit")
-	        //     break;
-	        // c->execute(currentBlock, m);
-	    }
+        } 
     }
 }
 
 
-/*
-typedef void (*ScriptFunction)(void); // function pointer type
-typedef map<string, ScriptFunction> script_map;
-
-
-void left() {
-    cout << "LEFT" << endl;
+void initCommandMap() {
+    map<string, Command *> map;
+    map["left"] = new LeftCommand();
+    map["right"] = new RightCommand();
+    map["down"] = new DownCommand();
+    map["levelup"] = new LevelUpCommand();
+    map["leveldown"] = new LevelDownCommand();
+    map["norandom"] = new NoRandomCommand();
+    map["sequence"] = new SequenceCommand();
+    map["clockwise"] = new ClockwiseCommand();
+    map["counterclockwise"] = new counterclockwiseCommand();
+    map["drop"] = new DropCommand();
+    map["restart"] = new RestartCommand();
+    map["I"] = new ICommand();
+    map["J"] = new JCommand();
+    map["L"] = new LCommand();
+    map["O"] = new OCommand();
+    map["T"] = new TCommand();
+    map["Z"] = new ZCommand();
+    map["S"] = new SCommand();
+    return map;
 }
 
-void right() {
-    cout << "RIGHT" << endl;
-}
-void down() {
-    cout << "DOWN" << endl;
-}
-void drop() {
-    cout << "DROP" << endl;
-}
 
-int main() {
-    script_map map;
-    map["left"] = &left;
-    map["right"] = &right;
-    map["down"] = &down;
-    map["drop"] = &drop;
     
     while(1) {
         string c;
         cin >> c;
         if(map.count(c)) {
             auto i = map.find(c);
-            (*i->second)();
+            (*i->second).execute();
         } 
     }
 }
 
-*/
+
+

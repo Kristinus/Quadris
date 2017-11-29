@@ -23,7 +23,7 @@ public:
 };
 
 class CounterClockwiseCommand: public Command {
-	
+
 public:
 	void execute(int m=1) override;
 };
@@ -33,7 +33,7 @@ public:
 	void execute(int m=1) override;
 };
 
-class LevelupCommand: public Command {
+class LevelUpCommand: public Command {
 public:
 	void execute(int m=1) override;
 };
@@ -64,6 +64,37 @@ public:
 };
 
 class HintCommand: public Command {
+public:
+	void execute(int m=1) override;
+};
+
+class ICommand: public Command {
+public:
+	void execute(int m=1) override;
+};
+
+class JCommand: public Command {
+public:
+	void execute(int m=1) override;
+};
+
+class LCommand: public Command {
+public:
+	void execute(int m=1) override;
+};
+class TCommand: public Command {
+public:
+	void execute(int m=1) override;
+};
+class OCommand: public Command {
+public:
+	void execute(int m=1) override;
+};
+class SCommand: public Command {
+public:
+	void execute(int m=1) override;
+};
+class ZCommand: public Command {
 public:
 	void execute(int m=1) override;
 };
