@@ -12,8 +12,8 @@ public:
     Level0();
     Block *createBlock() override;
     ~Level0() override; 
-    levelUp();
-    levelDown();
+    Level *levelUp();
+    Level *levelDown();
 };
 
 class Level1: public Level {
@@ -21,8 +21,8 @@ class Level1: public Level {
 public:
     Level1();
     Block *createBlock() override;
-    levelUp();
-    levelDown();
+    Level *levelUp();
+    Level *levelDown();
 };
 
 class Level2: public Level {
@@ -30,8 +30,8 @@ class Level2: public Level {
 public:
     Level2();
     Block *createBlock() override;
-    levelUp();
-    levelDown();
+    Level *levelUp();
+    Level *levelDown();
 };
 
 class Level3: public Level {
@@ -39,8 +39,8 @@ class Level3: public Level {
 public:
     Level3();
     Block *createBlock() override;
-    levelUp();
-    levelDown();
+    Level *levelUp();
+    Level *levelDown();
 };
 
 class Level4: public Level {
@@ -48,7 +48,7 @@ class Level4: public Level {
 public:
     Level4();
     Block *createBlock() override;
-    levelUp();
-    levelDown();
+    Level *levelUp();
+    Level *levelDown();
 };
 #endif
