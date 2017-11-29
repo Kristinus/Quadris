@@ -10,10 +10,12 @@ class Block {
     int level;
     int col;
     int row;
+    Grid *theGrid;
 public:
-    Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
+    Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
     Block(bool isHeavy, int level, std::vector<Cell> cells);
     ~Block();
+    void move();
     std::vector<Cell> getBlockCells();
     bool isBlockHeavy();
     int getLevel();

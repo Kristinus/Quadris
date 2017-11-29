@@ -8,6 +8,7 @@ class Level {
     int seed;
 public:
     void setSeed(int);
+    virtual int getLevel() = 0;
     virtual Block *createBlock();
     virtual ~Level();
     virtual Level *levelUp() = 0;

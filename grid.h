@@ -10,6 +10,7 @@
 class Grid {
   std::vector<std::vector<Cell>> theGrid;
   Level *theLevel;
+  Score* theScore;
   std::vector<Block *> setBlocks;
   Block *currentBlock;
   Block *nextBlock;

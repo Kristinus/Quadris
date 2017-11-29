@@ -38,6 +38,11 @@ Level* Level0::levelDown() {
     return this;
 }
 
+int Level0::getLevel() {
+    return 0;
+}
+
+
 //***************************************************************************************//
 
 Level1::Level1():
@@ -55,6 +60,10 @@ Level* Level1::levelDown() {
     return new Level1();
 }
 
+int Level1::getLevel() {
+    return 1;
+}
+
 //***************************************************************************************//
 
 Level2::Level2():
@@ -68,8 +77,12 @@ Level* Level2::levelUp() {
     return new Level3();
 }
 
-Level* Leevl2::levelDown() {
+Level* Level2::levelDown() {
     return new Level1();
+}
+
+int Level2::getLevel() {
+    return 2;
 }
 
 //***************************************************************************************//
@@ -89,6 +102,10 @@ Level* Level3::levelDown() {
     return new Level2();
 }
 
+int Level3::getLevel() {
+    return 3;
+}
+
 //***************************************************************************************//
 
 Level4::Level4():
@@ -105,5 +122,9 @@ Level* Level4::levelUp() {
 
 Level* Level4::levelDown() {
     return new Level3();
+}
+
+int Level4::getLevel() {
+    return 4;
 }
 
