@@ -98,8 +98,11 @@ void Grid::deleteRow() {
 
 bool isValidMove(vector<Cells> theCells, int offsetX, int offsetY) {
 	for (auto cell: theCells) {
-		if !((cell.info.x + offsetX >= 0 && (cell.info.x + offsetX <= 11) 
-			&& (cell.info.y + offsetY >= 0))) {
+		int newX = cell.info.x + offsetX;
+		int newY = cell.info.y + offsetY;
+
+		if !((newX >= 0 && (newX <= 11) && (newY >= 0)
+			&& theGrid[newX][newY].info.state != StateType::STATIC)) {
 			return false;
 		}
 	}
@@ -107,7 +110,7 @@ bool isValidMove(vector<Cells> theCells, int offsetX, int offsetY) {
 }
 
 // updates each cell of setblocks by the offset, depending on left, right, down
-void updateSetBlockIndices(vector<Cells> &theCells, int offsetX, int offsetY) {
+void updateCurblockIndices(vector<Cells> &theCells, int offsetX, int offsetY) {
 	for (auto &cell: theCells) {
 		cell.info.row += offsetX;
 		cell.info.col += offsetY;
@@ -125,7 +128,7 @@ void Grid::left(int x) {
 		shift++;
 	}
 
-	updateSetBlockIndices(currentBlock->cells, -shift, 0);
+	updateCurblockIndices(currentBlock->cells, -shift, 0);
 
 }
 
@@ -139,7 +142,7 @@ void Grid::right(int x) {
 		shift++;
 	}
 
-	updateSetBlockIndices(currentBlock->cells, shift, 0);
+	updateCurblockIndices(currentBlock->cells, shift, 0);
 
 }
 void Grid::down(int x) {
@@ -150,12 +153,28 @@ void Grid::down(int x) {
 		}
 		shift++;
 	}
-	updateSetBlockIndices(currentBlock->cells, 0, -shift);
+	updateCurblockIndices(currentBlock->cells, 0, -shift);
 
 }
+
+void setBlock(Block *curBlock) {
+	for (auto cell : currentBlock->cells) {
+		theGrid[cell.info.row][cell.info.col].setState(StateType::STATIC);
+	}
+	setBlocks.emplace_back(currentBlock);
+}
+
 void Grid::drop(int x) {
+	int shift = 0;
+	while (isValidMove(currentBlock->cells, 0, -shift)) {
+		updateCurblockIndices(currentBlock->cells, 0, -1);
+	}
+	setBlock(currentBlock);
+	//currentBlock = nextBlock;
+	//nextBlock = theLevel->createBlock();
 
 }
+
 void Grid::restart() {
 
 }
