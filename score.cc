@@ -1,5 +1,7 @@
 #include "score.h"
 
+
+
 int Score::getCurrentScore() {
 	return currentScore;
 }
