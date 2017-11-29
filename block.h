@@ -28,6 +28,7 @@ public:
     void down();
     virtual void clockwise()=0;
     virtual void counterclockwise()=0;
+    void updateSetCells(int);
 };
 
 #endif
