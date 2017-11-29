@@ -1,6 +1,7 @@
 #include "commands.h"
 #include "grid.h"
 
+
 void LeftCommand::execute(int m) {
     grid->left(m);
 }

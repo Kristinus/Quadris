@@ -11,8 +11,8 @@ void TextDisplay::createDict() {
   dict[BlockType::Z] = 'Z';
 }
 
-TextDisplay::TextDisplay(): 
-  theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, '-'))} {
+TextDisplay::TextDisplay(Grid *grid): 
+  theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, '-'))}, grid{grid} {
       createDict();
 }
 
@@ -33,7 +33,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   out << "-----------" << std::endl;
 
   //Outputs the Grid
-  for(auto r:td.theDisplay) {
+  for(auto r=td.theDisplay.rend(); r!=td.theDisplay.rbegin(); r++) {
     for(auto c:r) {
       out << c;
     }

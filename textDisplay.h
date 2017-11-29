@@ -16,7 +16,7 @@ class TextDisplay: public Observer<Info> {
 
   void createDict();
  public:
-  TextDisplay();
+  TextDisplay(Grid *);
 
   void notify(Subject<Info> &whoNotified) override;
 

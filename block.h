@@ -3,6 +3,7 @@
 #include "info.h"
 #include "cell.h"
 #include <vector>
+class Grid;
 
 class Block {
     std::vector<Cell> cells;

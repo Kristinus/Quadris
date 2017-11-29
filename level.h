@@ -6,7 +6,10 @@
 
 class Level {
     int seed;
+protected:
+    std::vector<Block *> selector;
 public:
+    void setDefaultSelector();
     void setSeed(int);
     virtual int getLevel() = 0;
     virtual Block *createBlock();

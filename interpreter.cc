@@ -115,3 +115,41 @@ void Interpreter::run(){
     }
 }
 
+
+/*
+typedef void (*ScriptFunction)(void); // function pointer type
+typedef map<string, ScriptFunction> script_map;
+
+
+void left() {
+    cout << "LEFT" << endl;
+}
+
+void right() {
+    cout << "RIGHT" << endl;
+}
+void down() {
+    cout << "DOWN" << endl;
+}
+void drop() {
+    cout << "DROP" << endl;
+}
+
+int main() {
+    script_map map;
+    map["left"] = &left;
+    map["right"] = &right;
+    map["down"] = &down;
+    map["drop"] = &drop;
+    
+    while(1) {
+        string c;
+        cin >> c;
+        if(map.count(c)) {
+            auto i = map.find(c);
+            (*i->second)();
+        } 
+    }
+}
+
+*/

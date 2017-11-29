@@ -45,8 +45,13 @@ int Level0::getLevel() {
 
 //***************************************************************************************//
 
-Level1::Level1():
-    selector{std::vector<Block *>{new IBlock(), new IBlock(), new JBlock(), new JBlock(), new LBlock(), new LBlock(), new OBlock(), new OBlock(), new SBlock(), new TBlock(), new TBlock(), new ZBlock()}} {
+Level1::Level1() {
+    setDefaultSelector();
+    selector.emplace_back(new IBlock());
+    selector.emplace_back(new JBlock());
+    selector.emplace_back(new LBlock());
+    selector.emplace_back(new OBlock());
+    selector.emplace_back(new TBlock());
 }
 
 Block *Level1::createBlock() {
@@ -57,7 +62,7 @@ Level* Level1::levelUp() {
 }
 
 Level* Level1::levelDown() {
-    return new Level1();
+    return new Level0();
 }
 
 int Level1::getLevel() {
@@ -66,8 +71,8 @@ int Level1::getLevel() {
 
 //***************************************************************************************//
 
-Level2::Level2():
-selector{std::vector<Block *>{new IBlock(), new JBlock(), new LBlock(), new OBlock(), new SBlock(), new TBlock(), new ZBlock()}} {
+Level2::Level2() {
+    setDefaultSelector();
 }
 
 Block *Level2::createBlock() {
@@ -87,8 +92,10 @@ int Level2::getLevel() {
 
 //***************************************************************************************//
 
-Level3::Level3():
-selector{std::vector<Block *>{new IBlock(), new JBlock(), new LBlock(), new OBlock(), new SBlock(), new TBlock(), new ZBlock(), new SBlock(), new ZBlock()}} {
+Level3::Level3() {
+    setDefaultSelector();
+    selector.emplace_back(new SBlock());
+    selector.emplace_back(new ZBlock());
 }
 
 Block *Level3::createBlock() {
@@ -108,8 +115,10 @@ int Level3::getLevel() {
 
 //***************************************************************************************//
 
-Level4::Level4():
-selector{std::vector<Block *>{new IBlock(), new JBlock(), new LBlock(), new OBlock(), new SBlock(), new TBlock(), new ZBlock(), new SBlock(), new ZBlock()}} {
+Level4::Level4() {
+    setDefaultSelector();
+    selector.emplace_back(new SBlock());
+    selector.emplace_back(new ZBlock());
 }
 
 Block *Level4::createBlock() {
