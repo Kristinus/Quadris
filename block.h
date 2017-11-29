@@ -12,6 +12,7 @@ class Block {
     int row;
 public:
     Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
+    Block(bool isHeavy, int level, std::vector<Cell> cells);
     ~Block();
     std::vector<Cell> getBlockCells();
     bool isBlockHeavy();

@@ -4,6 +4,11 @@ using namespace std;
 
 Block::Block(int col, int row, bool isHeavy, vector<Cell> cells): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row} {}
 
+Block::Block(bool isHeavy, int level, vector<Cell> cells): cells{cells}, isHeavy{isHeavy}, level{level} {
+   col = 0;
+   row = 0;
+}
+
 Block::~Block(){
    cells.clear();
 }
