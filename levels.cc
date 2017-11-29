@@ -55,8 +55,9 @@ Level1::Level1() {
 }
 
 Block *Level1::createBlock() {
-    return selector[std::rand()%13];
+    return selector[std::rand()%12];
 }
+
 Level* Level1::levelUp() {
     return new Level2();
 }
@@ -76,7 +77,7 @@ Level2::Level2() {
 }
 
 Block *Level2::createBlock() {
-    return selector[std::rand()%8];
+    return selector[std::rand()%7];
 }
 Level* Level2::levelUp() {
     return new Level3();
@@ -99,7 +100,7 @@ Level3::Level3() {
 }
 
 Block *Level3::createBlock() {
-    return selector[std::rand()%10];
+    return selector[std::rand()%9];
 }
 Level* Level3::levelUp() {
     return new Level4();
@@ -122,7 +123,7 @@ Level4::Level4() {
 }
 
 Block *Level4::createBlock() {
-    return selector[std::rand()%10];
+    return selector[std::rand()%9];
 }
 
 Level* Level4::levelUp() {

@@ -18,7 +18,6 @@ public:
 };
 
 class Level1: public Level {
-    std::vector<Block> selector;
 public:
     Level1();
     Block *createBlock() override;
@@ -29,7 +28,6 @@ public:
 };
 
 class Level2: public Level {
-    std::vector<Block> selector;
 public:
     Level2();
     Block *createBlock() override;
@@ -40,7 +38,6 @@ public:
 };
 
 class Level3: public Level {
-    std::vector<Block> selector;
 public:
     Level3();
     Block *createBlock() override;
@@ -51,7 +48,6 @@ public:
 };
 
 class Level4: public Level {
-    std::vector<Block> selector;
 public:
     Level4();
     Block *createBlock() override;

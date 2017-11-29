@@ -13,8 +13,9 @@ class Block {
     int row;
     Grid *theGrid;
 public:
+    Block(bool isHeavy=false);
     Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
-    Block(bool isHeavy, int level, std::vector<Cell> cells);
+    // Block(bool isHeavy, int level, std::vector<Cell> cells);
     ~Block();
     void move();
     std::vector<Cell> getBlockCells();

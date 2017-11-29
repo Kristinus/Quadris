@@ -33,8 +33,8 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   out << "-----------" << std::endl;
 
   //Outputs the Grid
-  for(auto r=td.theDisplay.rend(); r!=td.theDisplay.rbegin(); r++) {
-    for(auto c:r) {
+  for(int r=td.theDisplay.size(); r>=0; r--) {
+    for(auto c:td.theDisplay[r]) {
       out << c;
     }
     out << std::endl;

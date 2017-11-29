@@ -5,7 +5,7 @@
 #include "cell.h"
 #include "level.h"
 #include "blocks.h"
-
+template <typename InfoType> class Observer;
 
 class Grid {
   std::vector<std::vector<Cell>> theGrid;
@@ -15,7 +15,7 @@ class Grid {
   Block *currentBlock;
   Block *nextBlock;
   TextDisplay *td;
-  GraphicsDisplay *gd;
+  Observer<Info> *ob;
  
 
    

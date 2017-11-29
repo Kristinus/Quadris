@@ -12,7 +12,7 @@ public:
     void setDefaultSelector();
     void setSeed(int);
     virtual int getLevel() = 0;
-    virtual Block *createBlock();
+    virtual Block *createBlock() = 0;
     virtual ~Level();
     virtual Level *levelUp() = 0;
     virtual Level *levelDown() = 0;

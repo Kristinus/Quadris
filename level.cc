@@ -1,4 +1,5 @@
 #include "level.h"
+#include "blocks.h"
 
 void Level::setDefaultSelector() {
     selector.emplace_back(new IBlock());

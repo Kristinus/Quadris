@@ -3,20 +3,19 @@
 #include "cell.h"
 #include <vector>
 
-Grid::Grid():td{new TextDisplay()} {
+Grid::Grid():td{new TextDisplay(this)} {
 // NEED TO FIGURE THIS SHIT OUT
   theLevel = nullptr;
   theScore = nullptr;
 //  std::vector<Block *> setBlocks;
   Block *currentBlock = nullptr;
   Block *nextBlock = nullptr;
-//  GraphicsDisplay *gd;
+  ob = new GraphicsDisplay(this);
 }
 
 
 void Grid::initGrid() {
 	theGrid.clear();
-	//td = new TextDisplay(n);
 	
 
 	for (int i = 0; i < 18; i++) {
@@ -29,7 +28,8 @@ void Grid::initGrid() {
 			info.state = StateType::None;
 			Cell c = Cell(info);
 			c.parentBlock = nullptr;
-			c.attach(td)
+			c.attach(td);
+			c.attach(ob);
 			row.emplace_back(Cell(info));
 		}
 		// adds each row to the beginning so the bottom left is the ORIGIN (0,0)

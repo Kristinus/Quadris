@@ -2,7 +2,10 @@
 
 using namespace std;
 
-Block::Block(int col, int row, bool isHeavy, vector<Cell> cells): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, theGrid{theGrid} {}
+Block::Block(bool isHeavy): isHeavy{isHeavy} {
+}
+
+Block::Block(int col, int row, bool isHeavy, vector<Cell> cells, Grid *theGrid): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, theGrid{theGrid} {}
 
 /**
 Block::Block(bool isHeavy, int level, vector<Cell> cells): cells{cells}, isHeavy{isHeavy}, level{level} {
