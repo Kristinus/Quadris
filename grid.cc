@@ -169,16 +169,19 @@ void setBlock(Block *curBlock) {
 }
 
 void Grid::drop(int x) {
-	int shift = 0;
-
-	while (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
+	while (x > 0) {
+		while (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
 			currentBlock->down();
+		}
+		setBlock(currentBlock);
+		x--;
+		currentBlock = nextBlock;
+		nextBlock = theLevel->createBlock();
 
-		shift++;
 	}
-	setBlock(currentBlock);
-	//currentBlock = nextBlock;
-	//nextBlock = theLevel->createBlock();
+	
+	currentBlock = nextBlock;
+	nextBlock = theLevel->createBlock();
 
 }
 
