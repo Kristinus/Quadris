@@ -10,6 +10,9 @@ public:
     void setSeed(int);
     virtual Block *createBlock();
     virtual ~Level();
+    virtual Level *levelUp() = 0;
+    virtual Level *levelDown() = 0;
+
 };
 
 #endif

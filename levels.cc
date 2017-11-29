@@ -30,6 +30,13 @@ Block *Level0::createBlock() {
 Level0::~Level0() {
     seq.close();
 }
+Level* Level0::levelUp() {
+    return new Level1();
+}
+
+Level* Level0::levelDown() {
+    return this;
+}
 
 //***************************************************************************************//
 
@@ -39,6 +46,13 @@ Level1::Level1():
 
 Block *Level1::createBlock() {
     return selector[std::rand()%13];
+}
+Level* Level1::levelUp() {
+    return new Level2();
+}
+
+Level* Level1::levelDown() {
+    return new Level1();
 }
 
 //***************************************************************************************//
@@ -50,6 +64,13 @@ selector{std::vector<Block *>{new IBlock(), new JBlock(), new LBlock(), new OBlo
 Block *Level2::createBlock() {
     return selector[std::rand()%8];
 }
+Level* Level2::levelUp() {
+    return new Level3();
+}
+
+Level* Leevl2::levelDown() {
+    return new Level1();
+}
 
 //***************************************************************************************//
 
@@ -60,6 +81,13 @@ selector{std::vector<Block *>{new IBlock(), new JBlock(), new LBlock(), new OBlo
 Block *Level3::createBlock() {
     return selector[std::rand()%10];
 }
+Level* Level3::levelUp() {
+    return new Level4();
+}
+
+Level* Level3::levelDown() {
+    return new Level2();
+}
 
 //***************************************************************************************//
 
@@ -69,5 +97,13 @@ selector{std::vector<Block *>{new IBlock(), new JBlock(), new LBlock(), new OBlo
 
 Block *Level4::createBlock() {
     return selector[std::rand()%10];
+}
+
+Level* Level4::levelUp() {
+    return this;
+}
+
+Level* Level4::levelDown() {
+    return new Level3();
 }
 
