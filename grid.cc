@@ -4,6 +4,13 @@
 #include <vector>
 
 Grid::Grid():td{new TextDisplay()} {
+// NEED TO FIGURE THIS SHIT OUT
+  theLevel = nullptr;
+  theScore = nullptr;
+//  std::vector<Block *> setBlocks;
+  Block *currentBlock = nullptr;
+  Block *nextBlock = nullptr;
+//  GraphicsDisplay *gd;
 }
 
 
@@ -201,15 +208,21 @@ void Grid::restart() {
 
 }
 void Grid::rotateCW(int x) {
+	while (x > 0) {
+		currentBlock->rotateCW(x);
+		x--;
+	}
 
 }
 void Grid::rotateCCW(int x) {
+	while (x > 0) {
+		currentBlock->rotateCCW(x);
+	}
 
 }
 void Grid::levelUp(int x) {
 	while (x > 0) {
 		theLevel->levelUp();
-
 		x--;
 	}
 
