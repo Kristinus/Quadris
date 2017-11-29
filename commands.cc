@@ -27,33 +27,33 @@ void DropCommand::execute(int m) {
 }
 
 
-void LCommand::execute(int m=1) {
+void LCommand::execute(int m) {
 }
 
 
-void ICommand::execute(int m=1) {
+void ICommand::execute(int m) {
 
 }
 
 
 
-void JCommand::execute(int m=1) {
+void JCommand::execute(int m) {
 
 }
 
-void OCommand::execute(int m=1) {
+void OCommand::execute(int m) {
 
 }
 
-void SCommand::execute(int m=1) {
+void SCommand::execute(int m) {
 
 }
 
-void ZCommand::execute(int m=1) {
+void ZCommand::execute(int m) {
 
 }
 
-void TCommand::execute(int m=1) {
+void TCommand::execute(int m) {
 
 }
 

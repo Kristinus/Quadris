@@ -16,7 +16,29 @@ struct ProcessedInput {
 
 };
 
+void Interpreter::initCommandMap() {
+    commandMap["left"] = new LeftCommand(grid);
+    commandMap["right"] = new RightCommand(grid);
+    commandMap["down"] = new DownCommand(grid);
+    commandMap["levelup"] = new LevelUpCommand(grid);
+    commandMap["leveldown"] = new LevelDownCommand(grid);
+    commandMap["norandom"] = new NoRandomCommand(grid);
+    commandMap["sequence"] = new SequenceCommand(grid);
+    commandMap["clockwise"] = new ClockwiseCommand(grid);
+    commandMap["counterclockwise"] = new CounterClockwiseCommand(grid);
+    commandMap["drop"] = new DropCommand(grid);
+    commandMap["restart"] = new RestartCommand(grid);
+    commandMap["I"] = new ICommand(grid);
+    commandMap["J"] = new JCommand(grid);
+    commandMap["L"] = new LCommand(grid);
+    commandMap["O"] = new OCommand(grid);
+    commandMap["T"] = new TCommand(grid);
+    commandMap["Z"] = new ZCommand(grid);
+    commandMap["S"] = new SCommand(grid);
+}
+
 Interpreter::Interpreter(string seed, bool textOnly, string scriptFile, int startLevel) {
+	initCommandMap();
 	if (textOnly == false) {
 	//	gd = new GraphicsDisplay(500);
 	}
@@ -74,7 +96,6 @@ ProcessedInput parseCommand(string command) {
 }
 
 void Interpreter::run() {
-	std::map<string, Command*> map = initCommandMap();
     string s;
     while(*in >> s) {
         ProcessedInput processedCommand = parseCommand(s);
@@ -84,8 +105,8 @@ void Interpreter::run() {
         	break;
         }
 
-        if (map.count(cmd)) {
-           auto i = map.find(c);
+        if (commandMap.count(cmd)) {
+           auto i = commandMap.find(cmd);
            (i->second)->execute(mult);
 
         } 
@@ -93,28 +114,6 @@ void Interpreter::run() {
 }
 
 
-void initCommandMap() {
-    map<string, Command *> map;
-    map["left"] = new LeftCommand();
-    map["right"] = new RightCommand();
-    map["down"] = new DownCommand();
-    map["levelup"] = new LevelUpCommand();
-    map["leveldown"] = new LevelDownCommand();
-    map["norandom"] = new NoRandomCommand();
-    map["sequence"] = new SequenceCommand();
-    map["clockwise"] = new ClockwiseCommand();
-    map["counterclockwise"] = new counterclockwiseCommand();
-    map["drop"] = new DropCommand();
-    map["restart"] = new RestartCommand();
-    map["I"] = new ICommand();
-    map["J"] = new JCommand();
-    map["L"] = new LCommand();
-    map["O"] = new OCommand();
-    map["T"] = new TCommand();
-    map["Z"] = new ZCommand();
-    map["S"] = new SCommand();
-    return map;
-}
 
 
     

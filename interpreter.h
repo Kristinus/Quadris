@@ -5,16 +5,18 @@
 // #include "level.h"
 // #include "block.h"
 // #include "grid.h"
-#include "graphicsDisplay.h"
+// #include "graphicsDisplay.h"
+class Grid;
 
 class Interpreter {
 	std::istream *in = &std::cin;
+    std::map<std::string, Command *> commandMap;
    // GraphicsDisplay *gd;
-    // Grid grid;
+    Grid *grid = nullptr;
     // Level level;
 
-
-	public:
+    void initCommandMap();
+public:
     Interpreter(std::string, bool, std::string, int);
     ~Interpreter();
     void run();

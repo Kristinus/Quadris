@@ -6,6 +6,7 @@ class Command {
 protected:
 	Grid *grid;
 public:
+	Command(Grid *);
 	virtual void execute(int mult = 1) = 0;
 	~Command();
 };
