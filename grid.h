@@ -8,29 +8,32 @@
 
 
 class Grid {
-   std::vector<std::vector<Cell>> theGrid;
-   Level *theLevel;
-   std::vector<Block *> setBlocks;
-   Block *currentBlock;
-   Block *nextBlock;
- //  TextDisplay *td;
- //  GraphicsDisplay *gd;
+  std::vector<std::vector<Cell>> theGrid;
+  Level *theLevel;
+  std::vector<Block *> setBlocks;
+  Block *currentBlock;
+  Block *nextBlock;
+  TextDisplay *td;
+  GraphicsDisplay *gd;
+ 
+
    
-   public:
-   void initGrid();
-   bool isOver();
-   void deleteRow();
-   void left(int);
-   void right(int);
-   void down(int);
-   void drop(int);
-   void restart();
-   void rotateCW(int);
-   void rotateCCW(int);
-   void levelUp(int);
-   void levelDown(int);
-   void random();
-   void hint();
+  public:
+  Grid();
+  void initGrid();
+  bool isOver();
+  void deleteRow();
+  void left(int);
+  void right(int);
+  void down(int);
+  void drop(int);
+  void restart();
+  void rotateCW(int);
+  void rotateCCW(int);
+  void levelUp(int);
+  void levelDown(int);
+  void random();
+  void hint();
 };
 #endif
 
