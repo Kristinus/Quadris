@@ -13,6 +13,9 @@ Grid::Grid():td{new TextDisplay(this)} {
 //   ob = new GraphicsDisplay(this);
 }
 
+std::vector<Cell> getGridCells() {
+	return cells;
+}
 
 void Grid::initGrid() {
 	theGrid.clear();

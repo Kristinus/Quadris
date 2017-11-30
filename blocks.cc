@@ -7,13 +7,7 @@ IBlock::IBlock(bool isHeavy): Block(isHeavy) {}
 
 IBlock::~IBlock() {}
 
-void IBlock::clockwise() {
-   
-}
 
-void IBlock::counterclockwise() {
-
-}
 
 /*****************************************************************************/
 
@@ -24,13 +18,7 @@ JBlock::JBlock(bool isHeavy): Block(isHeavy) {}
 
 JBlock::~JBlock() {}
 
-void JBlock::clockwise() {
-   
-}
 
-void JBlock::counterclockwise() {
-
-}
 
 /*****************************************************************************/
 
@@ -41,13 +29,7 @@ LBlock::LBlock(bool isHeavy): Block(isHeavy) {}
 
 LBlock::~LBlock() {}
 
-void LBlock::clockwise() {
-   
-}
 
-void LBlock::counterclockwise() {
-
-}
 
 /*****************************************************************************/
 
@@ -58,13 +40,7 @@ OBlock::OBlock(bool isHeavy): Block(isHeavy) {}
 
 OBlock::~OBlock() {}
 
-void OBlock::clockwise() {
-   
-}
 
-void OBlock::counterclockwise() {
-
-}
 
 /*****************************************************************************/
 SBlock::SBlock(bool isHeavy): Block(isHeavy) {}
@@ -74,13 +50,7 @@ SBlock::SBlock(bool isHeavy): Block(isHeavy) {}
 
 SBlock::~SBlock() {}
 
-void SBlock::clockwise() {
-   
-}
 
-void SBlock::counterclockwise() {
-
-}
 
 /*****************************************************************************/
 
@@ -91,13 +61,7 @@ TBlock::TBlock(bool isHeavy): Block(isHeavy) {}
 
 TBlock::~TBlock() {}
 
-void TBlock::clockwise() {
-   
-}
 
-void TBlock::counterclockwise() {
-
-}
 
 /*****************************************************************************/
 ZBlock::ZBlock(bool isHeavy): Block(isHeavy) {}
@@ -107,13 +71,7 @@ ZBlock::ZBlock(bool isHeavy): Block(isHeavy) {}
 
 ZBlock::~ZBlock() {}
 
-void ZBlock::clockwise() {
-   
-}
 
-void ZBlock::counterclockwise() {
-
-}
 
 /*****************************************************************************/
 

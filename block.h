@@ -13,6 +13,7 @@ protected:
     int col;
     int row;
     Grid *grid;
+    void rotate();
 public:
     Block(bool isHeavy=false);
     Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
@@ -26,8 +27,8 @@ public:
     void left();
     void right();
     void down();
-    virtual void clockwise()=0;
-    virtual void counterclockwise()=0;
+    virtual void clockwise();
+    virtual void counterclockwise();
     void updateSetCells(int);
 };
 

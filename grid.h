@@ -20,6 +20,7 @@ class Grid {
   bool isValidMove(std::vector<Cell>, int, int);
 public:
   Grid();
+  std::vector<Cell> getGridCells();
   void initGrid();
   bool isOver();
   void deleteRow();

@@ -71,3 +71,62 @@ void Block::down(){
    	move(0,-1);
 }
 
+bool isValidCoordinate(Grid* theGrid, int x, int y) {
+	if ((x >= 0) && (x <= 11) && (y >=0) && (y <= 18)
+		&& theGrid->getGridCells()[y][x].getInfo().state != StateType::STATIC) {
+		return true;
+	} else return false;
+}
+
+void Block::rotate(int dir) {
+	int[] rotatedX = int[cells.size()];
+	int[] rotatedY = int[cells.size()];
+	int oldBottomLeftX = col;
+	int oldBottomRightY = row;
+
+	int newBottomLeftX = cells[0].getInfo().row * dir;
+	int newBottomLeftY = cells[0].getInfo().col * -dir;
+	rotatedX[0] = newBottomLeftX;
+	rotatedY[0] = newBottomLeftY;
+
+	for (int i = 1; i < cells.size(); i++) {
+		rotatedX[i] = cells[i].getInfo().row * dir;
+		rotatedY[i] = cells[i].getInfo().col * -dir;
+
+		// get the min bottom of left by getting the leftmost coord and the bottom most
+		if (rotatedX[i] < newBottomLeftX) {
+			newBottomLeftX = rotatedX[i];
+		}
+		if (rotatedY[i] < newBottomLeftY) {
+			newBottomLeftY = rotatedY[i];
+		}
+	}
+
+	// get the delta from the old bottom left
+	int deltax = oldBottomLeftX - newBottomLeftX;
+	int deltay = oldBottomRightY - newBottomLeftY;
+
+	// update all cells
+	for (int i = 0; i < cells.size(); i++) {
+		rotatedX[i] += deltax;
+		rotatedY[i] += deltay;
+		if (!isValidCoordinate(theGrid, rotatedX[i], rotatedY[i])) {
+			return; // or we can throw an exception!!!!!!!!!!1
+		}
+	}
+	// modify the cell
+	for (int i = 0; i < cells.size(); i++) {
+		cells[i].setCoords(rotatedY[i], rotatedX[i]);
+	}
+
+}
+
+void Block::clockwise() {
+	rotate(1);
+
+}
+
+void Block::counterclockwise() {
+	rotate(-1);
+}
+
