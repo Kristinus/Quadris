@@ -15,7 +15,7 @@ void TextDisplay::createDict() {
 TextDisplay::TextDisplay(Grid *grid): 
   theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, ' '))}, grid{grid} {
       createDict();
-      
+      score = grid->getScore();
 }
 
 void TextDisplay::notify(Subject<Info> &whoNotified) {
@@ -29,9 +29,9 @@ void TextDisplay::notify(Subject<Info> &whoNotified) {
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   //Outputs the scoreboard
-  // out << "Level:\t\t" << td.score->level << std::endl;
-  // out << "Score:\t\t" << td.score->score << std::endl;
-  // out << "Hi Score\t\t" << td.score->hiScore << std::endl;
+  out << "Level:\t\t" << td.grid->getLevel() << std::endl;
+  out << "Score:\t\t" << td.score->currentScore << std::endl;
+  out << "Hi Score\t\t" << td.score->highScore << std::endl;
   out << "-----------" << std::endl;
 
   //Outputs the Grid

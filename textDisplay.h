@@ -13,6 +13,7 @@ class TextDisplay: public Observer<Info> {
   std::vector<std::vector<char>> theDisplay;
   std::map<BlockType, char> dict;
   Grid *grid;
+  Score *score;
 
   void createDict();
  public:

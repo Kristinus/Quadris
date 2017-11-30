@@ -33,6 +33,8 @@ public:
   Grid();
   std::vector<std::vector<Cell>> getGridCells();
   Block *getNextBlock();
+  Score *getScore();
+  int getLevel();
   void initGrid();
   bool isOver();
   void deleteRow();
