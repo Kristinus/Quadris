@@ -47,6 +47,61 @@ void DropCommand::execute(int m) {
     grid->drop(m);
 }
 
+/******************************************************************************/
+
+LevelUpCommand::LevelUpCommand(Grid *g): Command(g) {}
+
+void LevelUpCommand::execute(int m) {
+    grid->levelUp(m);
+}
+
+/******************************************************************************/
+
+LevelDownCommand::LevelDownCommand(Grid *g): Command(g) {}
+
+void LevelDownCommand::execute(int m) {
+    grid->levelDown(m);
+}
+
+/******************************************************************************/
+
+NoRandomCommand::NoRandomCommand(Grid *g): Command(g) {}
+
+void NoRandomCommand::execute(int m) {
+    grid->random(false);
+}
+
+/******************************************************************************/
+
+RandomCommand::RandomCommand(Grid *g): Command(g) {}
+
+void RandomCommand::execute(int m) {
+    grid->random(true);
+}
+
+/******************************************************************************/
+
+SequenceCommand::SequenceCommand(Grid *g): Command(g) {}
+
+void SequenceCommand::execute(int m) {
+}
+
+/******************************************************************************/
+
+RestartCommand::RestartCommand(Grid *g): Command(g) {}
+
+void RestartCommand::execute(int m) {
+    grid->restart();
+}
+
+/******************************************************************************/
+
+HintCommand::HintCommand(Grid *g): Command(g) {}
+
+void HintCommand::execute(int m) {
+    grid->hint();
+}
+
 
 // void LCommand::execute(int m) {
 // }

@@ -28,7 +28,7 @@ public:
     void down(int x=1);
     virtual void clockwise(int x=1)=0;
     virtual void counterclockwise(int x =1)=0;
-    void updateSetCells(int);
+    void updateSetCells(size_t);
 };
 
 #endif

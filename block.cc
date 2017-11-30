@@ -19,7 +19,7 @@ Block::~Block(){
 }
 
 
-void Block::updateSetCells(int rowsToDelete) {
+void Block::updateSetCells(size_t rowsToDelete) {
 	for (int i = cells.size() - 1; i >= 0; i--) {
 	 		// if the row goes out of bounds, then erase the cell
 	 		if (cells[i].getInfo().row - rowsToDelete < 0) {

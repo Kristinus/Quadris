@@ -16,6 +16,7 @@ class Grid {
   Block *nextBlock = nullptr;
   TextDisplay *td;
   Observer<Info> *ob;
+  bool isRandom;
  
   bool isValidMove(std::vector<Cell>, int, int);
   void setBlock(Block *);
@@ -33,7 +34,7 @@ public:
   void rotateCCW(int);
   void levelUp(int);
   void levelDown(int);
-  void random();
+  void random(bool);
   void hint();
 };
 #endif

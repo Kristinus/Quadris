@@ -226,8 +226,8 @@ void Grid::levelDown(int x) {
 	}
 
 }
-void Grid::random() {
-
+void Grid::random(bool flag) {
+	isRandom = flag;
 }
 void Grid::hint() {
 
