@@ -144,5 +144,16 @@ int Block::getBottomLeftRow() {
 
 
 std::ostream &operator<<(std::ostream &out, Block *b) {
-	out << b->type;
+	//Assuming first cell is top left and last cell is bottom right
+	int i=0;
+	for(int r=0; r<2; r++) {
+		for(int c=0; c<3; c++) {
+			if(b->cells[i].getInfo().row == r && b->cells[i].getInfo().col == c) {
+				out << b->type;
+				i++;
+			}
+			else out << ' ';
+		}
+		out << std::endl;
+	}
 }

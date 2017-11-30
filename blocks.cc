@@ -2,6 +2,15 @@
 
 IBlock::IBlock(bool isHeavy): Block(isHeavy) {
     type = 'I';
+    Info i;
+    i.row = 1;
+    i.col = 0;
+    i.state = StateType::NONE;
+    i.block = BlockType::I;
+    for(int c=0; c<4; c++) {
+        i.col = c;
+        cells.emplace_back(Cell(i));   
+    }
 }
 // IBlock::IBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
@@ -15,6 +24,17 @@ IBlock::~IBlock() {}
 
 JBlock::JBlock(bool isHeavy): Block(isHeavy) {
     type = 'J';
+    Info i;
+    i.row = 0;
+    i.col = 0;
+    i.state = StateType::NONE;
+    i.block = BlockType::I;
+    cells.emplace_back(Cell(i));
+    i.row = 1;
+    for(int c=0; c<2; c++) {
+        i.col = c;
+        cells.emplace_back(Cell(i));   
+    }
 }
 // JBlock::JBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
