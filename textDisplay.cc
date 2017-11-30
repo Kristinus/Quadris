@@ -1,5 +1,6 @@
 #include "textDisplay.h"
 #include "constants.h"
+#include "grid.h"
 
 void TextDisplay::createDict() {
   dict[BlockType::I] = 'I';
@@ -14,6 +15,7 @@ void TextDisplay::createDict() {
 TextDisplay::TextDisplay(Grid *grid): 
   theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, ' '))}, grid{grid} {
       createDict();
+      
 }
 
 void TextDisplay::notify(Subject<Info> &whoNotified) {
@@ -43,7 +45,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   //Outputs Next Block
   out << "-----------" << std::endl;
   out << "Next:" << std::endl;
-  // out << *(td.nextBlock) << std::endl;
+  out << td.grid->getNextBlock() << std::endl;
 
   return out;
 }

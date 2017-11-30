@@ -21,10 +21,18 @@ class Grid {
  
   bool isValidMove(std::vector<Cell>, int, int);
   int countCompleteLines();
+  bool isFilled(std::vector<Cell>);
   void setBlock(Block *);
+  void unsetBlock(Block *);
+  double calculateSmoothness();
+  double getAverageHeights(std::vector<int> v);
+  double getStandardDeviationHeights(std::vector<int> v);
+  std::vector<int> getHeights();
+  int countHoles();
 public:
   Grid();
   std::vector<std::vector<Cell>> getGridCells();
+  Block *getNextBlock();
   void initGrid();
   bool isOver();
   void deleteRow();

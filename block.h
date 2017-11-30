@@ -3,6 +3,7 @@
 #include "info.h"
 #include "cell.h"
 #include <vector>
+#include <iostream>
 class Grid;
 
 class Block {
@@ -13,6 +14,7 @@ protected:
     int col;
     int row;
     Grid *grid;
+    char type;
 
 public:
     Block(bool isHeavy=false);
@@ -32,9 +34,11 @@ public:
     void left(int x=1);
     void right(int x=1);
     void down(int x=1);
-    virtual void clockwise(int x=1);
-    virtual void counterclockwise(int x =1);
+    void clockwise(int x=1);
+    void counterclockwise(int x =1);
     void updateSetCells(size_t);
+
+friend std::ostream &operator<<(std::ostream &out, Block *);
 };
 
 #endif

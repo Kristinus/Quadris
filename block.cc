@@ -125,12 +125,12 @@ void Block::rotate(int dir) {
 
 }
 
-void Block::clockwise() {
+void Block::clockwise(int x) {
 	rotate(1);
 
 }
 
-void Block::counterclockwise() {
+void Block::counterclockwise(int x) {
 	rotate(-1);
 }
 
@@ -143,3 +143,6 @@ int Block::getBottomLeftRow() {
 }
 
 
+std::ostream &operator<<(std::ostream &out, Block *b) {
+	out << b->type;
+}
