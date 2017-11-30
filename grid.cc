@@ -220,8 +220,11 @@ void Grid::down(int x) {
 void Grid::setBlock(Block *curBlock) {
 	for (auto cell : currentBlock->getBlockCells()) {
 		theGrid[cell.getInfo().row][cell.getInfo().col].setState(StateType::STATIC);
+		theGrid[cell.getInfo().row][cell.getInfo().col].notifyObservers();
+
 	}
 	setBlocks.emplace_back(currentBlock);
+
 }
 
 void Grid::unsetBlock(Block *block) {
@@ -229,7 +232,7 @@ void Grid::unsetBlock(Block *block) {
 	// for (auto cell : block->getBlockCells()) {
 	// 	theGrid[cell.getInfo().row][cell.getInfo().col].setState(StateType::NONE);
 	// }
-	// setBlocks.popback();
+	// setBlocks.pop_back();
 }
 
 void Grid::drop(int x) {
