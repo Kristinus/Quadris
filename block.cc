@@ -19,7 +19,7 @@ Block::~Block(){
 }
 
 
-void Block::updateSetCells(int rowsToDelete) {
+void Block::updateSetCells(size_t rowsToDelete) {
 	for (int i = cells.size() - 1; i >= 0; i--) {
 	 		// if the row goes out of bounds, then erase the cell
 	 		if (cells[i].getInfo().row - rowsToDelete < 0) {
@@ -56,17 +56,17 @@ void Block::move(int offsetX, int offsetY) {
 	}
 }
 
-void Block::left(){
+void Block::left(int x){
    col--;
    move(-1, 0);
 }
 
-void Block::right() {
+void Block::right(int x) {
    col++;
    move(1,0);
 }
 
-void Block::down(){
+void Block::down(int x){
 	row--;
    	move(0,-1);
 }
@@ -141,4 +141,5 @@ int Block::getBottomLeftCol() {
 int Block::getBottomLeftRow() {
 	return row;
 }
+
 

@@ -142,12 +142,12 @@ void Grid::deleteRow() {
 
 
 	 // iterate through each block pointer
-	 for (auto &block: setBlocks) {
+	 for (size_t i=0; i<setBlocks.size(); i++) {
 	 	// iterate through each block's cells
 	 	// removes cells that are out of bounds, or sets them to the new location
-	 	block.updateSetCells();
-	 	if (block.getBlockCells().size() == 0) {
-	 		theScore->addToCurrentScore(pow((block->level + 1), 2));
+	 	setBlocks[i]->updateSetCells(rowsToDelete);
+	 	if (setBlocks[i]->getBlockCells().size() == 0) {
+	 		theScore->addToCurrentScore(pow((setBlocks[i]->getLevel() + 1), 2));
 	 		delete setBlocks[i];
 	 		setBlocks.erase(setBlocks.begin() + i);
 	 	}
@@ -213,7 +213,7 @@ void Grid::down(int x) {
 	}
 }
 
-void setBlock(Block *curBlock) {
+void Grid::setBlock(Block *curBlock) {
 	for (auto cell : currentBlock->getBlockCells()) {
 		theGrid[cell.getInfo().row][cell.getInfo().col].setState(StateType::STATIC);
 	}
@@ -260,15 +260,18 @@ void Grid::restart() {
 }
 void Grid::rotateCW(int x) {
 	while (x > 0) {
-		currentBlock->rotate(1);
+
+		currentBlock->clockwise(x);
+
 		x--;
 	}
 
 }
 void Grid::rotateCCW(int x) {
 	while (x > 0) {
-		currentBlock->rotate(-1);
+		currentBlock->counterclockwise(x);
 		x--;
+
 	}
 
 }
@@ -286,8 +289,8 @@ void Grid::levelDown(int x) {
 	}
 
 }
-void Grid::random() {
-
+void Grid::random(bool flag) {
+	isRandom = flag;
 }
 
 int countHoles() {

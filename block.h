@@ -25,14 +25,16 @@ public:
     bool isBlockHeavy();
     int getLevel();
     void move(int, int);
-    void left();
-    void right();
-    void down();
+
     int getBottomLeftCol();
     int getBottomLeftRow();
-    virtual void clockwise();
-    virtual void counterclockwise();
-    void updateSetCells(int);
+
+    void left(int x=1);
+    void right(int x=1);
+    void down(int x=1);
+    virtual void clockwise(int x=1);
+    virtual void counterclockwise(int x =1);
+    void updateSetCells(size_t);
 };
 
 #endif

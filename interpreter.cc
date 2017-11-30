@@ -28,16 +28,16 @@ void Interpreter::initCommandMap() {
     commandMap["counterclockwise"] = new CounterClockwiseCommand(grid);
     commandMap["drop"] = new DropCommand(grid);
     commandMap["restart"] = new RestartCommand(grid);
-    commandMap["I"] = new ICommand(grid);
-    commandMap["J"] = new JCommand(grid);
-    commandMap["L"] = new LCommand(grid);
-    commandMap["O"] = new OCommand(grid);
-    commandMap["T"] = new TCommand(grid);
-    commandMap["Z"] = new ZCommand(grid);
-    commandMap["S"] = new SCommand(grid);
+    // commandMap["I"] = new ICommand(grid);
+    // commandMap["J"] = new JCommand(grid);
+    // commandMap["L"] = new LCommand(grid);
+    // commandMap["O"] = new OCommand(grid);
+    // commandMap["T"] = new TCommand(grid);
+    // commandMap["Z"] = new ZCommand(grid);
+    // commandMap["S"] = new SCommand(grid);
 }
 
-Interpreter::Interpreter(string seed, bool textOnly, string scriptFile, int startLevel) {
+Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLevel) {
 	initCommandMap();
 	if (textOnly == false) {
 	//	gd = new GraphicsDisplay(500);
@@ -113,7 +113,7 @@ void Interpreter::run() {
     }
 }
 
-
+Interpreter::~Interpreter() {}
 
     
     
