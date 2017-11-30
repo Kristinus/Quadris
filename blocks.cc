@@ -3,7 +3,7 @@
 IBlock::IBlock(bool isHeavy): Block(isHeavy) {
     type = 'I';
     Info i;
-    i.row = 1;
+    i.row = 0;
     i.col = 0;
     i.state = StateType::NONE;
     i.block = BlockType::I;
@@ -13,7 +13,7 @@ IBlock::IBlock(bool isHeavy): Block(isHeavy) {
     }
 }
 // IBlock::IBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
-
+:
 // IBlock::IBlock(bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 IBlock::~IBlock() {}
@@ -28,7 +28,7 @@ JBlock::JBlock(bool isHeavy): Block(isHeavy) {
     i.row = 0;
     i.col = 0;
     i.state = StateType::NONE;
-    i.block = BlockType::I;
+    i.block = BlockType::J;
     cells.emplace_back(Cell(i));
     i.row = 1;
     for(int c=0; c<3; c++) {
@@ -48,6 +48,19 @@ JBlock::~JBlock() {}
 
 LBlock::LBlock(bool isHeavy): Block(isHeavy) {
     type = 'L';
+    Info i;
+    i.row = 0;
+    i.col = 2;
+    i.state = StateType::NONE;
+    i.block = BlockType::L;
+    cells.emplace_back(Cell(i));
+    i.row = 1;
+    i.col = 0;
+    for(int c = 0;c < 3; c++) {
+        i.col = c;
+        cells.emplace_back(Cell(i));
+    }
+
 }
 // LBlock::LBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
@@ -61,6 +74,17 @@ LBlock::~LBlock() {}
 
 OBlock::OBlock(bool isHeavy): Block(isHeavy) {
     type = 'O';
+    Info i;
+    i.col = 0;
+    i.state = StateType::NONE;
+    i.block = BlockType::O;
+    for(int c = 0;c < 2;c++) {
+      i.col = c;
+      i.row = 0;
+      cells.emplace_back(Cell(i));
+      i.row = 1;
+      cells.emplace_back(Cell(i));
+    }
 }
 // OBlock::OBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
@@ -73,7 +97,20 @@ OBlock::~OBlock() {}
 
 /*****************************************************************************/
 SBlock::SBlock(bool isHeavy): Block(isHeavy) {
-    type = 'S';
+    type = 'S'; 
+    Info i;
+    i.row = 1;
+    i.col = 0;
+    i.state = StateType::NONE;
+    i.block = BlockType::S;
+    for(int c = 0;c < 3;c++) {
+      i.col = c;
+      cells.emplace_back(Cell(i));
+      if(c == 1){
+         i.row = 0;
+         cells.emplace_back(Cell(i));
+      }
+    }
 }
 // SBlock::SBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
@@ -86,7 +123,19 @@ SBlock::~SBlock() {}
 /*****************************************************************************/
 
 TBlock::TBlock(bool isHeavy): Block(isHeavy) {
-    type = 'T';
+    type = 'T'; 
+    Info i;
+    i.row = 1;
+    i.col = 1;
+    i.state = StateType::NONE;
+    i.block = BlockType::T;
+    cells.emplace_back(Cell(i));
+    i.row = 0;
+    for(int c = 0;c < 3;c++) {
+      i.col = c;
+      cells.emplace_back(Cell(i));
+    }
+
 }
 // TBlock::TBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
@@ -98,7 +147,21 @@ TBlock::~TBlock() {}
 
 /*****************************************************************************/
 ZBlock::ZBlock(bool isHeavy): Block(isHeavy) {
-    type = 'Z';
+    type = 'Z'; 
+    Info i;
+    i.row = 0;
+    i.col = 0;
+    i.state = StateType::NONE;
+    i.block = BlockType::Z;
+    for(int c = 0;c < 3;c++) {
+      i.col = c;
+      cells.emplace_back(Cell(i));
+      if(c == 1){
+         i.row = 1;
+         cells.emplace_back(Cell(i));
+      }
+    }
+
 }
 // ZBlock::ZBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
