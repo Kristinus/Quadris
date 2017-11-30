@@ -31,7 +31,7 @@ JBlock::JBlock(bool isHeavy): Block(isHeavy) {
     i.block = BlockType::I;
     cells.emplace_back(Cell(i));
     i.row = 1;
-    for(int c=0; c<2; c++) {
+    for(int c=0; c<3; c++) {
         i.col = c;
         cells.emplace_back(Cell(i));   
     }
