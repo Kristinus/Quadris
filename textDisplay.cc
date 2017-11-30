@@ -12,7 +12,7 @@ void TextDisplay::createDict() {
 }
 
 TextDisplay::TextDisplay(Grid *grid): 
-  theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, '-'))}, grid{grid} {
+  theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, ' '))}, grid{grid} {
       createDict();
 }
 
@@ -33,7 +33,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   out << "-----------" << std::endl;
 
   //Outputs the Grid
-  for(int r=td.theDisplay.size(); r>=0; r--) {
+  for(int r=td.theDisplay.size()-1; r>=0; r--) {
     for(auto c:td.theDisplay[r]) {
       out << c;
     }

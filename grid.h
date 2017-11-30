@@ -36,6 +36,11 @@ public:
   void levelDown(int);
   void random(bool);
   void hint();
+
+  friend std::ostream &operator<<(std::ostream &out, Grid &grid);
 };
+
+
+
 #endif
 

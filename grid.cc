@@ -11,6 +11,7 @@ Grid::Grid():td{new TextDisplay(this)} {
   theScore = nullptr;
 //  std::vector<Block *> setBlocks;
 //   ob = new GraphicsDisplay(this);
+	initGrid();
 }
 
 
@@ -231,6 +232,12 @@ void Grid::random(bool flag) {
 }
 void Grid::hint() {
 
+}
+
+
+std::ostream &operator<<(std::ostream &out, Grid &grid) {
+	out << *(grid.td) << std::endl;
+	return out;
 }
 
 
