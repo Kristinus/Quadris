@@ -40,7 +40,6 @@ void Interpreter::initCommandMap() {
 Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLevel) {
     grid = new Grid();
 	initCommandMap();
-    std::cout << *grid;
 	if (textOnly == false) {
 	//	gd = new GraphicsDisplay(500);
 	}
@@ -99,8 +98,9 @@ ProcessedInput parseCommand(string command) {
 
 void Interpreter::run() {
     string s;
+    cout << *grid;
     while(*in >> s) {
-        cout << *grid << endl;
+        
         ProcessedInput processedCommand = parseCommand(s);
         string cmd = processedCommand.command;
         int mult = processedCommand.multiplier;
@@ -108,11 +108,13 @@ void Interpreter::run() {
         	break;
         }
 
-        if (commandMap.count(cmd)) {
+        // cout << cmd << "|" << commandMap.count(cmd) << endl; 
+        if (commandMap.count(cmd) > 0) {
            auto i = commandMap.find(cmd);
 
            (i->second)->execute(mult);
-        } 
+           cout << *grid;
+        }
     }
 }
 

@@ -30,8 +30,8 @@ void TextDisplay::notify(Subject<Info> &whoNotified) {
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   //Outputs the scoreboard
   out << "Level:\t\t" << td.grid->getLevel() << std::endl;
-  out << "Score:\t\t" << td.score->currentScore << std::endl;
-  out << "Hi Score\t\t" << td.score->highScore << std::endl;
+  out << "Score:\t\t" << td.score->getCurrentScore() << std::endl;
+  out << "Hi Score\t" << td.score->getHighScore() << std::endl;
   out << "-----------" << std::endl;
 
   //Outputs the Grid
