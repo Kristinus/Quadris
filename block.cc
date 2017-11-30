@@ -79,19 +79,19 @@ bool isValidCoordinate(Grid* theGrid, int x, int y) {
 }
 
 void Block::rotate(int dir) {
-	int[] rotatedX = int[cells.size()];
-	int[] rotatedY = int[cells.size()];
+	std::vector<int> rotatedX(cells.size());
+	std::vector<int> rotatedY(cells.size());
 	int oldBottomLeftX = col;
 	int oldBottomRightY = row;
 
 	int newBottomLeftX = cells[0].getInfo().row * dir;
 	int newBottomLeftY = cells[0].getInfo().col * -dir;
-	rotatedX[0] = newBottomLeftX;
-	rotatedY[0] = newBottomLeftY;
+	rotatedX.emplace_back(newBottomLeftX);
+	rotatedY.emplace_back(newBottomLeftY);
 
-	for (int i = 1; i < cells.size(); i++) {
-		rotatedX[i] = cells[i].getInfo().row * dir;
-		rotatedY[i] = cells[i].getInfo().col * -dir;
+	for (unsigned int i = 1; i < cells.size(); i++) {
+		rotatedX.emplace_back(cells[i].getInfo().row * dir);
+		rotatedY.emplace_back(cells[i].getInfo().col * -dir);
 
 		// get the min bottom of left by getting the leftmost coord and the bottom most
 		if (rotatedX[i] < newBottomLeftX) {
@@ -107,10 +107,10 @@ void Block::rotate(int dir) {
 	int deltay = oldBottomRightY - newBottomLeftY;
 
 	// update all cells
-	for (int i = 0; i < cells.size(); i++) {
+	for (unsigned int i = 0; i < cells.size(); i++) {
 		rotatedX[i] += deltax;
 		rotatedY[i] += deltay;
-		if (!isValidCoordinate(theGrid, rotatedX[i], rotatedY[i])) {
+		if (!isValidCoordinate(grid, rotatedX[i], rotatedY[i])) {
 			return; // or we can throw an exception!!!!!!!!!!1
 		}
 	}
@@ -118,6 +118,10 @@ void Block::rotate(int dir) {
 	for (int i = 0; i < cells.size(); i++) {
 		cells[i].setCoords(rotatedY[i], rotatedX[i]);
 	}
+
+	// update the new bottomleft coordinates
+	row = newBottomLeftY;
+	col = newBottomLeftX;
 
 }
 
@@ -128,5 +132,13 @@ void Block::clockwise() {
 
 void Block::counterclockwise() {
 	rotate(-1);
+}
+
+int Block::getBottomLeftCol() {
+	return col;
+}
+
+int Block::getBottomLeftRow() {
+	return row;
 }
 

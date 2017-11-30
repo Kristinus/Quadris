@@ -13,14 +13,16 @@ class Grid {
   Score* theScore;
   std::vector<Block *> setBlocks;
   Block *currentBlock = nullptr;
+  Block *hintBlock = nullptr;
   Block *nextBlock = nullptr;
   TextDisplay *td;
   Observer<Info> *ob;
  
   bool isValidMove(std::vector<Cell>, int, int);
+  int countCompleteLines();
 public:
   Grid();
-  std::vector<Cell> getGridCells();
+  std::vector<std::vector<Cell>> getGridCells();
   void initGrid();
   bool isOver();
   void deleteRow();

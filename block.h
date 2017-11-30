@@ -13,13 +13,14 @@ protected:
     int col;
     int row;
     Grid *grid;
-    void rotate();
+
 public:
     Block(bool isHeavy=false);
     Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
     // Block(bool isHeavy, int level, std::vector<Cell> cells);
     ~Block();
     void move();
+    void rotate(int);
     std::vector<Cell> getBlockCells();
     bool isBlockHeavy();
     int getLevel();
@@ -27,6 +28,8 @@ public:
     void left();
     void right();
     void down();
+    int getBottomLeftCol();
+    int getBottomLeftRow();
     virtual void clockwise();
     virtual void counterclockwise();
     void updateSetCells(int);
