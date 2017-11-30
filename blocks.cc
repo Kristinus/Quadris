@@ -7,13 +7,7 @@ IBlock::IBlock(bool isHeavy): Block(isHeavy) {}
 
 IBlock::~IBlock() {}
 
-void IBlock::clockwise(int x) {
-   
-}
 
-void IBlock::counterclockwise(int x) {
-
-}
 
 /*****************************************************************************/
 
@@ -24,13 +18,7 @@ JBlock::JBlock(bool isHeavy): Block(isHeavy) {}
 
 JBlock::~JBlock() {}
 
-void JBlock::clockwise(int x) {
-   
-}
 
-void JBlock::counterclockwise(int x) {
-
-}
 
 /*****************************************************************************/
 
@@ -41,13 +29,7 @@ LBlock::LBlock(bool isHeavy): Block(isHeavy) {}
 
 LBlock::~LBlock() {}
 
-void LBlock::clockwise(int x) {
-   
-}
 
-void LBlock::counterclockwise(int x) {
-
-}
 
 /*****************************************************************************/
 
@@ -58,13 +40,8 @@ OBlock::OBlock(bool isHeavy): Block(isHeavy) {}
 
 OBlock::~OBlock() {}
 
-void OBlock::clockwise(int x) {
-   
-}
 
-void OBlock::counterclockwise(int x) {
 
-}
 
 /*****************************************************************************/
 SBlock::SBlock(bool isHeavy): Block(isHeavy) {}
@@ -74,13 +51,7 @@ SBlock::SBlock(bool isHeavy): Block(isHeavy) {}
 
 SBlock::~SBlock() {}
 
-void SBlock::clockwise(int x) {
-   
-}
 
-void SBlock::counterclockwise(int x) {
-
-}
 
 /*****************************************************************************/
 
@@ -91,13 +62,7 @@ TBlock::TBlock(bool isHeavy): Block(isHeavy) {}
 
 TBlock::~TBlock() {}
 
-void TBlock::clockwise(int x) {
-   
-}
 
-void TBlock::counterclockwise(int x) {
-
-}
 
 /*****************************************************************************/
 ZBlock::ZBlock(bool isHeavy): Block(isHeavy) {}
@@ -106,14 +71,4 @@ ZBlock::ZBlock(bool isHeavy): Block(isHeavy) {}
 // ZBlock::ZBlock(bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 ZBlock::~ZBlock() {}
-
-void ZBlock::clockwise(int x) {
-   
-}
-
-void ZBlock::counterclockwise(int x) {
-
-}
-
-/*****************************************************************************/
 

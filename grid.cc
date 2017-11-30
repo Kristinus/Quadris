@@ -14,6 +14,9 @@ Grid::Grid():td{new TextDisplay(this)} {
 	initGrid();
 }
 
+std::vector<std::vector<Cell>> getGridCells() {
+	return theGrid;
+}
 
 void Grid::initGrid() {
 	theGrid.clear();
@@ -54,6 +57,55 @@ bool isFilled(std::vector<Cell> row) {
 		if (c.getInfo().state != StateType::STATIC) return false;
 	}
 	return true;
+}
+
+
+int countCompleteLines() {
+	int rowsToDelete = 0;
+	for (int i = theGrid.size() - 1; i >= 0; i--) {
+		if (isFilled(theGrid[i])) {
+			rowsToDelete++;
+		}
+	} 
+	return rowsToDelete;
+}
+
+double calculateSmoothness() {
+	std::vector<int> heights = getHeights();
+	double stdHeights = getStandardDeviationHeights(heights);
+	return stdHeights;
+
+}
+
+
+double getAverageHeights(vector<int> v)
+{      int sum=0;
+       for(int i=0;i<v.size();i++)
+               sum+=v[i];
+       return sum/v.size();
+}
+//DEVIATION
+double getStandardDeviationHeights(vector<int> v)
+{
+		double ave = getAverageHeights(v);
+       double E=0;
+       for(int i=0;i<v.size();i++)
+               E+=(v[i] - ave)*(v[i] - ave);
+       return sqrt(1/v.size()*E);
+}
+
+std::vector<int> getHeights() {
+	std::vector<int> heights(11);
+	for (int row = theGrid.size() - 1; row >= 0; row--) {
+		for (int col = 0; col < theGrid[col]; j++) {
+			// record the index of the highest static block...if no block is there... height is 0
+			if (theGrid[row][col].getInfo().state == StateType::STATIC) {
+				heights[col] = theGrid[row][col].getInfo().col + 1;
+			}
+		}
+	}
+
+	return heights;
 }
 
 void Grid::deleteRow() {
@@ -169,6 +221,13 @@ void Grid::setBlock(Block *curBlock) {
 	setBlocks.emplace_back(currentBlock);
 }
 
+void unsetBlock(Block *block) {
+	for (auto cell : block->getBlockCells()) {
+		theGrid[cell.getInfo().row][cell.getInfo().col].setState(StateType::NONE);
+	}
+	setBlocks.popback();
+}
+
 void Grid::drop(int x) {
 	while (x > 0) {
 		while (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
@@ -202,7 +261,9 @@ void Grid::restart() {
 }
 void Grid::rotateCW(int x) {
 	while (x > 0) {
+
 		currentBlock->clockwise(x);
+
 		x--;
 	}
 
@@ -210,6 +271,8 @@ void Grid::rotateCW(int x) {
 void Grid::rotateCCW(int x) {
 	while (x > 0) {
 		currentBlock->counterclockwise(x);
+		x--;
+
 	}
 
 }
@@ -230,7 +293,92 @@ void Grid::levelDown(int x) {
 void Grid::random(bool flag) {
 	isRandom = flag;
 }
+
+int countHoles() {
+	std::vector<int> heights = getHeights();
+	int numHoles = 0; 
+	// for all the cells below the highest cell
+	for (int i = 0; i < heights.size(); i++) {
+		for (int row = 0; row < heights[i]; row++) {
+			if (theGrid[row][i].getInfo().state == StateType::NONE) {
+				numHoles++;
+			}
+		}
+	}
+
+	return numHoles;
+
+}
+struct HintInfo {
+	int bottomLeftRow;
+	int bottomLeftCol;
+	int numRotations;
+	double priority;
+	HintInfo(int blr, int blc, int nr, double p): bottomLeftRow{blr}, bottomLeftCol{blc},
+	numRotations{nr}, priority{p} {
+
+	}
+
+};
+
 void Grid::hint() {
+
+	// MAKE SURE TO RESET HINTINFO
+	// RESET THE HINT BLOCK
+	// CODE THE MOVE TO HINT INFO WITH ROTATIONS AND TRANSLATIONS
+
+	vector<HintInfo> hintInfo;
+
+	Block temp{*currentBlock}; // implement the Copy Ctor
+	hintBlock = &temp;
+
+	for (int i = 0; i < 4; i++) {
+		try {
+			hintBlock->rotateCW(i);
+		} catch (...) { // rotaetfailexception
+			continue;
+		}
+
+		int horizontal = 0;
+
+		while (isValidMove(hintBlock->getBlockCells(), horizontal, 0)) {
+			hintBlock->move(horizontal, 0);
+			while (isValidMove(hintBlock->getBlockCells(), 0, -1)) {
+				hintBlock->move(0, -1);
+			}
+
+			setBlock(hintBlock);
+			double smoothness = calculateSmoothness();
+			int completeLines = countCompleteLines();
+			int numHoles = countHoles();
+			double priority = (1/ (1+smoothness)) * completeLines * 1/(numHoles+1);
+			hintInfo.emplace_back(HintInfo{hintBlock->getBottomLeftRow(), hintBlock->getBottomLeftCol(), i, priority});
+			unsetBlock(hintBlock);
+			horizontal++;
+		}
+		horizontal = 0;
+
+		//(TODO) refactor so that we can input horizontal and change direction :)
+
+
+		int max = 0;
+		HintInfo best{0,0,0,0};
+		for (HintInfo h : hintInfo) {
+
+			if (hintInfo.priority > max) {
+				max = hintInfo.priority;
+				best = hintInfo;
+			}
+		}
+
+
+	}
+
+
+
+	
+
+
 
 }
 
