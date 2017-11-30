@@ -7,11 +7,11 @@ IBlock::IBlock(bool isHeavy): Block(isHeavy) {}
 
 IBlock::~IBlock() {}
 
-void IBlock::clockwise() {
+void IBlock::clockwise(int x) {
    
 }
 
-void IBlock::counterclockwise() {
+void IBlock::counterclockwise(int x) {
 
 }
 
@@ -24,11 +24,11 @@ JBlock::JBlock(bool isHeavy): Block(isHeavy) {}
 
 JBlock::~JBlock() {}
 
-void JBlock::clockwise() {
+void JBlock::clockwise(int x) {
    
 }
 
-void JBlock::counterclockwise() {
+void JBlock::counterclockwise(int x) {
 
 }
 
@@ -41,11 +41,11 @@ LBlock::LBlock(bool isHeavy): Block(isHeavy) {}
 
 LBlock::~LBlock() {}
 
-void LBlock::clockwise() {
+void LBlock::clockwise(int x) {
    
 }
 
-void LBlock::counterclockwise() {
+void LBlock::counterclockwise(int x) {
 
 }
 
@@ -58,11 +58,11 @@ OBlock::OBlock(bool isHeavy): Block(isHeavy) {}
 
 OBlock::~OBlock() {}
 
-void OBlock::clockwise() {
+void OBlock::clockwise(int x) {
    
 }
 
-void OBlock::counterclockwise() {
+void OBlock::counterclockwise(int x) {
 
 }
 
@@ -74,11 +74,11 @@ SBlock::SBlock(bool isHeavy): Block(isHeavy) {}
 
 SBlock::~SBlock() {}
 
-void SBlock::clockwise() {
+void SBlock::clockwise(int x) {
    
 }
 
-void SBlock::counterclockwise() {
+void SBlock::counterclockwise(int x) {
 
 }
 
@@ -91,11 +91,11 @@ TBlock::TBlock(bool isHeavy): Block(isHeavy) {}
 
 TBlock::~TBlock() {}
 
-void TBlock::clockwise() {
+void TBlock::clockwise(int x) {
    
 }
 
-void TBlock::counterclockwise() {
+void TBlock::counterclockwise(int x) {
 
 }
 
@@ -107,11 +107,11 @@ ZBlock::ZBlock(bool isHeavy): Block(isHeavy) {}
 
 ZBlock::~ZBlock() {}
 
-void ZBlock::clockwise() {
+void ZBlock::clockwise(int x) {
    
 }
 
-void ZBlock::counterclockwise() {
+void ZBlock::counterclockwise(int x) {
 
 }
 

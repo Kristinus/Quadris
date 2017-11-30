@@ -18,6 +18,7 @@ class Grid {
   Observer<Info> *ob;
  
   bool isValidMove(std::vector<Cell>, int, int);
+  void setBlock(Block *);
 public:
   Grid();
   void initGrid();

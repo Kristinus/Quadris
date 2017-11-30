@@ -23,11 +23,11 @@ public:
     bool isBlockHeavy();
     int getLevel();
     void move(int, int);
-    void left();
-    void right();
-    void down();
-    virtual void clockwise()=0;
-    virtual void counterclockwise()=0;
+    void left(int x=1);
+    void right(int x=1);
+    void down(int x=1);
+    virtual void clockwise(int x=1)=0;
+    virtual void counterclockwise(int x =1)=0;
     void updateSetCells(int);
 };
 

@@ -56,18 +56,17 @@ void Block::move(int offsetX, int offsetY) {
 	}
 }
 
-void Block::left(){
+void Block::left(int x){
    col--;
    move(-1, 0);
 }
 
-void Block::right() {
+void Block::right(int x) {
    col++;
    move(1,0);
 }
 
-void Block::down(){
+void Block::down(int x){
 	row--;
    	move(0,-1);
 }
-
