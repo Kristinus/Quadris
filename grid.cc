@@ -23,7 +23,6 @@ std::vector<std::vector<Cell>> Grid::getGridCells() {
 void Grid::initGrid() {
 	theGrid.clear();
 	
-
 	for (int i = 0; i < 18; i++) {
 		std::vector<Cell> row;
 		for (int j = 0; j < 11; j++) {
@@ -43,6 +42,12 @@ void Grid::initGrid() {
 	// theGrid = res; (TODO)
 
 	currentBlock = theLevel->createBlock();
+	theGrid[5][5].setBlock(BlockType::J);
+	theGrid[5][5].setState(StateType::MOVING);
+
+	theGrid[5][5].notifyObservers();
+	moveTo(15, 0, currentBlock);
+	playBlock(currentBlock);
 	nextBlock = theLevel->createBlock();
 
 }
@@ -63,6 +68,26 @@ bool Grid::isFilled(std::vector<Cell> row) {
 	}
 	return true;
 }
+
+/**
+bool Grid::updateMovingBlock(std::vector<Cell> cells) {
+
+	// (TODO) if we do cell pointers change this shitty run time
+
+	for (int i = 0; i < theGrid.size(); i++) {
+		for (int j = 0; j < theGrid[i].size(); j++) {
+			for (auto c : cells) {
+				if (c.getInfo().row == i && c.getInfo().col == j) {
+					c.setBlock(currentBlock->getBlockType());
+					c.setState(StateType::MOVING);
+				} 
+			}
+		}
+	}
+	for (auto c : cells) {
+		theGrid[c.getInfo().row][c.getInfo().col].setBlock(BlockType::MOVING);
+	}
+} **/
 
 
 int Grid::countCompleteLines() {
@@ -109,6 +134,30 @@ std::vector<int> Grid::getHeights() {
 	}
 
 	return heights;
+}
+
+void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
+	int oldBottomLeftRow = b->getBottomLeftRow();
+	int oldBottomLeftCol = b->getBottomLeftCol();
+	int deltaRow = bottomLeftRow - oldBottomLeftRow;
+	int deltaCol = bottomLeftCol - oldBottomLeftCol;
+
+	for (auto &c : b->getBlockCells()) {
+		c.setCoords(c.getInfo().row + deltaRow, c.getInfo().col + deltaCol);
+
+	}
+	b->setBottomLeftCoords(bottomLeftRow, bottomLeftCol);
+
+
+}
+
+void Grid::playBlock(Block *b) {
+	for (auto &c : b->getBlockCells()) {
+		c.setState(StateType::MOVING);
+		c.setBlock(b->getBlockType());
+		c.notifyObservers();
+	}
+
 }
 
 void Grid::deleteRow() {
@@ -175,8 +224,19 @@ bool Grid::isValidMove(std::vector<Cell> theCells, int offsetX, int offsetY) {
 	return true;	
 }
 
+void Grid::deleteCurrentBlock() {
+	for (int i = 0; i < currentBlock->getBlockCells().size(); i++) {
+		int row = currentBlock->getBlockCells()[i].getInfo().row;
+		int col = currentBlock->getBlockCells()[i].getInfo().col;
+		theGrid[row][col].setBlock(BlockType::NONE);
+		theGrid[row][col].setState(StateType::NONE);
+	}
+}
+
+
 
 void Grid::left(int x) {
+	deleteCurrentBlock();
 	// check if valid move
 	// update the current block's cells
 	int shift = 0;
@@ -189,11 +249,13 @@ void Grid::left(int x) {
 		shift++;
 	}
 
+	playBlock(currentBlock);
+
 
 }
 
 void Grid::right(int x) {
-
+	deleteCurrentBlock();
 	int shift = 0;
 	while (shift < x) {
 		if (isValidMove(currentBlock->getBlockCells(), 1, 0)) {
@@ -203,9 +265,11 @@ void Grid::right(int x) {
 		}
 		shift++;
 	}
+	playBlock(currentBlock);
 
 }
 void Grid::down(int x) {
+	deleteCurrentBlock();
 	int shift = 0;
 	while (shift < x) {
 		if (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
@@ -215,6 +279,7 @@ void Grid::down(int x) {
 		}
 		shift++;
 	}
+	playBlock(currentBlock);
 }
 
 void Grid::setBlock(Block *curBlock) {
@@ -244,11 +309,13 @@ void Grid::drop(int x) {
 		x--;
 		currentBlock = nextBlock;
 		nextBlock = theLevel->createBlock();
+		playBlock(currentBlock);
 
 	}
 	
 	currentBlock = nextBlock;
 	nextBlock = theLevel->createBlock();
+	playBlock(currentBlock);
 
 }
 
@@ -262,25 +329,30 @@ void Grid::restart() {
     // note: level doesn't change
     initGrid(); 
     currentBlock = theLevel->createBlock();
+    playBlock(currentBlock);
     nextBlock = theLevel->createBlock();
     theScore->setCurrentScore(0);  
 
 }
 void Grid::rotateCW(int x) {
+	deleteCurrentBlock();
 	while (x > 0) {
 
 		currentBlock->clockwise(x);
 
 		x--;
 	}
+	playBlock(currentBlock);
 
 }
 void Grid::rotateCCW(int x) {
+	deleteCurrentBlock();
 	while (x > 0) {
 		currentBlock->counterclockwise(x);
 		x--;
 
 	}
+	playBlock(currentBlock);
 
 }
 void Grid::levelUp(int x) {

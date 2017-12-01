@@ -20,7 +20,7 @@ public:
     Block(bool isHeavy=false);
     Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
     // Block(bool isHeavy, int level, std::vector<Cell> cells);
-    ~Block();
+    virtual ~Block();
     void move();
     void rotate(int);
     std::vector<Cell> getBlockCells();
@@ -30,6 +30,7 @@ public:
 
     int getBottomLeftCol();
     int getBottomLeftRow();
+    void setBottomLeftCoords(int row, int col);
 
     void left(int x=1);
     void right(int x=1);
@@ -37,6 +38,7 @@ public:
     void clockwise(int x=1);
     void counterclockwise(int x =1);
     void updateSetCells(size_t);
+    virtual BlockType getBlockType();
 
 friend std::ostream &operator<<(std::ostream &out, Block *);
 };

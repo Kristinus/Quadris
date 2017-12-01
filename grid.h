@@ -29,6 +29,7 @@ class Grid {
   double getStandardDeviationHeights(std::vector<int> v);
   std::vector<int> getHeights();
   int countHoles();
+  void moveTo(int, int, Block*);
 public:
   Grid();
   std::vector<std::vector<Cell>> getGridCells();
@@ -38,6 +39,7 @@ public:
   void initGrid();
   bool isOver();
   void deleteRow();
+  void deleteCurrentBlock();
   void left(int);
   void right(int);
   void down(int);
@@ -49,6 +51,7 @@ public:
   void levelDown(int);
   void random(bool);
   void hint();
+  void playBlock(Block *);
 
   friend std::ostream &operator<<(std::ostream &out, Grid &grid);
 };

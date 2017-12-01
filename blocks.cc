@@ -1,4 +1,5 @@
 #include "blocks.h"
+#include "info.h"
 
 IBlock::IBlock(bool isHeavy): Block(isHeavy) {
     type = 'I';
@@ -17,6 +18,9 @@ IBlock::IBlock(bool isHeavy): Block(isHeavy) {
 // IBlock::IBlock(bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 IBlock::~IBlock() {}
+BlockType IBlock::getBlockType() {
+	return BlockType::I;
+}
 
 
 
@@ -41,6 +45,9 @@ JBlock::JBlock(bool isHeavy): Block(isHeavy) {
 // JBlock::JBlock(bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 JBlock::~JBlock() {}
+BlockType JBlock::getBlockType() {
+	return BlockType::J;
+}
 
 
 
@@ -67,6 +74,11 @@ LBlock::LBlock(bool isHeavy): Block(isHeavy) {
 // LBlock::LBlock(bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 LBlock::~LBlock() {}
+BlockType LBlock::getBlockType() {
+	return BlockType::L;
+}
+
+
 
 
 
@@ -91,6 +103,9 @@ OBlock::OBlock(bool isHeavy): Block(isHeavy) {
 // OBlock::OBlock(bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 OBlock::~OBlock() {}
+BlockType OBlock::getBlockType() {
+	return BlockType::O;
+}
 
 
 
@@ -118,6 +133,10 @@ SBlock::SBlock(bool isHeavy): Block(isHeavy) {
 
 SBlock::~SBlock() {}
 
+BlockType SBlock::getBlockType() {
+	return BlockType::S;
+}
+
 
 
 /*****************************************************************************/
@@ -142,6 +161,10 @@ TBlock::TBlock(bool isHeavy): Block(isHeavy) {
 // TBlock::TBlock(bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 TBlock::~TBlock() {}
+
+BlockType TBlock::getBlockType() {
+	return BlockType::T;
+}
 
 
 
@@ -168,4 +191,8 @@ ZBlock::ZBlock(bool isHeavy): Block(isHeavy) {
 // ZBlock::ZBlock(bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 ZBlock::~ZBlock() {}
+
+BlockType ZBlock::getBlockType() {
+	return BlockType::Z;
+}
 

@@ -1,5 +1,6 @@
 #include "block.h"
 #include "grid.h"
+#include "info.h"
 
 using namespace std;
 
@@ -46,6 +47,8 @@ int Block::getLevel(){
    return level;
 }
 
+
+
 void Block::move(int offsetX, int offsetY) {
 	for (auto &c : cells) {
 		size_t oldX = c.getInfo().col;
@@ -76,6 +79,11 @@ bool isValidCoordinate(Grid* theGrid, int x, int y) {
 		&& theGrid->getGridCells()[y][x].getInfo().state != StateType::STATIC) {
 		return true;
 	} else return false;
+}
+
+void Block::setBottomLeftCoords(int row, int col) {
+	row = row;
+	col = col;
 }
 
 void Block::rotate(int dir) {
@@ -115,7 +123,7 @@ void Block::rotate(int dir) {
 		}
 	}
 	// modify the cell
-	for (int i = 0; i < cells.size(); i++) {
+	for (unsigned int i = 0; i < cells.size(); i++) {
 		cells[i].setCoords(rotatedY[i], rotatedX[i]);
 	}
 
@@ -142,12 +150,17 @@ int Block::getBottomLeftRow() {
 	return row;
 }
 
+//(TODO) figure out pure virtual for this!!!!!!
+BlockType Block::getBlockType() {
+	return BlockType::NONE;
+}
+
 
 std::ostream &operator<<(std::ostream &out, Block *b) {
 	//Assuming first cell is top left and last cell is bottom right
 	int i=0;
-	for(int r=0; r<2; r++) {
-		for(int c=0; c<3; c++) {
+	for(unsigned int r=0; r<2; r++) {
+		for(unsigned int c=0; c<3; c++) {
 			if(b->cells[i].getInfo().row == r && b->cells[i].getInfo().col == c) {
 				out << b->type;
 				i++;
@@ -156,4 +169,5 @@ std::ostream &operator<<(std::ostream &out, Block *b) {
 		}
 		out << std::endl;
 	}
+	return out;
 }
