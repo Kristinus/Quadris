@@ -133,7 +133,7 @@ void Interpreter::run() {
         	break;
         }
 
-        cout << cmd << "|" << mult << endl; 
+        // cout << cmd << "|" << mult << endl; 
         if (commandMap.count(cmd) > 0) {
            auto i = commandMap.find(cmd);
 

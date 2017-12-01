@@ -44,7 +44,7 @@ public:
   void left(int);
   void right(int);
   void down(int);
-  void drop(int);
+  void drop();
   void restart();
   void rotateCW(int);
   void rotateCCW(int);

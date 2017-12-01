@@ -44,7 +44,7 @@ void CounterClockwiseCommand::execute(int m) {
 DropCommand::DropCommand(Grid *g): Command(g) {}
 
 void DropCommand::execute(int m) {
-    grid->drop(m);
+    grid->drop();
 }
 
 /******************************************************************************/

@@ -22,13 +22,13 @@ TextDisplay::TextDisplay(Grid *grid):
 }
 
 void TextDisplay::notify(Subject<Info> &whoNotified) {
-  cout <<"notified" << endl;
+  // cout <<"notified" << endl;
   Info i = whoNotified.getInfo();
-  if (i.block == BlockType::NONE) {cout << "none" << endl;}
+  // if (i.block == BlockType::NONE) {cout << "none" << endl;}
   char c = ' ';
   if(dict.count(i.block) > 0) {
     c = dict[i.block];
-    cout << "hi" << endl;
+    // cout << "hi" << endl;
   } 
   theDisplay[i.row][i.col] = c;
 }

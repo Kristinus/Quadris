@@ -44,18 +44,18 @@ void Grid::initGrid() {
 	// theGrid = res; (TODO)
 
 	currentBlock = theLevel->createBlock();
-	for (auto c: currentBlock->getBlockCells()) {
-		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	}
+	// for (auto c: currentBlock->getBlockCells()) {
+	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	// }
 	currentBlock->moveTo(14,0);
-		for (auto c: currentBlock->getBlockCells()) {
-		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	}
+	// for (auto c: currentBlock->getBlockCells()) {
+	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	// }
 	updateCells();
 	//currentBlock->down();
-	for (auto c: currentBlock->getBlockCells()) {
-		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	}
+	// for (auto c: currentBlock->getBlockCells()) {
+	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	// }
 	nextBlock = theLevel->createBlock();
 
 }
@@ -288,7 +288,7 @@ void Grid::down(int x) {
 	while (shift < x) {
 		if (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
 			currentBlock->down();
-			cout <<"YES VALID" << endl;
+			// cout <<"YES VALID" << endl;
 		} else {
 			break;
 		}
@@ -317,25 +317,20 @@ void Grid::unsetBlock(Block *block) {
 	// setBlocks.pop_back();
 }
 
-void Grid::drop(int x) {
-	while (x > 0) {
-		deleteCurrentBlock();
-		while (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
+void Grid::drop() {
+	deleteCurrentBlock();
+	while (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
 
-			currentBlock->down();
-		}
-		updateCells();
-		setBlock(currentBlock);
-		x--;
-		currentBlock = nextBlock;
-		nextBlock = theLevel->createBlock();
-		//playBlock(currentBlock);
-
+		currentBlock->down();
 	}
-	
+	updateCells();
+	setBlock(currentBlock);
+	// x--;
 	currentBlock = nextBlock;
 	nextBlock = theLevel->createBlock();
-	//playBlock(currentBlock);
+	// playBlock(currentBlock);
+	currentBlock->moveTo(14,0);
+	updateCells();
 
 }
 
