@@ -33,8 +33,8 @@ void Grid::initGrid() {
 			info.state = StateType::NONE;
 			Cell c = Cell(info);
 			c.attach(td);
-			c.attach(ob);
-			row.emplace_back(Cell(info));
+			if(ob) c.attach(ob);
+			row.emplace_back(c);
 		}
 		// adds each row to the beginning so the bottom left is the ORIGIN (0,0)
 		theGrid.insert(theGrid.begin(), row);
