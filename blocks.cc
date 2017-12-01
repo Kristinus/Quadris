@@ -13,7 +13,7 @@ IBlock::IBlock(bool isHeavy): Block(isHeavy) {
     }
 }
 // IBlock::IBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
-:
+
 // IBlock::IBlock(bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 IBlock::~IBlock() {}

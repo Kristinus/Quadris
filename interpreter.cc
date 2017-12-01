@@ -51,9 +51,17 @@ bool isDigit(char c) {
 	else return false;
 }
 
+// (TODO) put this into an exception class
+// also learn how to make your own 
+
+struct invalidInputException {
+	string message;
+	invalidInputException(string message):message{message} {}
+};
+ 
 ProcessedInput parseCommand(string command) {
 	string bd = "";
-	string cmd;
+	string typedCommand;
 	int res;
 	// if (!isDigit(command[i])) return ProcessedInput(1, command);
 	size_t i;
@@ -66,13 +74,13 @@ ProcessedInput parseCommand(string command) {
 	}
 
 	vector<string> possibleCommands {"left", "right", "down", "levelup", "leveldown", "norandom", "random", "sequence", "clockwise", "counterclockwise", "drop", "restart", "hint", "I", "J", "L", "O", "S", "Z", "T", "quit",};
-    cmd = command.substr(i);
+    typedCommand = command.substr(i);
      
     for (int i = possibleCommands.size() - 1; i >= 0; i--) {
 
         string possibleCommand = possibleCommands[i];
-        int partialCommandLen = cmd.length();
-        if (cmd != possibleCommand.substr(0, partialCommandLen)) {
+        int partialCommandLen = typedCommand.length();
+        if (typedCommand != possibleCommand.substr(0, partialCommandLen)) {
         	possibleCommands.erase(possibleCommands.begin() + i);
         }
 
@@ -80,14 +88,18 @@ ProcessedInput parseCommand(string command) {
 
     if (possibleCommands.size() == 0) {
         	// throw an error
+
+    	// (TODO) put these messages in a config file somewhere
+    	throw invalidInputException("No Command Matches.");
     }
 
     else if (possibleCommands.size() > 1) {
+    	throw invalidInputException("Ambiguous Input");
     	// throw an error: ambigious command
     }
 
     else {
-    	cmd = possibleCommands[0];
+    	typedCommand = possibleCommands[0];
     }
 
 	istringstream iss{bd};
@@ -100,15 +112,22 @@ void Interpreter::run() {
     string s;
     cout << *grid;
     while(*in >> s) {
+
+    	ProcessedInput processedCommand;
+        try {
+        	 processedCommand = parseCommand(s);
+        } catch (invalidInputException e) {
+        	//cout << e.message << endl;
+        	continue;
+        }
         
-        ProcessedInput processedCommand = parseCommand(s);
         string cmd = processedCommand.command;
         int mult = processedCommand.multiplier;
         if (cmd == "quit") {
         	break;
         }
 
-        // cout << cmd << "|" << commandMap.count(cmd) << endl; 
+        cout << cmd << "|" << commandMap.count(cmd) << endl; 
         if (commandMap.count(cmd) > 0) {
            auto i = commandMap.find(cmd);
 
