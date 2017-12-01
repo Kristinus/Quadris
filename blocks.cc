@@ -89,6 +89,8 @@ OBlock::OBlock(bool isHeavy): Block(isHeavy) {
     Info i;
     i.state = StateType::NONE;
     i.block = BlockType::O;
+    i.row = 2;
+    i.col = 0;
     for(int r = 0; r < 2; r++) {
         i.row = r;
         i.col = 0;
@@ -96,6 +98,7 @@ OBlock::OBlock(bool isHeavy): Block(isHeavy) {
         i.col = 1;
         cells.emplace_back(Cell(i));
     }
+
 }
 // OBlock::OBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 

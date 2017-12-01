@@ -19,7 +19,7 @@ class Grid {
   Observer<Info> *ob;
   bool isRandom;
  
-  bool isValidMove(std::vector<Cell>, int, int);
+  bool isValidMove(int, int);
   int countCompleteLines();
   bool isFilled(std::vector<Cell>);
   void setBlock(Block *);

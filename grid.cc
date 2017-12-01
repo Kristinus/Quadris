@@ -221,15 +221,19 @@ void Grid::deleteRow() {
 
 }
 
-bool Grid::isValidMove(std::vector<Cell> theCells, int colshift, int rowshift) {
-	for (auto &cell: theCells) {
+bool Grid::isValidMove(int colshift, int rowshift) {
+	for (auto &cell: currentBlock->getBlockCells()) {
 		int newrow = cell.getInfo().row + rowshift;
+		cout << cell.getInfo().row << "was old row and is now " << newrow << endl;
 		int newcol = cell.getInfo().col + colshift;
+		
 
-		if (!((newcol >= 0 && (newcol <= 11) && (newrow >= 0)
-			&& theGrid[17 - newrow][newcol].getInfo().state != StateType::STATIC))) {
+		if ((!(newcol >= 0 && newcol < 11 && newrow >= 0)) || 
+			(theGrid[17 - newrow][newcol].getInfo().state == StateType::STATIC)) {
+			cout << "INVALID MOVE!" << endl;
 			return false;
 		}
+	
 	}
 	return true;	
 }
@@ -253,7 +257,7 @@ void Grid::left(int x) {
 	// update the current block's cells
 	int shift = 0;
 	while (shift < x) {
-		if (isValidMove(currentBlock->getBlockCells(), -1, 0)) {
+		if (isValidMove(-1, 0)) {
 			currentBlock->left();
 		} else {
 			break;
@@ -271,7 +275,7 @@ void Grid::right(int x) {
 	deleteCurrentBlock();
 	int shift = 0;
 	while (shift < x) {
-		if (isValidMove(currentBlock->getBlockCells(), 1, 0)) {
+		if (isValidMove(1, 0)) {
 			currentBlock->right();
 		} else {
 			break;
@@ -286,7 +290,7 @@ void Grid::down(int x) {
 	deleteCurrentBlock();
 	int shift = 0;
 	while (shift < x) {
-		if (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
+		if (isValidMove( 0, -1)) {
 			currentBlock->down();
 			// cout <<"YES VALID" << endl;
 		} else {
@@ -300,12 +304,12 @@ void Grid::down(int x) {
 }
 
 void Grid::setBlock(Block *curBlock) {
-	for (auto cell : currentBlock->getBlockCells()) {
-		theGrid[cell.getInfo().row][cell.getInfo().col].setState(StateType::STATIC);
-		theGrid[cell.getInfo().row][cell.getInfo().col].notifyObservers();
+	for (auto &cell : curBlock->getBlockCells()) {
+		theGrid[17 - cell.getInfo().row][cell.getInfo().col].setState(StateType::STATIC);
+		theGrid[17 - cell.getInfo().row][cell.getInfo().col].notifyObservers();
 
 	}
-	setBlocks.emplace_back(currentBlock);
+	setBlocks.emplace_back(curBlock);
 
 }
 
@@ -319,18 +323,33 @@ void Grid::unsetBlock(Block *block) {
 
 void Grid::drop() {
 	deleteCurrentBlock();
-	while (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
-
+	while (isValidMove(0, -1)) {
 		currentBlock->down();
 	}
 	updateCells();
 	setBlock(currentBlock);
+	for (auto cell: currentBlock->getBlockCells()) {
+			cout << "(" << cell.getInfo().row << "," << cell.getInfo().col << ")" << endl;
+			if (cell.getInfo().state == StateType::STATIC) cout << "cell is static";
+			if (theGrid[cell.getInfo().row][cell.getInfo().col].getInfo().state == StateType::STATIC) cout << "yesgrid is static";
+		
+	}
 	// x--;
+	delete currentBlock;
 	currentBlock = nextBlock;
+	cout <<"hi";
 	nextBlock = theLevel->createBlock();
 	// playBlock(currentBlock);
 	currentBlock->moveTo(14,0);
 	updateCells();
+
+	for (int i = 0 ; i < theGrid.size(); i++) {
+		for (int j = 0; j < theGrid[i].size(); j++) {
+			if (theGrid[i][j].getInfo().state == StateType::STATIC) {
+				cout << 17 - i << "|" << j << "is static" << endl;
+			}
+		}
+	}
 
 }
 
@@ -434,10 +453,10 @@ void Grid::hint() {
 		}
 
 		int horizontal = 0;
-
-		while (isValidMove(hintBlock->getBlockCells(), horizontal, 0)) {
+		// make default params to be currenbloc cells
+		while (isValidMove(horizontal, 0)) {
 			hintBlock->move(horizontal, 0);
-			while (isValidMove(hintBlock->getBlockCells(), 0, -1)) {
+			while (isValidMove(0, -1)) {
 				hintBlock->move(0, -1);
 			}
 
