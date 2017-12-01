@@ -11,8 +11,11 @@
 using namespace std;
 
 struct ProcessedInput {
-	int multiplier;
 	string command;
+
+	int multiplier;
+
+
 
 };
 
@@ -60,10 +63,10 @@ struct invalidInputException {
 };
  
 ProcessedInput parseCommand(string command) {
+	if (command == "") throw invalidInputException("Empty command");
 	string bd = "";
 	string typedCommand;
 	int res;
-	// if (!isDigit(command[i])) return ProcessedInput(1, command);
 	size_t i;
 	for (i = 0; i < command.length(); i++) {
 		if (isDigit(command[i])) {
@@ -102,9 +105,13 @@ ProcessedInput parseCommand(string command) {
     	typedCommand = possibleCommands[0];
     }
 
-	istringstream iss{bd};
-	iss >> res; // throw an exception
-	return ProcessedInput{res, possibleCommands[0]};
+    if (bd != "") {
+    	istringstream iss{bd};
+		iss >> res; // throw an exception
+		return ProcessedInput{possibleCommands[0], res};
+    }
+    else return ProcessedInput{possibleCommands[0], 1};
+	
 
 }
 
@@ -120,14 +127,13 @@ void Interpreter::run() {
         	//cout << e.message << endl;
         	continue;
         }
-        
         string cmd = processedCommand.command;
         int mult = processedCommand.multiplier;
         if (cmd == "quit") {
         	break;
         }
 
-        cout << cmd << "|" << commandMap.count(cmd) << endl; 
+        cout << cmd << "|" << mult << endl; 
         if (commandMap.count(cmd) > 0) {
            auto i = commandMap.find(cmd);
 
