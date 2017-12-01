@@ -48,14 +48,17 @@ int Block::getLevel(){
 }
 
 
-
-void Block::move(int offsetX, int offsetY) {
+// going down is ADD
+void Block::move(int colshift, int rowshift) {
 	for (auto &c : cells) {
-		size_t oldX = c.getInfo().col;
-		size_t oldY = c.getInfo().row;
-		size_t newX = oldX + offsetX;
-		size_t newY = oldY + offsetY;
-		c.setCoords(newX, newY);
+		size_t oldcol = c.getInfo().col;
+		size_t oldrow = c.getInfo().row;
+		size_t newcol = oldcol + colshift;
+		size_t newrow = oldrow + rowshift;
+		c.setCoords(newrow, newcol);
+	}
+			for (auto &c: getBlockCells()) {
+		cout << "MOVE(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	}
 }
 
@@ -70,8 +73,11 @@ void Block::right(int x) {
 }
 
 void Block::down(int x){
-	row--;
+	row++;
    	move(0,-1);
+   			for (auto c: getBlockCells()) {
+		cout << "DOWN(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	}
 }
 
 bool isValidCoordinate(Grid* theGrid, int x, int y) {
@@ -84,6 +90,25 @@ bool isValidCoordinate(Grid* theGrid, int x, int y) {
 void Block::setBottomLeftCoords(int row, int col) {
 	row = row;
 	col = col;
+}
+
+void Block::moveTo(int bottomLeftRow, int bottomLeftCol) {
+	int oldBottomLeftRow = row;
+	int oldBottomLeftCol = col;
+	int deltaRow = bottomLeftRow - oldBottomLeftRow;
+	int deltaCol = bottomLeftCol - oldBottomLeftCol;
+
+	for (auto &c : cells) {
+		c.setCoords(c.getInfo().row + deltaRow, c.getInfo().col + deltaCol);
+	}
+}
+
+// delete this
+void Block::playBlock() {
+	for (auto &c : cells) {
+		c.setState(StateType::MOVING);
+		c.setBlock(getBlockType());
+	}
 }
 
 void Block::rotate(int dir) {

@@ -5,6 +5,8 @@
 #include <vector>
 #include "info.h"
 #include "levels.h"
+#include <iostream>
+using namespace std;
 
 Grid::Grid() {
 // NEED TO FIGURE THIS SHIT OUT
@@ -42,12 +44,18 @@ void Grid::initGrid() {
 	// theGrid = res; (TODO)
 
 	currentBlock = theLevel->createBlock();
-	theGrid[5][5].setBlock(BlockType::J);
-	theGrid[5][5].setState(StateType::MOVING);
-
-	theGrid[5][5].notifyObservers();
-	moveTo(15, 0, currentBlock);
-	playBlock(currentBlock);
+	for (auto c: currentBlock->getBlockCells()) {
+		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	}
+	currentBlock->moveTo(14,0);
+		for (auto c: currentBlock->getBlockCells()) {
+		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	}
+	updateCells();
+	//currentBlock->down();
+	for (auto c: currentBlock->getBlockCells()) {
+		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	}
 	nextBlock = theLevel->createBlock();
 
 }
@@ -146,16 +154,18 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 		c.setCoords(c.getInfo().row + deltaRow, c.getInfo().col + deltaCol);
 
 	}
-	b->setBottomLeftCoords(bottomLeftRow, bottomLeftCol);
+
 
 
 }
 
-void Grid::playBlock(Block *b) {
-	for (auto &c : b->getBlockCells()) {
+// update cell Grid
+void Grid::updateCells() {
+	for (auto &c : currentBlock->getBlockCells()) {
 		c.setState(StateType::MOVING);
-		c.setBlock(b->getBlockType());
-		c.notifyObservers();
+		c.setBlock(currentBlock->getBlockType());
+		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(currentBlock->getBlockType());
+		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
 }
@@ -211,13 +221,13 @@ void Grid::deleteRow() {
 
 }
 
-bool Grid::isValidMove(std::vector<Cell> theCells, int offsetX, int offsetY) {
+bool Grid::isValidMove(std::vector<Cell> theCells, int colshift, int rowshift) {
 	for (auto &cell: theCells) {
-		int newX = cell.getInfo().row + offsetX;
-		int newY = cell.getInfo().col + offsetY;
+		int newrow = cell.getInfo().row + rowshift;
+		int newcol = cell.getInfo().col + colshift;
 
-		if (!((newX >= 0 && (newX <= 11) && (newY >= 0)
-			&& theGrid[newX][newY].getInfo().state != StateType::STATIC))) {
+		if (!((newcol >= 0 && (newcol <= 11) && (newrow >= 0)
+			&& theGrid[17 - newrow][newcol].getInfo().state != StateType::STATIC))) {
 			return false;
 		}
 	}
@@ -225,11 +235,13 @@ bool Grid::isValidMove(std::vector<Cell> theCells, int offsetX, int offsetY) {
 }
 
 void Grid::deleteCurrentBlock() {
+	// (TODO) refector into currentblock code
 	for (int i = 0; i < currentBlock->getBlockCells().size(); i++) {
 		int row = currentBlock->getBlockCells()[i].getInfo().row;
 		int col = currentBlock->getBlockCells()[i].getInfo().col;
-		theGrid[row][col].setBlock(BlockType::NONE);
-		theGrid[row][col].setState(StateType::NONE);
+		theGrid[17 - row][col].setBlock(BlockType::NONE);
+		theGrid[17 - row][col].setState(StateType::NONE);
+		theGrid[17 - row][col].notifyObservers();
 	}
 }
 
@@ -248,8 +260,9 @@ void Grid::left(int x) {
 		}
 		shift++;
 	}
+	updateCells(); // will update cells on the board and in the currentBlock to MOVING and notify textdisplay
 
-	playBlock(currentBlock);
+	//playBlock(currentBlock);
 
 
 }
@@ -265,7 +278,8 @@ void Grid::right(int x) {
 		}
 		shift++;
 	}
-	playBlock(currentBlock);
+	updateCells();
+	//playBlock(currentBlock);
 
 }
 void Grid::down(int x) {
@@ -274,12 +288,15 @@ void Grid::down(int x) {
 	while (shift < x) {
 		if (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
 			currentBlock->down();
+			cout <<"YES VALID" << endl;
 		} else {
 			break;
 		}
 		shift++;
 	}
-	playBlock(currentBlock);
+	updateCells();
+
+	//playBlock(currentBlock);
 }
 
 void Grid::setBlock(Block *curBlock) {
@@ -302,20 +319,23 @@ void Grid::unsetBlock(Block *block) {
 
 void Grid::drop(int x) {
 	while (x > 0) {
+		deleteCurrentBlock();
 		while (isValidMove(currentBlock->getBlockCells(), 0, -1)) {
+
 			currentBlock->down();
 		}
+		updateCells();
 		setBlock(currentBlock);
 		x--;
 		currentBlock = nextBlock;
 		nextBlock = theLevel->createBlock();
-		playBlock(currentBlock);
+		//playBlock(currentBlock);
 
 	}
 	
 	currentBlock = nextBlock;
 	nextBlock = theLevel->createBlock();
-	playBlock(currentBlock);
+	//playBlock(currentBlock);
 
 }
 
@@ -329,7 +349,7 @@ void Grid::restart() {
     // note: level doesn't change
     initGrid(); 
     currentBlock = theLevel->createBlock();
-    playBlock(currentBlock);
+   // playBlock(currentBlock);
     nextBlock = theLevel->createBlock();
     theScore->setCurrentScore(0);  
 
@@ -342,7 +362,7 @@ void Grid::rotateCW(int x) {
 
 		x--;
 	}
-	playBlock(currentBlock);
+	//playBlock(currentBlock);
 
 }
 void Grid::rotateCCW(int x) {
@@ -352,7 +372,7 @@ void Grid::rotateCCW(int x) {
 		x--;
 
 	}
-	playBlock(currentBlock);
+	//playBlock(currentBlock);
 
 }
 void Grid::levelUp(int x) {

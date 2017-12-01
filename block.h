@@ -30,8 +30,9 @@ public:
 
     int getBottomLeftCol();
     int getBottomLeftRow();
+    void playBlock();
     void setBottomLeftCoords(int row, int col);
-
+    void moveTo(int row, int col);
     void left(int x=1);
     void right(int x=1);
     void down(int x=1);
