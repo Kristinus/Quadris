@@ -225,7 +225,7 @@ std::ostream &operator<<(std::ostream &out, Block *b) {
 	int i=0;
 	for(size_t r=0; r<2; r++) {
 		for(size_t c=0; c<3; c++) {
-			out << "|" << i << "|" << std::endl;
+			// out << "|" << i << "|" << std::endl;
 			if(b->cells[i].getInfo().row == r && b->cells[i].getInfo().col == c) {
 				out << b->type;
 				i++;

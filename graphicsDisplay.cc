@@ -26,6 +26,7 @@ void GraphicsDisplay::setGrid(Grid *grid) {
 void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
   auto info = whoNotified.getInfo();
   int cellSize = winSize / gridSize;
+  std::cout << Xwindow::Cyan << std::endl;
   if(info.block == BlockType::I)
     xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Cyan);
   else if(info.block == BlockType::J)

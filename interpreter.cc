@@ -46,7 +46,7 @@ Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLe
 		gd = new GraphicsDisplay();
 	}
 	grid = new Grid(gd);
-    gd->setGrid(grid);
+    if(gd) gd->setGrid(grid);
     
     // grid = new Grid(seed, gd, startLevel);
     initCommandMap();
