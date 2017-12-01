@@ -8,7 +8,7 @@
 #include <iostream>
 using namespace std;
 
-Grid::Grid() {
+Grid::Grid(Observer<Info> *ob): ob{ob} {
 // NEED TO FIGURE THIS SHIT OUT
   theLevel = new Level0();
   theScore = new Score();

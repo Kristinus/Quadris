@@ -7,6 +7,7 @@
 #include "block.h"
 #include "grid.h"
 #include "commands.h"
+#include "graphicsDisplay.h"
 #include "interpreter.h"
 using namespace std;
 
@@ -41,12 +42,14 @@ void Interpreter::initCommandMap() {
 }
 
 Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLevel) {
-    grid = new Grid();
-	initCommandMap();
 	if (textOnly == false) {
-	//	gd = new GraphicsDisplay(500);
+		gd = new GraphicsDisplay();
 	}
-	// grid = new Grid(seed, gd, startLevel);
+	grid = new Grid(gd);
+    gd->setGrid(grid);
+    
+    // grid = new Grid(seed, gd, startLevel);
+    initCommandMap();
 }
 
 bool isDigit(char c) {

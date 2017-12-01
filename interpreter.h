@@ -8,13 +8,14 @@
 // #include "grid.h"
 // #include "graphicsDisplay.h"
 class Grid;
+class GraphicsDisplay;
 class Command;
 
 class Interpreter {
 	std::istream *in = &std::cin;
     std::map<std::string, Command *> commandMap;
 
-   // GraphicsDisplay *gd;
+    GraphicsDisplay *gd = nullptr;
     Grid *grid = nullptr;
     // Level level;
 

@@ -32,7 +32,7 @@ class Grid {
   int countHoles();
   void moveTo(int, int, Block*);
 public:
-  Grid();
+  Grid(Observer<Info> *);
   std::vector<std::vector<Cell>> getGridCells();
   Block *getNextBlock();
   Score *getScore();

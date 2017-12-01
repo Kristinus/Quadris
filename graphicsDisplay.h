@@ -5,14 +5,18 @@
 #include "info.h"
 #include "observer.h"
 #include "window.h"
-class Cell;
+class Grid;
+class Score;
 
 class GraphicsDisplay: public Observer<Info> {
+  Grid *grid;
   const int gridSize, winSize;
   Xwindow xw;
+  Score *score;
 
  public:
-  GraphicsDisplay(int winSize);
+  GraphicsDisplay();
+  void setGrid(Grid *);
 
   void notify(Subject<Info> &whoNotified) override;
 };
