@@ -224,7 +224,7 @@ void Grid::deleteRow() {
 bool Grid::isValidMove(int colshift, int rowshift) {
 	for (auto &cell: currentBlock->getBlockCells()) {
 		int newrow = cell.getInfo().row + rowshift;
-		cout << cell.getInfo().row << "was old row and is now " << newrow << endl;
+	//	cout << cell.getInfo().row << "was old row and is now " << newrow << endl;
 		int newcol = cell.getInfo().col + colshift;
 		
 
@@ -303,6 +303,23 @@ void Grid::down(int x) {
 	//playBlock(currentBlock);
 }
 
+void Grid::rotateCW(int x) {
+	deleteCurrentBlock();
+		 for (auto c: currentBlock->getBlockCells()) {
+	 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	 }
+	//while (x > 0) {
+		currentBlock->clockwise(x);
+	//	x--;
+	//}
+		 for (auto c: currentBlock->getBlockCells()) {
+		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	 }
+	updateCells();
+	//playBlock(currentBlock);
+
+}
+
 void Grid::setBlock(Block *curBlock) {
 	for (auto &cell : curBlock->getBlockCells()) {
 		theGrid[17 - cell.getInfo().row][cell.getInfo().col].setState(StateType::STATIC);
@@ -329,15 +346,15 @@ void Grid::drop() {
 	updateCells();
 	setBlock(currentBlock);
 	for (auto cell: currentBlock->getBlockCells()) {
-			cout << "(" << cell.getInfo().row << "," << cell.getInfo().col << ")" << endl;
-			if (cell.getInfo().state == StateType::STATIC) cout << "cell is static";
-			if (theGrid[cell.getInfo().row][cell.getInfo().col].getInfo().state == StateType::STATIC) cout << "yesgrid is static";
+			//cout << "(" << cell.getInfo().row << "," << cell.getInfo().col << ")" << endl;
+			//if (cell.getInfo().state == StateType::STATIC) cout << "cell is static";
+			//if (theGrid[cell.getInfo().row][cell.getInfo().col].getInfo().state == StateType::STATIC) cout << "yesgrid is static";
 		
 	}
 	// x--;
 	delete currentBlock;
 	currentBlock = nextBlock;
-	cout <<"hi";
+	//cout <<"hi";
 	nextBlock = theLevel->createBlock();
 	// playBlock(currentBlock);
 	currentBlock->moveTo(14,0);
@@ -346,7 +363,7 @@ void Grid::drop() {
 	for (int i = 0 ; i < theGrid.size(); i++) {
 		for (int j = 0; j < theGrid[i].size(); j++) {
 			if (theGrid[i][j].getInfo().state == StateType::STATIC) {
-				cout << 17 - i << "|" << j << "is static" << endl;
+			//	cout << 17 - i << "|" << j << "is static" << endl;
 			}
 		}
 	}
@@ -368,17 +385,7 @@ void Grid::restart() {
     theScore->setCurrentScore(0);  
 
 }
-void Grid::rotateCW(int x) {
-	deleteCurrentBlock();
-	while (x > 0) {
 
-		currentBlock->clockwise(x);
-
-		x--;
-	}
-	//playBlock(currentBlock);
-
-}
 void Grid::rotateCCW(int x) {
 	deleteCurrentBlock();
 	while (x > 0) {
@@ -386,6 +393,7 @@ void Grid::rotateCCW(int x) {
 		x--;
 
 	}
+	updateCells();
 	//playBlock(currentBlock);
 
 }
