@@ -438,18 +438,12 @@ void Grid::rotateCCW(int x) {
 
 }
 void Grid::levelUp(int x) {
-	while (x > 0) {
-		theLevel->levelUp();
-		x--;
-	}
-
+	for(int i=0; i<x; i++)
+		theLevel = theLevel->levelUp();
 }
 void Grid::levelDown(int x) {
-	while (x > 0) {
-		theLevel->levelDown();
-		x--;
-	}
-
+	for(int i=0; i<x; i++)
+		theLevel = theLevel->levelDown();
 }
 void Grid::random(bool flag) {
 	isRandom = flag;

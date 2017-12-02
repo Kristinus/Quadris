@@ -11,19 +11,19 @@ Block *Level0::createBlock() {
     char b;
     seq >> b;
     if (b=='I')
-        return new IBlock();
+        return new IBlock(0);
     else if (b=='J')
-        return new JBlock();
+        return new JBlock(0);
     else if (b=='L')
-        return new LBlock();
+        return new LBlock(0);
     else if (b=='O')
-        return new OBlock();
+        return new OBlock(0);
     else if (b=='S')
-        return new SBlock();
+        return new SBlock(0);
     else if (b=='T')
-        return new TBlock();
+        return new TBlock(0);
     else if (b=='Z')
-        return new ZBlock();
+        return new ZBlock(0);
     //Loops through file again
     seq.close();
     seq.open(sourceFile);
@@ -49,16 +49,11 @@ int Level0::getLevel() {
 //***************************************************************************************//
 
 Level1::Level1() {
-    setDefaultSelector();
-    selector.emplace_back(new IBlock());
-    selector.emplace_back(new JBlock());
-    selector.emplace_back(new LBlock());
-    selector.emplace_back(new OBlock());
-    selector.emplace_back(new TBlock());
+    setDefaultSelector(2,2,2,2,1,2,1);
 }
 
 Block *Level1::createBlock() {
-    return selector[std::rand()%12];
+    return selector[std::rand()%12](1,false);
 }
 
 Level* Level1::levelUp() {
@@ -76,11 +71,11 @@ int Level1::getLevel() {
 //***************************************************************************************//
 
 Level2::Level2() {
-    setDefaultSelector();
+    setDefaultSelector(1,1,1,1,1,1,1);
 }
 
 Block *Level2::createBlock() {
-    return selector[std::rand()%7];
+    return selector[std::rand()%7](2,false);
 }
 Level* Level2::levelUp() {
     return new Level3();
@@ -97,13 +92,11 @@ int Level2::getLevel() {
 //***************************************************************************************//
 
 Level3::Level3() {
-    setDefaultSelector();
-    selector.emplace_back(new SBlock());
-    selector.emplace_back(new ZBlock());
+    setDefaultSelector(1,1,1,1,2,1,2);
 }
 
 Block *Level3::createBlock() {
-    return selector[std::rand()%9];
+    return selector[std::rand()%9](3,true);
 }
 Level* Level3::levelUp() {
     return new Level4();
@@ -120,13 +113,11 @@ int Level3::getLevel() {
 //***************************************************************************************//
 
 Level4::Level4() {
-    setDefaultSelector();
-    selector.emplace_back(new SBlock());
-    selector.emplace_back(new ZBlock());
+    setDefaultSelector(1,1,1,1,2,1,2);
 }
 
 Block *Level4::createBlock() {
-    return selector[std::rand()%9];
+    return selector[std::rand()%9](4, true);
 }
 
 Level* Level4::levelUp() {

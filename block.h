@@ -17,7 +17,7 @@ protected:
     char type;
 	bool isValidCoordinate(int row , int col);
 public:
-    Block(bool isHeavy=false);
+    Block(int level, bool isHeavy=false);
     Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
     // Block(bool isHeavy, int level, std::vector<Cell> cells);
     virtual ~Block();
