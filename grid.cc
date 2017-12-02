@@ -541,6 +541,11 @@ struct HintInfo {
 };
 
 void Grid::hint() {
+	vector<Cell> hintCells;
+
+
+	for (int i = 0; i < 4; i++) {
+
 		double smoothness = calculateSmoothness();
 		//	cout << "hi" << endl;
 
@@ -551,6 +556,13 @@ void Grid::hint() {
 	//	cout << "smoothness:" << smoothness << " completeLines: " << completeLines << "numHoles: " << numHoles << endl;
 		//double priority = (1/ (1+smoothness)) * completeLines * 1/(numHoles+1);
 		cout << "SCORE IS " << completeLines + density + smoothness << endl;
+
+
+
+	}
+
+		
+
 }
 /**
 void Grid::hint() {
