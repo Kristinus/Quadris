@@ -83,7 +83,7 @@ bool Grid::isOver() {
 
 //Checks if the row is filled
 bool Grid::isFilled(std::vector<Cell> row) {
-	for (auto c : row) {
+	for (auto &c : row) {
 		if (c.getInfo().state != StateType::STATIC) return false;
 	}
 	return true;
@@ -270,7 +270,7 @@ void Grid::deleteCurrentBlock() {
 
 
 void Grid::left(int x) {
-	deleteCurrentBlock();
+	updateCells(currentBlock, StateType::NONE);
 	// check if valid move
 	// update the current block's cells
 	int shift = 0;
@@ -290,7 +290,7 @@ void Grid::left(int x) {
 }
 
 void Grid::right(int x) {
-	deleteCurrentBlock();
+	updateCells(currentBlock, StateType::NONE);
 	int shift = 0;
 	while (shift < x) {
 		if (isValidMove(1, 0)) {
@@ -305,7 +305,7 @@ void Grid::right(int x) {
 
 }
 void Grid::down(int x) {
-	deleteCurrentBlock();
+	updateCells(currentBlock, StateType::NONE);
 	int shift = 0;
 	while (shift < x) {
 		if (isValidMove( 0, -1)) {
@@ -322,7 +322,7 @@ void Grid::down(int x) {
 }
 
 void Grid::rotateCW(int x) {
-	deleteCurrentBlock();
+	updateCells(currentBlock, StateType::NONE);
 		 for (auto c: currentBlock->getBlockCells()) {
 	 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	 }
@@ -350,8 +350,9 @@ void Grid::unsetBlock(Block *block) {
 }
 
 void Grid::drop(int x) {
-	deleteCurrentBlock();
+
 	while (x > 0) {
+		deleteCurrentBlock();
 		while (isValidMove(0, -1)) {
 			currentBlock->down();
 		}
@@ -371,6 +372,8 @@ void Grid::drop(int x) {
 		x--;
 
 	}
+
+	deleteRow();
 
 
 }
@@ -402,7 +405,7 @@ void Grid::restart() {
 }
 
 void Grid::rotateCCW(int x) {
-	deleteCurrentBlock();
+	updateCells(currentBlock, StateType::NONE);
 	while (x > 0) {
 		currentBlock->counterclockwise(x);
 		x--;
