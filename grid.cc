@@ -234,7 +234,7 @@ void Grid::deleteRow() {
 	for (int i = theGrid.size() - 1; i >= 0; i--) {
 		if (isFilled(theGrid[i])) {
 			//(TODO) code a notify all cels function
-			lowerRow = 17 - i;
+			lowerRow = i;
 			for (auto &c : theGrid[i]) {
 				c.setState(StateType::NONE);
 				c.setBlock(BlockType::NONE);
@@ -249,8 +249,7 @@ void Grid::deleteRow() {
 	//make a notifygrid
 
 
-	for (int i=theGrid.size()-1; i>=0; i--) {
-		if(i==lowerRow) break;
+	for (int i=0; i<lowerRow; i++) {
 		for (auto &c: theGrid[i]) {
 			c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
 		}
