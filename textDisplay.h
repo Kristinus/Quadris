@@ -21,6 +21,7 @@ class TextDisplay: public Observer<Info> {
 
   void notify(Subject<Info> &whoNotified) override;
   void clearNext() override;
+  void update() override;
   friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 #endif

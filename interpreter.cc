@@ -45,10 +45,9 @@ Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLe
 	if (textOnly == false) {
 		gd = new GraphicsDisplay();
 	}
-	grid = new Grid(gd);
+	grid = new Grid(seed, gd, scriptFile);
     if(gd) gd->setGrid(grid);
     
-    // grid = new Grid(seed, gd, startLevel);
     initCommandMap();
 }
 
@@ -120,6 +119,7 @@ ProcessedInput parseCommand(string command) {
 
 void Interpreter::run() {
     string s;
+    // grid->initGrid();
     cout << *grid;
     while(*in >> s) {
 

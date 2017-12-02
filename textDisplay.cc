@@ -34,6 +34,7 @@ void TextDisplay::notify(Subject<Info> &whoNotified) {
 }
 
 void TextDisplay::clearNext() {}
+void TextDisplay::update() {}
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   //Outputs the scoreboard

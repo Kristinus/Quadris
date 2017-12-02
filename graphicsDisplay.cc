@@ -6,13 +6,13 @@
 using namespace std;
 
 GraphicsDisplay::GraphicsDisplay():
- gridSize{18}, winSize{600}, cellSize{winSize/gridSize}, xw{800, 600} {
+ gridSize{18}, winSize{600}, cellSize{winSize/gridSize}, xw{650, 650} {
   xw.fillRectangle(0, 0, winSize, winSize, Xwindow::White);
-  xw.fillRectangle(11 * cellSize, 0, 1, winSize, Xwindow::Black);
+  xw.fillRectangle(11 * cellSize, 0, 1, 700, Xwindow::Black);
   xw.drawString(10,10,"Level:");
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
-  xw.drawString(winSize*3/4,10,"Next:"); 
+  xw.drawString(11*cellSize+10,10,"Next:"); 
   
 }
 
@@ -25,7 +25,7 @@ void GraphicsDisplay::setGrid(Grid *grid) {
 }
 
 
-void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
+void GraphicsDisplay::notify(Subject<Info> &whoNotified) {  
   auto info = whoNotified.getInfo();
   int colour = xw.White;
 
@@ -47,12 +47,19 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
   
   //If nextBlock
   if(info.state == StateType::NEXT) {
-    xw.fillRectangle((15+info.col) * cellSize, (1-info.row) * cellSize, cellSize, cellSize, colour);
+    xw.fillRectangle((13+info.col) * cellSize, (1-info.row) * cellSize, cellSize, cellSize, colour);
   } 
   else
-    xw.fillRectangle(info.col * cellSize, (17 - info.row) * cellSize, cellSize, cellSize, colour);
+    xw.fillRectangle(info.col * cellSize, 50 + (17 - info.row) * cellSize, cellSize, cellSize, colour);
 }
 
 void GraphicsDisplay::clearNext() {
-  xw.fillRectangle(15 * cellSize, 0, cellSize*4, cellSize*2, Xwindow::White);
+  xw.fillRectangle(13 * cellSize, 0, cellSize*4, cellSize*2, Xwindow::White);
+}
+
+void GraphicsDisplay::update() {
+  xw.fillRectangle(100, 0, 100, 50, Xwindow::White);
+  xw.drawString(100,10,std::to_string(grid->getLevel()));
+  xw.drawString(100,20,std::to_string(score->getCurrentScore()));
+  xw.drawString(100,30,std::to_string(score->getHighScore()));
 }

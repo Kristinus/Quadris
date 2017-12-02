@@ -36,7 +36,7 @@ class Grid {
   bool isCurrentBlockOverlap();
 
 public:
-  Grid(Observer<Info> *);
+  Grid(int seed, Observer<Info> *, std::string);
   std::vector<std::vector<Cell>> getGridCells();
   Block *getNextBlock();
   Score *getScore();
@@ -56,6 +56,7 @@ public:
   void levelDown(int);
   void random(bool);
   void hint();
+  void heavyMove();
   void playBlock(Block *);
 
   friend std::ostream &operator<<(std::ostream &out, Grid &grid);

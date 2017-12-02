@@ -8,14 +8,14 @@
 #include <iostream>
 using namespace std;
 
-Grid::Grid(Observer<Info> *ob): ob{ob} {
+Grid::Grid(int seed, Observer<Info> *ob, std::string scriptFile): ob{ob} {
 // NEED TO FIGURE THIS SHIT OUT
-  theLevel = new Level0();
-  theScore = new Score();
-  td = new TextDisplay(this);
-//  std::vector<Block *> setBlocks;
-//   ob = new GraphicsDisplay(this);
-	initGrid();
+	theLevel = new Level0(seed, scriptFile);
+	theScore = new Score();
+	td = new TextDisplay(this);
+	//  std::vector<Block *> setBlocks;
+	//   ob = new GraphicsDisplay(this);
+	initGrid();	
 }
 
 
@@ -127,10 +127,11 @@ double Grid::calculateSmoothness() {
 }
 
 
-double Grid::getAverageHeights(std::vector<int> v) {      int sum=0;
-       for(unsigned int i=0;i<v.size();i++)
-               sum+=v[i];
-       return sum/v.size();
+double Grid::getAverageHeights(std::vector<int> v) {
+	int sum=0;
+	for(unsigned int i=0;i<v.size();i++)
+			sum+=v[i];
+	return sum/v.size();
 }
 //DEVIATION
 double Grid::getStandardDeviationHeights(std::vector<int> v) {
@@ -242,10 +243,12 @@ void Grid::deleteRow() {
 		theGrid.insert(theGrid.begin(), row);
 	}
 
-
+	//Update whole grid if row is deleted
+	if(rowsToDelete>0) {
 		for (auto &row : theGrid) {
-		for (auto &c: row) {
-			c.notifyObservers();
+			for (auto &c: row) {
+				c.notifyObservers();
+			}
 		}
 	}
 
@@ -315,7 +318,7 @@ void Grid::left(int x) {
 		shift++;
 	}
 	updateCells(currentBlock);
-
+	if(theLevel->isHeavy()) down(1);
 	//playBlock(currentBlock);
 
 
@@ -333,12 +336,14 @@ void Grid::right(int x) {
 		shift++;
 	}
 	updateCells(currentBlock);
+	if(theLevel->isHeavy()) down(1);
 	//playBlock(currentBlock);
 
 }
 void Grid::down(int x) {
-		deleteCurrentBlock();
+	deleteCurrentBlock();
 	int shift = 0;
+	if(theLevel->isHeavy()) shift++;
 	while (shift < x) {
 		if (isValidMove( 0, -1)) {
 			currentBlock->down();
@@ -348,8 +353,17 @@ void Grid::down(int x) {
 		}
 		shift++;
 	}
+	
+	if(theLevel->isHeavy()) {
+		if (isValidMove( 0, -1)) {
+			currentBlock->down();
+		}
+		else {
+			drop(1);
+		}
+	}
+	
 	updateCells(currentBlock);
-
 	//playBlock(currentBlock);
 }
 
@@ -366,7 +380,7 @@ void Grid::rotateCW(int x) {
 		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	 }
 	updateCells(currentBlock);
-
+	if(theLevel->isHeavy()) down(1);
 	//playBlock(currentBlock);
 
 }
@@ -446,15 +460,18 @@ void Grid::rotateCCW(int x) {
 	}
 	updateCells(currentBlock, StateType::MOVING);
 	//playBlock(currentBlock);
-
+	if(theLevel->isHeavy()) down(1);
 }
 void Grid::levelUp(int x) {
 	for(int i=0; i<x; i++)
 		theLevel = theLevel->levelUp();
+	ob->update();
 }
+
 void Grid::levelDown(int x) {
 	for(int i=0; i<x; i++)
 		theLevel = theLevel->levelDown();
+	ob->update();
 }
 void Grid::random(bool flag) {
 	isRandom = flag;
@@ -539,13 +556,6 @@ void Grid::hint() {
 
 
 	}
-
-
-
-	
-
-
-
 }
 
 Block * Grid::getNextBlock() {
@@ -559,6 +569,10 @@ Score *Grid::getScore() {
 int Grid::getLevel() {
 	return theLevel->getLevel();
 }
+
+// void Grid::heavyMove() {
+// 	if(theLevel->isHeavy()) down(1);
+// }
 
 
 std::ostream &operator<<(std::ostream &out, Grid &grid) {

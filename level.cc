@@ -5,9 +5,7 @@
 //     return new IBlock();
 // }
 
-Level::Level(){}
-
-Level::Level(int seed):seed{seed} {
+Level::Level(int seed, std::string file, bool heavy):seed{seed},sourceFile{file}, heavy{heavy} {
     srand(seed);
 } 
 
@@ -31,6 +29,10 @@ void Level::setDefaultSelector(int i, int j, int l, int o, int s, int t, int z) 
 void Level::setSeed(int seed) {
     this->seed = seed;
     srand(seed);
+}
+
+bool Level::isHeavy() {
+    return heavy;
 }
 
 Level::~Level() {}
