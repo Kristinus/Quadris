@@ -10,7 +10,7 @@ class Score;
 
 class GraphicsDisplay: public Observer<Info> {
   Grid *grid;
-  const int gridSize, winSize;
+  const int gridSize, winSize, cellSize;
   Xwindow xw;
   Score *score;
 

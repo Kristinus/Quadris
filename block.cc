@@ -223,10 +223,13 @@ BlockType Block::getBlockType() {
 std::ostream &operator<<(std::ostream &out, Block *b) {
 	//Assuming first cell is top left and last cell is bottom right
 	int i=0;
+	size_t row=1;
+	// out << "(" << row << "," << b->cells[i].getInfo().col << ")" << std::endl;
 	for(size_t r=0; r<2; r++) {
-		for(size_t c=0; c<3; c++) {
+		// out << "|" << i << "|" << std::endl;
+		for(size_t c=0; c<4; c++) {
 			// out << "|" << i << "|" << std::endl;
-			if(b->cells[i].getInfo().row == r && b->cells[i].getInfo().col == c) {
+			if(b->cells[i].getInfo().row == row-r && b->cells[i].getInfo().col == c) {
 				out << b->type;
 				i++;
 				if(i==4) break;
