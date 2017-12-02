@@ -12,7 +12,7 @@ GraphicsDisplay::GraphicsDisplay():
   xw.drawString(10,10,"Level:");
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
-  xw.drawString(winSize/2,10,"Next:"); 
+  xw.drawString(winSize*3/4,10,"Next:"); 
   
 }
 

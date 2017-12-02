@@ -13,7 +13,7 @@ protected:
     int level;
     int col;
     int row;
-    Grid *grid;
+    Grid *grid = nullptr;
     char type;
 	bool isValidCoordinate(int row , int col);
 public:

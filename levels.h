@@ -10,6 +10,7 @@ class Level0: public Level {
     std::string sourceFile = "sequence.txt";
 public:
     Level0();
+    Level0(int seed);
     Block *createBlock() override;
     ~Level0() override; 
     Level *levelUp();
@@ -20,6 +21,7 @@ public:
 class Level1: public Level {
 public:
     Level1();
+    Level1(int seed);
     Block *createBlock() override;
     Level *levelUp();
     Level *levelDown();
@@ -30,6 +32,7 @@ public:
 class Level2: public Level {
 public:
     Level2();
+    Level2(int seed);
     Block *createBlock() override;
     Level *levelUp();
     Level *levelDown();
@@ -40,6 +43,7 @@ public:
 class Level3: public Level {
 public:
     Level3();
+    Level3(int seed);
     Block *createBlock() override;
     Level *levelUp();
     Level *levelDown();
@@ -50,6 +54,7 @@ public:
 class Level4: public Level {
 public:
     Level4();
+    Level4(int seed);
     Block *createBlock() override;
     Level *levelUp();
     Level *levelDown();

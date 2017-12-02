@@ -5,6 +5,12 @@
 //     return new IBlock();
 // }
 
+Level::Level(){}
+
+Level::Level(int seed):seed{seed} {
+    srand(seed);
+} 
+
 void Level::setDefaultSelector(int i, int j, int l, int o, int s, int t, int z) {
     for(;i>0;--i)
         selector.emplace_back([](int a, bool b)->Block *{return new IBlock(a, b);});
@@ -24,6 +30,7 @@ void Level::setDefaultSelector(int i, int j, int l, int o, int s, int t, int z) 
 
 void Level::setSeed(int seed) {
     this->seed = seed;
+    srand(seed);
 }
 
 Level::~Level() {}

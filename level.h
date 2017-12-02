@@ -5,10 +5,12 @@
 #include <functional>
 
 class Level {
-    int seed;
 protected:
+    int seed;
     std::vector<std::function<Block *(int, bool)>> selector;
 public:
+    Level();
+    Level(int seed);
     void setDefaultSelector(int, int, int, int, int, int, int);
     void setSeed(int);
     virtual int getLevel() = 0;
