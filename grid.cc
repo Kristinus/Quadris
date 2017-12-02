@@ -18,6 +18,8 @@ Grid::Grid(Observer<Info> *ob): ob{ob} {
 	initGrid();
 }
 
+
+
 std::vector<std::vector<Cell>> Grid::getGridCells() {
 	return theGrid;
 }
@@ -44,6 +46,7 @@ void Grid::initGrid() {
 	// theGrid = res; (TODO)
 
 	currentBlock = theLevel->createBlock();
+	currentBlock->setGridPointer(this);
 	// for (auto c: currentBlock->getBlockCells()) {
 	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	// }
@@ -57,6 +60,9 @@ void Grid::initGrid() {
 	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	// }
 	nextBlock = theLevel->createBlock();
+	    nextBlock->setGridPointer(this);
+
+
 
 }
 
@@ -354,8 +360,13 @@ void Grid::drop() {
 	// x--;
 	delete currentBlock;
 	currentBlock = nextBlock;
+	currentBlock->setGridPointer(this);
+
 	//cout <<"hi";
 	nextBlock = theLevel->createBlock();
+	    nextBlock->setGridPointer(this);
+
+
 	// playBlock(currentBlock);
 	currentBlock->moveTo(14,0);
 	updateCells();
@@ -380,8 +391,13 @@ void Grid::restart() {
     // note: level doesn't change
     initGrid(); 
     currentBlock = theLevel->createBlock();
+	currentBlock->setGridPointer(this);
+
    // playBlock(currentBlock);
     nextBlock = theLevel->createBlock();
+    nextBlock->setGridPointer(this);
+
+
     theScore->setCurrentScore(0);  
 
 }

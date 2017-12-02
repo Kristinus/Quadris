@@ -72,6 +72,10 @@ void Block::right(int x) {
    move(1,0);
 }
 
+void Block::setGridPointer(Grid *theGrid) {
+	grid = theGrid;
+}
+
 void Block::down(int x){
 	row++;
    	move(0,-1);
@@ -80,12 +84,15 @@ void Block::down(int x){
 	}
 }
 
-bool isValidCoordinate(Grid* theGrid, int x, int y) {
-	cout << x << " IS X " << y << " IS Y" << endl;
-	if (!((x >= 0) && (x <= 11) && (y >=0) && (y <= 18)
-		/**&& theGrid->getGridCells()[y][x].getInfo().state != StateType::STATIC **/)) {
-		return true;
-	} else return false;
+bool Block::isValidCoordinate(int row , int col) {
+	if (grid == nullptr) {cout << "ITS NULL";}
+	cout << "VAID";
+	cout << row << " IS row " << col << " IS cl" << endl;
+
+	if ((col < 0) || (col >= 11) || (row < 0) || (row > 18)
+		|| grid->getGridCells()[17 - row][col].getInfo().state == StateType::STATIC) {
+		return false;
+	} else return true;
 }
 
 void Block::setBottomLeftCoords(int row, int col) {
@@ -119,8 +126,7 @@ void Block::rotate(int dir) {
 	std::vector<int> rotatedCol;
 	std::vector<int> rotatedRow;
 	int oldBottomLeftCol = col;
-	int oldBottomRightRow = row;
-	cout << "HELP" <<endl;
+	int oldBottomLeftRow = row;
 
 	int newBottomLeftCol = cells[0].getInfo().row * dir;
 	int newBottomLeftRow = cells[0].getInfo().col * -dir;
@@ -139,63 +145,46 @@ void Block::rotate(int dir) {
 			newBottomLeftRow = rotatedRow[i];
 		}
 	}
-	for (auto col : rotatedCol) {
-		cout << "rotated col (x): " << col << endl;
-	}
-		for (auto col : rotatedRow) {
-		cout << "rotate row (y): " << col << endl;
-	}
+
 
 	// get the delta from the old bottom left
 	int deltax = oldBottomLeftCol - newBottomLeftCol;
-	int deltay = oldBottomRightRow - newBottomLeftRow;
-	cout << "old bottomleft x" << oldBottomLeftCol << "new bottoleft y" << oldBottomRightRow << endl;
-		cout << "new bottoleft x" << newBottomLeftCol << "new bottomleft row " << newBottomLeftRow << endl;
-
-	cout << "delta c is " << deltax << "delta y is " << deltay << endl;
-	cout << "HELP2" <<endl;
-
+	int deltay = oldBottomLeftRow - newBottomLeftRow;
 
 	// update all cells
 	for (unsigned int i = 0; i < cells.size(); i++) {
 		rotatedCol[i] += deltax;
-
-
 		rotatedRow[i] += deltay;
-		//if (!isValidCoordinate(grid, rotatedCol[i], rotatedRow[i])) {
 
-		//	return; // or we can throw an exception!!!!!!!!!!1
-		//}
 	}
 
-	for (auto col : rotatedCol) {
-		cout << "HIrotated col (x): " << col << endl;
-	}
-		for (auto col : rotatedRow) {
-		cout << "HIrotate row (y): " << col << endl;
-	}
-	// modify the cell
+
+	//if (grid == nullptr) cout << "its null" << endl;
 	for (unsigned int i = 0; i < cells.size(); i++) {
+		cout << "WHA";
+		if (!isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
+			return;
+			// or we can throw an exception!!!!!!!!!!1
+		}
 		cells[i].setCoords(rotatedRow[i], rotatedCol[i]);
-	}
-		cout << "HELP3" <<endl;
 
-	for (auto c: cells) {
-		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	 }
+	}
+
 	//updat
 
 
 	// update the new bottomleft coordinates
-	row = newBottomLeftRow;
-	col = newBottomLeftCol;
+	row = oldBottomLeftRow;
+	col = oldBottomLeftCol;
 
 }
 
 void Block::clockwise(int x) {
 	x = x%4;
 	while (x > 0) {
+		
 		rotate(1);
+
 		x--;
 
 	}
@@ -203,7 +192,12 @@ void Block::clockwise(int x) {
 }
 
 void Block::counterclockwise(int x) {
-	rotate(-1);
+	x = x%4;
+	while (x > 0) {
+		rotate(-1);
+		x--;
+
+	}
 }
 
 int Block::getBottomLeftCol() {
