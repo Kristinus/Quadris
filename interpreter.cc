@@ -13,11 +13,8 @@ using namespace std;
 
 struct ProcessedInput {
 	string command;
-
 	int multiplier;
-
-
-
+    string file;
 };
 
 void Interpreter::initCommandMap() {
@@ -64,10 +61,11 @@ struct invalidInputException {
 	invalidInputException(string message):message{message} {}
 };
  
-ProcessedInput parseCommand(string command) {
+ProcessedInput Interpreter::parseCommand(string command) {
 	if (command == "") throw invalidInputException("Empty command");
 	string bd = "";
 	string typedCommand;
+    string file;
 	int res;
 	unsigned int i;
 	for (i = 0; i < command.length(); i++) {
@@ -79,7 +77,10 @@ ProcessedInput parseCommand(string command) {
 	}
 
 	vector<string> possibleCommands {"left", "right", "down", "levelup", "leveldown", "norandom", "random", "sequence", "clockwise", "counterclockwise", "drop", "restart", "hint", "I", "J", "L", "O", "S", "Z", "T", "quit",};
-    typedCommand = command.substr(i);
+    
+    int pos = command.find(' ');
+    typedCommand = command.substr(i, pos-i);
+    // file = command.substr(pos);
      
     for (int i = possibleCommands.size() - 1; i >= 0; i--) {
 
@@ -107,12 +108,17 @@ ProcessedInput parseCommand(string command) {
     	typedCommand = possibleCommands[0];
     }
 
+
+    if(typedCommand == "random" || typedCommand == "sequence") {
+        *in >> file;
+    }
+
     if (bd != "") {
     	istringstream iss{bd};
 		iss >> res; // throw an exception
-		return ProcessedInput{possibleCommands[0], res};
+		return ProcessedInput{possibleCommands[0], res, file};
     }
-    else return ProcessedInput{possibleCommands[0], 1};
+    else return ProcessedInput{possibleCommands[0], 1, file};
 	
 
 }
@@ -140,7 +146,7 @@ void Interpreter::run() {
         if (commandMap.count(cmd) > 0) {
            auto i = commandMap.find(cmd);
 
-           (i->second)->execute(mult);
+           (i->second)->execute(mult, processedCommand.file);
            if (grid->isOver()) break;
 
 

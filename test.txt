@@ -1,0 +1,15 @@
+drop
+drop
+2clock
+4right
+drop
+2clock
+9right
+drop
+drop
+9right
+drop
+4right
+drop
+6right
+drop

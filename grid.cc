@@ -206,10 +206,11 @@ void notifyRow(std::vector<Cell> & row) {
 
 void Grid::deleteRow() {
 	int rowsToDelete = 0;
-
+	int lowerRow=0;
 	for (int i = theGrid.size() - 1; i >= 0; i--) {
 		if (isFilled(theGrid[i])) {
 			//(TODO) code a notify all cels function
+			lowerRow = i;
 			for (auto &c : theGrid[i]) {
 				c.setState(StateType::NONE);
 				c.setBlock(BlockType::NONE);
@@ -224,13 +225,12 @@ void Grid::deleteRow() {
 	}
 	//make a notifygrid
 
-
-	for (auto &row : theGrid) {
-		for (auto &c: row) {
+	for (int i=theGrid.size()-1; i>=0; i--) {
+		if(i==lowerRow) break;
+		for (auto &c: theGrid[i]) {
 			c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
 		}
 	}
-
 
 	//Recreate Rows
 	for (int i = rowsToDelete - 1; i >= 0; i--) {
@@ -242,6 +242,8 @@ void Grid::deleteRow() {
 			info.state = StateType::NONE;
 			info.block = BlockType::NONE;
 			Cell c = Cell{info};
+			c.attach(td);
+			if(ob) c.attach(ob);
 			row.emplace_back(c);
 		}
 		theGrid.insert(theGrid.begin(), row);
@@ -421,6 +423,9 @@ void Grid::drop(int x) {
 			cout << "HELP ME" << c.getInfo().row << endl;
 		}
 	} **/
+	
+		deleteRow();
+
 		currentBlock = nextBlock;
 		currentBlock->setGridPointer(this);
 		currentBlock->moveTo(14,0);
@@ -437,7 +442,7 @@ void Grid::drop(int x) {
 	}
 
 
-	deleteRow();
+	
 
 
 }
@@ -492,6 +497,10 @@ void Grid::levelDown(int x) {
 }
 void Grid::random(bool flag) {
 	isRandom = flag;
+}
+
+void Grid::setRandomFile(std::string file) {
+	//TODO
 }
 
 int Grid::countHoles() {

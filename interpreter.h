@@ -10,6 +10,7 @@
 class Grid;
 class GraphicsDisplay;
 class Command;
+struct ProcessedInput;
 
 class Interpreter {
 	std::istream *in = &std::cin;
@@ -20,6 +21,7 @@ class Interpreter {
     // Level level;
 
     void initCommandMap();
+    ProcessedInput parseCommand(std::string);
 public:
     Interpreter(int, bool, std::string, int);
     ~Interpreter();

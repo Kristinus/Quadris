@@ -57,6 +57,7 @@ public:
   void random(bool);
   void hint();
   void heavyMove();
+  void setRandomFile(std::string);
   void playBlock(Block *);
 
   friend std::ostream &operator<<(std::ostream &out, Grid &grid);
