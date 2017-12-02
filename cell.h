@@ -12,8 +12,8 @@ public:
    Cell(Info &info);
    void setBlock(BlockType block);
    void setState(StateType state);
-   void setCoords(size_t, size_t);
-   void moveDown(size_t);
+   void setCoords(unsigned int, unsigned int);
+   void moveDown(unsigned int);
    Info getInfo() const;
 };
 

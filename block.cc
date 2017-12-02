@@ -20,16 +20,18 @@ Block::~Block(){
 }
 
 
-void Block::updateSetCells(size_t rowsToDelete) {
+void Block::updateSetCells(unsigned int rowsToDelete) {
 	for (int i = cells.size() - 1; i >= 0; i--) {
 	 		// if the row goes out of bounds, then erase the cell
-	 		if (cells[i].getInfo().row - rowsToDelete < 0) {
+	 		if (cells[i].getInfo().row  < rowsToDelete) {
 	 			cells.erase(cells.begin() + i);
 
 	 		} else {
 	 			// decrement each setBlock's
-
+	 			//cout << "cell was at row: " << cells[i].getInfo().row << endl;
 	 			cells[i].moveDown(rowsToDelete);	
+	 			//cout << "cell now at row: " << cells[i].getInfo().row << endl;
+
 	 			// block->cells.block->cells.getInfo().row - rowsToDelete;
 	 		}
 	 	}
@@ -51,10 +53,10 @@ int Block::getLevel(){
 // going down is ADD
 void Block::move(int colshift, int rowshift) {
 	for (auto &c : cells) {
-		size_t oldcol = c.getInfo().col;
-		size_t oldrow = c.getInfo().row;
-		size_t newcol = oldcol + colshift;
-		size_t newrow = oldrow + rowshift;
+		unsigned int oldcol = c.getInfo().col;
+		unsigned int oldrow = c.getInfo().row;
+		unsigned int newcol = oldcol + colshift;
+		unsigned int newrow = oldrow + rowshift;
 		c.setCoords(newrow, newcol);
 	}
 			for (auto &c: getBlockCells()) {
@@ -84,8 +86,10 @@ void Block::displayNext(Observer<Info> *ob) {
 }
 
 void Block::down(int x){
+
 	row++;
    	move(0,-1);
+
    			for (auto c: getBlockCells()) {
 		// cout << "DOWN(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	}
@@ -93,8 +97,7 @@ void Block::down(int x){
 
 bool Block::isValidCoordinate(int row , int col) {
 	if (grid == nullptr) {cout << "ITS NULL";}
-	cout << "VAID";
-	cout << row << " IS row " << col << " IS cl" << endl;
+
 
 	if ((col < 0) || (col >= 11) || (row < 0) || (row > 18)
 		|| grid->getGridCells()[17 - row][col].getInfo().state == StateType::STATIC) {
@@ -165,10 +168,8 @@ void Block::rotate(int dir) {
 
 	}
 
-
 	//if (grid == nullptr) cout << "its null" << endl;
 	for (unsigned int i = 0; i < cells.size(); i++) {
-		cout << "WHA";
 		if (!isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
 			return;
 			// or we can throw an exception!!!!!!!!!!1
@@ -230,11 +231,11 @@ BlockType Block::getBlockType() {
 std::ostream &operator<<(std::ostream &out, Block *b) {
 	//Assuming first cell is top left and last cell is bottom right
 	int i=0;
-	size_t row=1;
+	unsigned int row=1;
 	// out << "(" << row << "," << b->cells[i].getInfo().col << ")" << std::endl;
-	for(size_t r=0; r<2; r++) {
+	for(unsigned int r=0; r<2; r++) {
 		// out << "|" << i << "|" << std::endl;
-		for(size_t c=0; c<4; c++) {
+		for(unsigned int c=0; c<4; c++) {
 			// out << "|" << i << "|" << std::endl;
 			if(b->cells[i].getInfo().row == row-r && b->cells[i].getInfo().col == c) {
 				out << b->type;

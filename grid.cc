@@ -225,7 +225,11 @@ void Grid::deleteRow() {
 	//make a notifygrid
 
 
-
+	for (auto &row : theGrid) {
+		for (auto &c: row) {
+			c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
+		}
+	}
 
 
 	//Recreate Rows
@@ -254,21 +258,26 @@ void Grid::deleteRow() {
 
 //	Delete Cells from Block if in deleted row
 //	Decrement cell.row in each block
+/**		for (auto &b : setBlocks) {
+	 		cout << "BEFORE the size of the cells of this set block are" << b->getBlockCells().size() << endl;
+	 	}
+cout << setBlocks.size() << endl; **/
 
 
-		// iterate through each block pointer
-		for (size_t i=0; i<setBlocks.size(); i++) {
-			// iterate through each block's cells
-			// removes cells that are out of bounds, or sets them to the new location
-			setBlocks[i]->updateSetCells(rowsToDelete);
+	 // iterate through each block pointer
+	 for (int j = setBlocks.size() - 1 ; j >= 0; j--) {
+	 	// iterate through each block's cells
+	 	// removes cells that are out of bounds, or sets them to the new location
 
-			if (setBlocks[i]->getBlockCells().size() == 0) {
-				theScore->addToCurrentScore(pow((setBlocks[i]->getLevel() + 1), 2));
-				delete setBlocks[i];
-				setBlocks.erase(setBlocks.begin() + i);
-			}
-		
-		}
+	 	setBlocks[j]->updateSetCells(rowsToDelete);
+
+	 	if (setBlocks[j]->getBlockCells().size() == 0) {
+	 		theScore->addToCurrentScore(pow((setBlocks[j]->getLevel() + 1), 2));
+	 		delete setBlocks[j];
+	 		setBlocks.erase(setBlocks.begin() + j);
+	 	}
+	
+	 }
 
 		theScore->addToCurrentScore(pow(theLevel->getLevel() + rowsToDelete, 2));
 	}
@@ -363,22 +372,19 @@ void Grid::down(int x) {
 		}
 	}
 	
+
 	updateCells(currentBlock);
 	//playBlock(currentBlock);
 }
 
 void Grid::rotateCW(int x) {
 		deleteCurrentBlock();
-		 for (auto c: currentBlock->getBlockCells()) {
-	 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	 }
+
 	//while (x > 0) {
 		currentBlock->clockwise(x);
 	//	x--;
 	//}
-		 for (auto c: currentBlock->getBlockCells()) {
-		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	 }
+
 	updateCells(currentBlock);
 	if(theLevel->isHeavy()) down(1);
 	//playBlock(currentBlock);
@@ -402,14 +408,24 @@ void Grid::drop(int x) {
 		while (isValidMove(0, -1)) {
 			currentBlock->down();
 		}
+
 		updateCells(currentBlock, StateType::STATIC);
 
+
+
 		// x--;
-		delete currentBlock;
+
+	//	delete currentBlock; // this is casuing the pointers in update CElls to be wacky
+	/**				for (auto &b : setBlocks) {
+		for (auto &c : b->getBlockCells()) {
+			cout << "HELP ME" << c.getInfo().row << endl;
+		}
+	} **/
 		currentBlock = nextBlock;
 		currentBlock->setGridPointer(this);
 		currentBlock->moveTo(14,0);
 		updateCells(currentBlock);
+
 
 		//cout <<"hi";
 		nextBlock = theLevel->createBlock();
@@ -419,6 +435,7 @@ void Grid::drop(int x) {
 		x--;
 
 	}
+
 
 	deleteRow();
 
@@ -437,7 +454,7 @@ void Grid::restart() {
     currentBlock = theLevel->createBlock();
 	currentBlock->setGridPointer(this);
 	currentBlock->moveTo(14,0);
-	updateCells(currentBlock, StateType::MOVING);
+	//updateCells(currentBlock, StateType::MOVING);
 
 
 
