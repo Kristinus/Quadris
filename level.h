@@ -2,14 +2,14 @@
 #define LEVEL_H
 #include "block.h"
 #include "blocks.h"
-
+#include <functional>
 
 class Level {
     int seed;
 protected:
-    std::vector<Block *> selector;
+    std::vector<std::function<Block *(int, bool)>> selector;
 public:
-    void setDefaultSelector();
+    void setDefaultSelector(int, int, int, int, int, int, int);
     void setSeed(int);
     virtual int getLevel() = 0;
     virtual Block *createBlock() = 0;

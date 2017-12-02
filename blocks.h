@@ -6,9 +6,9 @@
 class IBlock: public Block {
 	
 public:
-    IBlock(bool isHeavy = false);
+    IBlock(int level, bool isHeavy = false);
 	// IBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
-    // IBlock(bool isHeavy, int level, std::vector<Cell> cells);
+    // IBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~IBlock();
     BlockType getBlockType();
     // void clockwise(int x=1) override;
@@ -18,9 +18,9 @@ public:
 class JBlock: public Block {
 	
 public:
-    JBlock(bool isHeavy = false);
+    JBlock(int level, bool isHeavy = false);
 	// JBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
-    // JBlock(bool isHeavy, int level, std::vector<Cell> cells);
+    // JBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~JBlock();
     BlockType getBlockType();
     // void clockwise(int x=1) override;
@@ -30,9 +30,9 @@ public:
 class LBlock: public Block {
 	
 public:
-    LBlock(bool isHeavy = false);
+    LBlock(int level, bool isHeavy = false);
 	// LBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
-    // LBlock(bool isHeavy, int level, std::vector<Cell> cells);
+    // LBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~LBlock();
     BlockType getBlockType();
     // void clockwise(int x=1) override;
@@ -42,9 +42,9 @@ public:
 class OBlock: public Block {
 	
 public:
-    OBlock(bool isHeavy = false);
+    OBlock(int level, bool isHeavy = false);
 	// OBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
-    // OBlock(bool isHeavy, int level, std::vector<Cell> cells);
+    // OBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~OBlock();
     BlockType getBlockType();
     // void clockwise(int x=1) override;
@@ -54,9 +54,9 @@ public:
 class SBlock: public Block {
 	
 public:
-	SBlock(bool isHeavy = false);
+	SBlock(int level, bool isHeavy = false);
     // SBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
-    // SBlock(bool isHeavy, int level, std::vector<Cell> cells);
+    // SBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~SBlock();
     BlockType getBlockType();
     // void clockwise(int x=1) override;
@@ -66,9 +66,9 @@ public:
 class TBlock: public Block {
 	
 public:
-    TBlock(bool isHeavy = false);
+    TBlock(int level, bool isHeavy = false);
 	// TBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
-    // TBlock(bool isHeavy, int level, std::vector<Cell> cells);
+    // TBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~TBlock();
     BlockType getBlockType();
     // void clockwise(int x=1) override;
@@ -78,9 +78,9 @@ public:
 class ZBlock: public Block {
 	
 public:
-    ZBlock(bool isHeavy = false);
+    ZBlock(int level, bool isHeavy = false);
 	// ZBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
-    // ZBlock(bool isHeavy, int level, std::vector<Cell> cells);
+    // ZBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~ZBlock();
     BlockType getBlockType();
     // void clockwise(int x=1) override;
