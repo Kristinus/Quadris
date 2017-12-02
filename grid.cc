@@ -235,12 +235,11 @@ void Grid::deleteRow() {
 	for (int i = theGrid.size() - 1; i >= 0; i--) {
 		if (isFilled(theGrid[i])) {
 			//(TODO) code a notify all cels function
-			lowerRow = i;
+			lowerRow = 17 - i;
 			for (auto &c : theGrid[i]) {
 				c.setState(StateType::NONE);
 				c.setBlock(BlockType::NONE);
 				//notifyRow(the);
-				
 
 			}
 
@@ -460,7 +459,7 @@ void Grid::drop(int x) {
 		//cout <<"hi";
 		nextBlock = theLevel->createBlock();
 		nextBlock->setGridPointer(this);
-		ob->clearNext();
+		if(ob)ob->clearNext();
 		if(ob) nextBlock->displayNext(ob);
 		x--;
 
@@ -512,13 +511,13 @@ void Grid::rotateCCW(int x) {
 void Grid::levelUp(int x) {
 	for(int i=0; i<x; i++)
 		theLevel = theLevel->levelUp();
-	ob->update();
+	if(ob) ob->update();
 }
 
 void Grid::levelDown(int x) {
 	for(int i=0; i<x; i++)
 		theLevel = theLevel->levelDown();
-	ob->update();
+	if(ob) ob->update();
 }
 void Grid::random(bool flag) {
 	isRandom = flag;
