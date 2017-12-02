@@ -367,6 +367,7 @@ void Grid::drop(int x) {
 		//cout <<"hi";
 		nextBlock = theLevel->createBlock();
 		nextBlock->setGridPointer(this);
+		nextBlock->displayNext(ob);
 		x--;
 
 	}
