@@ -2,7 +2,7 @@
 #define __INFO_H__
 #include <cstddef>
 
-enum class StateType { NONE, MOVING, STATIC };
+enum class StateType { NONE, MOVING, STATIC, NEXT };
 enum class BlockType { NONE, I, J, L, O, S, T, Z };
 
 struct Info {

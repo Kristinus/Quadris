@@ -5,7 +5,7 @@ IBlock::IBlock(int level, bool isHeavy): Block(level, isHeavy) {
     type = 'I';
     Info i;
     i.row = 0;
-    i.state = StateType::NONE;
+    i.state = StateType::NEXT;
     i.block = BlockType::I;
     for(int c=0; c<4; c++) {
         i.col = c;
@@ -29,7 +29,7 @@ JBlock::JBlock(int level, bool isHeavy): Block(level, isHeavy) {
     type = 'J';
     Info i;
     i.row = 1;
-    i.state = StateType::NONE;
+    i.state = StateType::NEXT;
     i.block = BlockType::J;
     for(int c=0; c<3; c++) {
         i.col = c;
@@ -58,7 +58,7 @@ BlockType JBlock::getBlockType() {
 LBlock::LBlock(int level, bool isHeavy): Block(level, isHeavy) {
     type = 'L';
     Info i;
-    i.state = StateType::NONE;
+    i.state = StateType::NEXT;
     i.block = BlockType::L;
     i.row = 1;
     for(int c = 0;c < 3; c++) {
@@ -89,7 +89,7 @@ BlockType LBlock::getBlockType() {
 OBlock::OBlock(int level, bool isHeavy): Block(level, isHeavy) {
     type = 'O';
     Info i;
-    i.state = StateType::NONE;
+    i.state = StateType::NEXT;
     i.block = BlockType::O;
     for(int r = 1; r >=0 ; r--) {
         i.row = r;
@@ -117,7 +117,7 @@ SBlock::SBlock(int level, bool isHeavy): Block(level, isHeavy) {
     Info i;
     i.row = 1;
     i.col = 1;
-    i.state = StateType::NONE;
+    i.state = StateType::NEXT;
     i.block = BlockType::S;
     cells.emplace_back(Cell(i));
     i.col = 2;
@@ -147,7 +147,7 @@ TBlock::TBlock(int level, bool isHeavy): Block(level, isHeavy) {
         grid = nullptr;
 
     Info i;
-    i.state = StateType::NONE;
+    i.state = StateType::NEXT;
     i.block = BlockType::T;
     i.row = 1;
     for(int c = 0;c < 3;c++) {
@@ -176,7 +176,7 @@ ZBlock::ZBlock(int level, bool isHeavy): Block(level, isHeavy) {
     Info i;
     i.row = 1;
     i.col = 0;
-    i.state = StateType::NONE;
+    i.state = StateType::NEXT;
     i.block = BlockType::Z;
     for(int c = 0;c < 3;c++) {
       i.col = c;

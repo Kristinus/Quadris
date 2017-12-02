@@ -46,7 +46,7 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
     colour = Xwindow::Red;
   
   //If nextBlock
-  if(info.state == StateType::NONE) {
+  if(info.state == StateType::NEXT) {
     xw.fillRectangle((15+info.col) * cellSize, (1-info.row) * cellSize, cellSize, cellSize, colour);
   } 
   else
