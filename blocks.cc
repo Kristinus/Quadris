@@ -14,6 +14,7 @@ IBlock::IBlock(bool isHeavy): Block(isHeavy) {
     }
     row = 0;
     col = 0;
+    grid = nullptr;
 }
 // IBlock::IBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
@@ -41,6 +42,8 @@ JBlock::JBlock(bool isHeavy): Block(isHeavy) {
         i.col = c;
         cells.emplace_back(Cell(i));   
     }
+        grid = nullptr;
+
  //       row = 0;
    // col  = 0;
 }
@@ -59,6 +62,8 @@ BlockType JBlock::getBlockType() {
 
 LBlock::LBlock(bool isHeavy): Block(isHeavy) {
     type = 'L';
+        grid = nullptr;
+
     Info i;
     i.row = 0;
     i.col = 2;
@@ -92,6 +97,8 @@ BlockType LBlock::getBlockType() {
 
 OBlock::OBlock(bool isHeavy): Block(isHeavy) {
     type = 'O';
+        grid = nullptr;
+
     Info i;
     i.state = StateType::NONE;
     i.block = BlockType::O;
@@ -120,6 +127,8 @@ BlockType OBlock::getBlockType() {
 /*****************************************************************************/
 SBlock::SBlock(bool isHeavy): Block(isHeavy) {
     type = 'S'; 
+        grid = nullptr;
+
     Info i;
     i.row = 0;
     i.col = 1;
@@ -152,6 +161,8 @@ BlockType SBlock::getBlockType() {
 
 TBlock::TBlock(bool isHeavy): Block(isHeavy) {
     type = 'T'; 
+        grid = nullptr;
+
     Info i;
     i.state = StateType::NONE;
     i.block = BlockType::T;
@@ -181,6 +192,8 @@ BlockType TBlock::getBlockType() {
 /*****************************************************************************/
 ZBlock::ZBlock(bool isHeavy): Block(isHeavy) {
     type = 'Z'; 
+        grid = nullptr;
+
     Info i;
     i.row = 0;
     i.col = 0;

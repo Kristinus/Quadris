@@ -20,6 +20,7 @@ class Grid {
   bool isRandom;
  
   bool isValidMove(int, int);
+  void attachGridToBlock(Block *);
   int countCompleteLines();
   bool isFilled(std::vector<Cell>);
   void setBlock(Block *);
