@@ -110,7 +110,7 @@ ProcessedInput Interpreter::parseCommand(string command) {
     }
 
 
-    if(typedCommand == "random" || typedCommand == "sequence") {
+    if(typedCommand == "norandom" || typedCommand == "sequence") {
         *in >> file;
     }
 
@@ -175,6 +175,7 @@ void Interpreter::run(std::istream &in) {
             (i->second)->execute(mult, processedCommand.file);
             if (grid->isOver()) {
                 cout << "GAME OVER YOU LOSER" << endl;           
+                break;
             }
             cout << *grid;
         }

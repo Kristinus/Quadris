@@ -96,7 +96,9 @@ Level3::Level3(int seed, std::string file): Level(seed, file, true) {
 }
 
 Block *Level3::createBlock() {
-    return selector[std::rand()%9](3,true);
+    if(random)
+        return selector[std::rand()%9](3,true);
+    return generateFromFile(true);
 }
 Level* Level3::levelUp() {
     return new Level4(seed, sourceFile);
@@ -117,7 +119,9 @@ Level4::Level4(int seed, std::string file): Level(seed, file, true) {
 }
 
 Block *Level4::createBlock() {
-    return selector[std::rand()%9](4, true);
+    if(random)
+        return selector[std::rand()%9](4,true);
+    return generateFromFile(true);
 }
 
 Level* Level4::levelUp() {

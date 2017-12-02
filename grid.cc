@@ -517,12 +517,13 @@ void Grid::levelDown(int x) {
 		theLevel = theLevel->levelDown();
 	if(ob) ob->update();
 }
+
 void Grid::random(bool flag) {
-	isRandom = flag;
+	theLevel->setRandom(flag);
 }
 
 void Grid::setRandomFile(std::string file) {
-	//TODO
+	theLevel->setFile(file);
 }
 
 int Grid::countHoles() {
