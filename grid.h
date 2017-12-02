@@ -25,7 +25,8 @@ class Grid {
   bool isFilled(std::vector<Cell>);
   void setBlock(Block *);
   void unsetBlock(Block *);
-  void updateCells();
+  void updateCells(Block *, StateType);
+  void updateCells(Block *b);
   double calculateSmoothness();
   double getAverageHeights(std::vector<int> v);
   double getStandardDeviationHeights(std::vector<int> v);

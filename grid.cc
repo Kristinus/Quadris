@@ -54,11 +54,8 @@ void Grid::initGrid() {
 	// for (auto c: currentBlock->getBlockCells()) {
 	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	// }
-	updateCells();
-	//currentBlock->down();
-	// for (auto c: currentBlock->getBlockCells()) {
-	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	// }
+	updateCells(currentBlock, StateType::MOVING);
+
 	nextBlock = theLevel->createBlock();
 	    nextBlock->setGridPointer(this);
 
@@ -175,11 +172,20 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 }
 
 // update cell Grid
-void Grid::updateCells() {
-	for (auto &c : currentBlock->getBlockCells()) {
-		c.setState(StateType::MOVING);
-		c.setBlock(currentBlock->getBlockType());
-		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(currentBlock->getBlockType());
+void Grid::updateCells(Block *b, StateType s) {
+	b->setBlockCellStates(s);
+	for (auto &c : b->getBlockCells()) {
+		c.setBlock(b->getBlockType()); // is this necessary
+		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
+		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
+	}
+
+}
+
+void Grid::updateCells(Block *b) {
+	for (auto &c : b->getBlockCells()) {
+		c.setBlock(b->getBlockType()); // is this necessary
+		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
 		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
@@ -279,7 +285,7 @@ void Grid::left(int x) {
 		}
 		shift++;
 	}
-	updateCells(); // will update cells on the board and in the currentBlock to MOVING and notify textdisplay
+	updateCells(currentBlock);
 
 	//playBlock(currentBlock);
 
@@ -297,7 +303,7 @@ void Grid::right(int x) {
 		}
 		shift++;
 	}
-	updateCells();
+	updateCells(currentBlock);
 	//playBlock(currentBlock);
 
 }
@@ -313,7 +319,7 @@ void Grid::down(int x) {
 		}
 		shift++;
 	}
-	updateCells();
+	updateCells(currentBlock);
 
 	//playBlock(currentBlock);
 }
@@ -330,7 +336,8 @@ void Grid::rotateCW(int x) {
 		 for (auto c: currentBlock->getBlockCells()) {
 		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	 }
-	updateCells();
+	updateCells(currentBlock);
+
 	//playBlock(currentBlock);
 
 }
@@ -358,27 +365,30 @@ void Grid::drop() {
 	while (isValidMove(0, -1)) {
 		currentBlock->down();
 	}
-	updateCells();
+	updateCells(currentBlock);
 	setBlock(currentBlock);
-	for (auto cell: currentBlock->getBlockCells()) {
-			//cout << "(" << cell.getInfo().row << "," << cell.getInfo().col << ")" << endl;
-			//if (cell.getInfo().state == StateType::STATIC) cout << "cell is static";
-			//if (theGrid[cell.getInfo().row][cell.getInfo().col].getInfo().state == StateType::STATIC) cout << "yesgrid is static";
-		
-	}
+
 	// x--;
 	delete currentBlock;
 	currentBlock = nextBlock;
 	currentBlock->setGridPointer(this);
+	currentBlock->moveTo(14,0);
+	updateCells(currentBlock, StateType::MOVING);
+
+		for (auto cell: currentBlock->getBlockCells()) {
+			//cout << "(" << cell.getInfo().row << "," << cell.getInfo().col << ")" << endl;
+			if (cell.getInfo().state == StateType::NONE) cout << "cell is none";
+			//if (theGrid[cell.getInfo().row][cell.getInfo().col].getInfo().state == StateType::STATIC) cout << "yesgrid is static";
+		
+	}
 
 	//cout <<"hi";
 	nextBlock = theLevel->createBlock();
-	    nextBlock->setGridPointer(this);
+	nextBlock->setGridPointer(this);
 
 
 	// playBlock(currentBlock);
-	currentBlock->moveTo(14,0);
-	updateCells();
+
 
 	for (int i = 0 ; i < theGrid.size(); i++) {
 		for (int j = 0; j < theGrid[i].size(); j++) {
@@ -401,10 +411,15 @@ void Grid::restart() {
     initGrid(); 
     currentBlock = theLevel->createBlock();
 	currentBlock->setGridPointer(this);
+	currentBlock->moveTo(14,0);
+	updateCells(currentBlock, StateType::MOVING);
+
+
 
    // playBlock(currentBlock);
     nextBlock = theLevel->createBlock();
     nextBlock->setGridPointer(this);
+
 
 
     theScore->setCurrentScore(0);  
@@ -418,7 +433,7 @@ void Grid::rotateCCW(int x) {
 		x--;
 
 	}
-	updateCells();
+	updateCells(currentBlock, StateType::MOVING);
 	//playBlock(currentBlock);
 
 }
