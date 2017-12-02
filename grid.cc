@@ -473,21 +473,24 @@ void Grid::restart() {
 	for (auto b : setBlocks) {
 		delete b;
 	}
+	setBlocks.clear();
 
     delete currentBlock;
     delete nextBlock;
     // note: level doesn't change
+	td->clear();
+	ob->clear();
     initGrid(); 
-    currentBlock = theLevel->createBlock();
-	currentBlock->setGridPointer(this);
-	currentBlock->moveTo(14,0);
-	//updateCells(currentBlock, StateType::MOVING);
+//     currentBlock = theLevel->createBlock();
+// 	currentBlock->setGridPointer(this);
+// 	currentBlock->moveTo(14,0);
+// 	//updateCells(currentBlock, StateType::MOVING);
 
 
 
-   // playBlock(currentBlock);
-    nextBlock = theLevel->createBlock();
-    nextBlock->setGridPointer(this);
+//    // playBlock(currentBlock);
+//     nextBlock = theLevel->createBlock();
+//     nextBlock->setGridPointer(this);
 
 
 
@@ -686,6 +689,12 @@ int Grid::getLevel() {
 	return theLevel->getLevel();
 }
 
+void Grid::replaceBlock(char type) {
+	currentBlock = theLevel->getBlock(type);
+
+	//(TODO) replace current block (move to location)
+}
+
 // void Grid::heavyMove() {
 // 	if(currentBlock->isBlockHeavy()) down(1);
 // }
@@ -695,5 +704,7 @@ std::ostream &operator<<(std::ostream &out, Grid &grid) {
 	out << *(grid.td);
 	return out;
 }
+
+
 
 

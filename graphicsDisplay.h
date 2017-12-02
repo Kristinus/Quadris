@@ -21,5 +21,6 @@ class GraphicsDisplay: public Observer<Info> {
   void notify(Subject<Info> &whoNotified) override;
   void clearNext() override;
   void update() override;
+  void clear() override;
 };
 #endif

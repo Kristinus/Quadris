@@ -63,3 +63,12 @@ void GraphicsDisplay::update() {
   xw.drawString(100,20,std::to_string(score->getCurrentScore()));
   xw.drawString(100,30,std::to_string(score->getHighScore()));
 }
+
+void GraphicsDisplay::clear() {
+  xw.fillRectangle(0, 0, 650, 650, Xwindow::White);
+  xw.fillRectangle(11 * cellSize, 0, 1, 700, Xwindow::Black);
+  xw.drawString(10,10,"Level:");
+  xw.drawString(10,20,"Score:");
+  xw.drawString(10,30,"Hi Score:"); 
+  xw.drawString(11*cellSize+10,10,"Next:"); 
+}

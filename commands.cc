@@ -107,34 +107,12 @@ void HintCommand::execute(int m, std::string file) {
     grid->hint();
 }
 
+/******************************************************************************/
 
-// void LCommand::execute(int m, std::string file) {
-// }
+ReplaceCommand::ReplaceCommand(Grid *g, char type): Command(g), type{type} {}
 
+void ReplaceCommand::execute(int m, std::string file) {
+    grid->replaceBlock(type);
+}
 
-// void ICommand::execute(int m, std::string file) {
-
-// }
-
-
-
-// void JCommand::execute(int m, std::string file) {
-
-// }
-
-// void OCommand::execute(int m, std::string file) {
-
-// }
-
-// void SCommand::execute(int m, std::string file) {
-
-// }
-
-// void ZCommand::execute(int m, std::string file) {
-
-// }
-
-// void TCommand::execute(int m, std::string file) {
-
-// }
-
+/******************************************************************************/
