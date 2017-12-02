@@ -57,16 +57,23 @@ void Grid::initGrid() {
 	updateCells(currentBlock, StateType::MOVING);
 
 	nextBlock = theLevel->createBlock();
-	    nextBlock->setGridPointer(this);
+	nextBlock->setGridPointer(this);
 
 
 
 }
 
 bool Grid::isCurrentBlockOverlap() {
+	/**bool isFound = false;
 	for (auto &c : currentBlock->getBlockCells()) {
+		for (auto &b : setBlocks) {
+			for (auto cells: b.getBlockCells()) {
+				if ((cells.getInfo().row == c.getInfo().row && cells.getInfo().col == c.getInfo().col)) continue;
+				else 
+			} 
+		}
 		if (theGrid[17 - c.getInfo().row][c.getInfo().col].getInfo().state == StateType::STATIC) return true;
-	}
+	} **/
 	return false;
 }
 
@@ -270,7 +277,7 @@ void Grid::deleteCurrentBlock() {
 
 
 void Grid::left(int x) {
-	updateCells(currentBlock, StateType::NONE);
+		deleteCurrentBlock();
 	// check if valid move
 	// update the current block's cells
 	int shift = 0;
@@ -290,7 +297,7 @@ void Grid::left(int x) {
 }
 
 void Grid::right(int x) {
-	updateCells(currentBlock, StateType::NONE);
+		deleteCurrentBlock();
 	int shift = 0;
 	while (shift < x) {
 		if (isValidMove(1, 0)) {
@@ -305,7 +312,7 @@ void Grid::right(int x) {
 
 }
 void Grid::down(int x) {
-	updateCells(currentBlock, StateType::NONE);
+		deleteCurrentBlock();
 	int shift = 0;
 	while (shift < x) {
 		if (isValidMove( 0, -1)) {
@@ -322,7 +329,7 @@ void Grid::down(int x) {
 }
 
 void Grid::rotateCW(int x) {
-	updateCells(currentBlock, StateType::NONE);
+		deleteCurrentBlock();
 		 for (auto c: currentBlock->getBlockCells()) {
 	 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	 }
