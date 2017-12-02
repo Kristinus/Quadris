@@ -32,6 +32,8 @@ class Grid {
   std::vector<int> getHeights();
   int countHoles();
   void moveTo(int, int, Block*);
+  bool isCurrentBlockOverlap();
+
 public:
   Grid(Observer<Info> *);
   std::vector<std::vector<Cell>> getGridCells();
