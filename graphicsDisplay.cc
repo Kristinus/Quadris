@@ -6,11 +6,13 @@
 using namespace std;
 
 GraphicsDisplay::GraphicsDisplay():
- gridSize{11}, winSize{600}, xw{600, 600} {
+ gridSize{18}, winSize{600}, cellSize{winSize/gridSize}, xw{800, 600} {
   xw.fillRectangle(0, 0, winSize, winSize, Xwindow::White);
+  xw.fillRectangle(11 * cellSize, 0, 1, winSize, Xwindow::Black);
   xw.drawString(10,10,"Level:");
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
+  xw.drawString(winSize/2,10,"Next:"); 
   
 }
 
@@ -25,20 +27,26 @@ void GraphicsDisplay::setGrid(Grid *grid) {
 
 void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
   auto info = whoNotified.getInfo();
-  int cellSize = winSize / gridSize;
-  std::cout << Xwindow::Cyan << std::endl;
-  if(info.block == BlockType::I)
-    xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Cyan);
+  int colour = xw.White;
+
+  //Changes colour depending on BlockType
+  if(info.block == BlockType::I) 
+    colour = Xwindow::Cyan;
   else if(info.block == BlockType::J)
-    xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Blue);
+    colour = Xwindow::Blue;
   else if(info.block == BlockType::L)
-    xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Orange);
+    colour = Xwindow::Orange;
   else if(info.block == BlockType::O)
-    xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Yellow);
+    colour = Xwindow::Yellow;
   else if(info.block == BlockType::S)
-    xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Green);
+    colour = Xwindow::Green;
   else if(info.block == BlockType::T)
-    xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Magenta);
+    colour = Xwindow::Magenta;
   else if(info.block == BlockType::Z)
-    xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Red);
+    colour = Xwindow::Red;
+  
+  if(info.state == StateType::NONE)
+    xw.fillRectangle((15+info.col) * cellSize, info.row * cellSize, cellSize, cellSize, colour);
+  else
+      xw.fillRectangle(info.col * cellSize, (17 - info.row) * cellSize, cellSize, cellSize, colour);
 }

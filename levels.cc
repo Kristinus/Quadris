@@ -24,7 +24,10 @@ Block *Level0::createBlock() {
         return new TBlock();
     else if (b=='Z')
         return new ZBlock();
-    //Invalid file.txt
+    //Loops through file again
+    seq.close();
+    seq.open(sourceFile);
+        return createBlock();
 }
 
 Level0::~Level0() {
