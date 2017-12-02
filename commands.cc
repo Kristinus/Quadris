@@ -1,5 +1,6 @@
 #include "commands.h"
 #include "grid.h"
+#include "interpreter.h"
 
 LeftCommand::LeftCommand(Grid *g): Command(g) {}
 
@@ -82,10 +83,12 @@ void RandomCommand::execute(int m, std::string file) {
 
 /******************************************************************************/
 
-SequenceCommand::SequenceCommand(Grid *g): Command(g) {}
+SequenceCommand::SequenceCommand(Grid *g, Interpreter *i): Command(g), i{i} {}
 
 void SequenceCommand::execute(int m, std::string file) {
-    
+    seq.open(file);
+    i->run(seq);
+    seq.close();
 }
 
 /******************************************************************************/

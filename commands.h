@@ -1,6 +1,8 @@
 #ifndef __COMMANDS_H
 #define __COMMANDS_H
 #include "command.h"
+#include <fstream>
+class Interpreter;
 
 class LeftCommand: public Command {
 public:
@@ -64,8 +66,10 @@ public:
 };
 
 class SequenceCommand: public Command {
+	std::ifstream seq;
+	Interpreter *i;
 public:
-	SequenceCommand(Grid *);
+	SequenceCommand(Grid *, Interpreter *);
 	void execute(int m, std::string) override;
 };
 

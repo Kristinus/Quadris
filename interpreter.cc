@@ -24,7 +24,7 @@ void Interpreter::initCommandMap() {
     commandMap["levelup"] = new LevelUpCommand(grid);
     commandMap["leveldown"] = new LevelDownCommand(grid);
     commandMap["norandom"] = new NoRandomCommand(grid);
-    commandMap["sequence"] = new SequenceCommand(grid);
+    commandMap["sequence"] = new SequenceCommand(grid, this);
     commandMap["clockwise"] = new ClockwiseCommand(grid);
     commandMap["counterclockwise"] = new CounterClockwiseCommand(grid);
     commandMap["drop"] = new DropCommand(grid);
@@ -125,11 +125,38 @@ ProcessedInput Interpreter::parseCommand(string command) {
 }
 
 void Interpreter::run() {
-    string s;
-    // grid->initGrid();
+    // string s;
     cout << *grid;
-    while(*in >> s) {
 
+    run(*in);
+
+    // while(*in >> s) {
+    // 	ProcessedInput processedCommand;
+    //     try {
+    //     	 processedCommand = parseCommand(s);
+    //     } catch (invalidInputException e) {
+    //     	//cout << e.message << endl;
+    //     	continue;
+    //     }
+    //     string cmd = processedCommand.command;
+    //     int mult = processedCommand.multiplier;
+    //     if (cmd == "quit") {
+    //     	break;
+    //     }
+    //     // cout << cmd << "|" << mult << endl; 
+    //     if (commandMap.count(cmd) > 0) {
+    //        auto i = commandMap.find(cmd);
+    //        (i->second)->execute(mult, processedCommand.file);
+    //        if (grid->isOver()) break;
+    //        cout << *grid;
+    //     }
+    // }
+    // cout << "GAME OVER YOU LOSER" << endl;
+}
+
+void Interpreter::run(std::istream &in) {
+    string s;
+    while(in >> s) {
     	ProcessedInput processedCommand;
         try {
         	 processedCommand = parseCommand(s);
@@ -142,24 +169,18 @@ void Interpreter::run() {
         if (cmd == "quit") {
         	break;
         }
-
         // cout << cmd << "|" << mult << endl; 
         if (commandMap.count(cmd) > 0) {
-           auto i = commandMap.find(cmd);
-
-           (i->second)->execute(mult, processedCommand.file);
-           if (grid->isOver()) break;
-
-
-           cout << *grid;
+            auto i = commandMap.find(cmd);
+            (i->second)->execute(mult, processedCommand.file);
+            if (grid->isOver()) {
+                cout << "GAME OVER YOU LOSER" << endl;           
+            }
+            cout << *grid;
         }
-
-
     }
-
-
-    cout << "GAME OVER YOU LOSER" << endl;
 }
+
 
 Interpreter::~Interpreter() {}
 

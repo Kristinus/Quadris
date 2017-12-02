@@ -59,7 +59,7 @@ void Grid::initGrid() {
 
 	nextBlock = theLevel->createBlock();
 	nextBlock->setGridPointer(this);
-	nextBlock->displayNext(ob);
+	if(ob) nextBlock->displayNext(ob);
 
 }
 
@@ -131,12 +131,7 @@ double Grid::calculateSmoothness() {
 // higher if lessl holes
 double Grid::calculateDensity() {
 	return 1/ (1 + countHoles());
-<<<<<<< HEAD
 }
-=======
-
-
->>>>>>> e2cfc1e4fdce4addea3a1c7dbfa05f81afee6cc4
 
 double Grid::getAverageHeights(std::vector<int> v) {      
 		double sum=0;
@@ -146,11 +141,7 @@ double Grid::getAverageHeights(std::vector<int> v) {
        }
 
 
-<<<<<<< HEAD
 	return sum/v.size();
-=======
-       return sum/v.size();
->>>>>>> e2cfc1e4fdce4addea3a1c7dbfa05f81afee6cc4
 }
 //DEVIATION
 double Grid::getStandardDeviationHeights(std::vector<int> v) {
@@ -407,8 +398,7 @@ void Grid::down(int x) {
 		else {
 			drop(1);
 		}
-	}
-	
+	}	
 
 	updateCells(currentBlock);
 	//playBlock(currentBlock);
@@ -471,7 +461,7 @@ void Grid::drop(int x) {
 		nextBlock = theLevel->createBlock();
 		nextBlock->setGridPointer(this);
 		ob->clearNext();
-		nextBlock->displayNext(ob);
+		if(ob) nextBlock->displayNext(ob);
 		x--;
 
 	}

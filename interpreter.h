@@ -26,6 +26,7 @@ public:
     Interpreter(int, bool, std::string, int);
     ~Interpreter();
     void run();
+    void run(std::istream &);
 
 };
 
