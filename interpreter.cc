@@ -141,9 +141,15 @@ void Interpreter::run() {
            auto i = commandMap.find(cmd);
 
            (i->second)->execute(mult);
+           if (grid->isOver()) break;
+
+
            cout << *grid;
         }
     }
+    
+
+    cout << "GAME OVER YOU LOSER" << endl;
 }
 
 Interpreter::~Interpreter() {}

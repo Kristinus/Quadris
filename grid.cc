@@ -66,13 +66,22 @@ void Grid::initGrid() {
 
 }
 
+bool Grid::isCurrentBlockOverlap() {
+	for (auto &c : currentBlock->getBlockCells()) {
+		if (theGrid[17 - c.getInfo().row][c.getInfo().col].getInfo().state == StateType::STATIC) return true;
+	}
+	return false;
+}
+
 bool Grid::isOver() {
+	return isCurrentBlockOverlap();
+
 	// if the piece in play cannot be played
 
 	// if (theScore->getCurrentScore > theScore->getHighScore) {
 	// 	theScore->setHighScore(theScore->getCurrentScore);
 	// }
-	return false;
+
 }
 
 //Checks if the row is filled
