@@ -178,7 +178,6 @@ void Grid::updateCells(Block *b, StateType s) {
 		c.setBlock(b->getBlockType()); // is this necessary
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setState(s);
-
 		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
@@ -188,6 +187,8 @@ void Grid::updateCells(Block *b) {
 	for (auto &c : b->getBlockCells()) {
 		c.setBlock(b->getBlockType()); // is this necessary
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
+		theGrid[17 - c.getInfo().row][c.getInfo().col].setState(s);
+
 		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
@@ -344,15 +345,7 @@ void Grid::rotateCW(int x) {
 
 }
 
-void Grid::setBlock(Block *curBlock) {
-	for (auto &cell : curBlock->getBlockCells()) {
-		theGrid[17 - cell.getInfo().row][cell.getInfo().col].setState(StateType::STATIC);
-		theGrid[17 - cell.getInfo().row][cell.getInfo().col].notifyObservers();
 
-	}
-	setBlocks.emplace_back(curBlock);
-
-}
 
 void Grid::unsetBlock(Block *block) {
 	//(TODO)
