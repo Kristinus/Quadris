@@ -119,6 +119,7 @@ int Grid::countCompleteLines() {
 	return rowsToDelete;
 }
 
+// higher the value, the more smooth it is (i.e. lower standard deviation)
 double Grid::calculateSmoothness() {
 	std::vector<int> heights = getHeights();
 	double stdHeights = getStandardDeviationHeights(heights);
@@ -126,32 +127,57 @@ double Grid::calculateSmoothness() {
 
 }
 
+// higher if lessl holes
+double Grid::calculateDensity() {
+	return 1/ (1 + countHoles());
 
-double Grid::getAverageHeights(std::vector<int> v) {
-	int sum=0;
-	for(unsigned int i=0;i<v.size();i++)
-			sum+=v[i];
-	return sum/v.size();
+
+
+
+double Grid::getAverageHeights(std::vector<int> v) {      
+		double sum=0;
+       for(int i=0;i<v.size();i++) {
+               sum+=v[i];
+
+       }
+
+
+       return sum/v.size();
 }
 //DEVIATION
 double Grid::getStandardDeviationHeights(std::vector<int> v) {
 		double ave = getAverageHeights(v);
        double E=0;
-       for(unsigned int i=0;i<v.size();i++)
-               E+=(v[i] - ave)*(v[i] - ave);
-       return sqrt(1/v.size()*E);
+       for( int i=0;i<v.size();i++) {
+       	cout << static_cast<double>(v[i]) << endl;
+       	E += (static_cast<double>(v[i]) - ave) * (static_cast<double>(v[i]) - ave);
+       }
+       return 1/(E + 1);
+
+       // the higher your scre the mo
+       //return sqrt(1/v.size()*E);
 }
 
 std::vector<int> Grid::getHeights() {
-	std::vector<int> heights(11);
-	for (unsigned int row = theGrid.size() - 1; row >= 0; row--) {
-		for (unsigned int col = 0; col < theGrid[col].size(); col++) {
+	std::vector<int> heights (11);
+	cout << "hi1" << endl;
+	cout << theGrid[0][6].getInfo().row;
+	for ( int row = 17; row >= 0; row--) {
+		for ( int col = 0; col < 11; col++) {
 			// record the index of the highest static block...if no block is there... height is 0
-			if (theGrid[row][col].getInfo().state == StateType::STATIC) {
-				heights[col] = theGrid[row][col].getInfo().col + 1;
+			if (theGrid[17 - row][col].getInfo().state == StateType::STATIC) {
+				cout << row << "|" << col << endl;
+				if (row + 1 > heights[col]) {
+					heights[col] = row;
+				}  
 			}
 		}
 	}
+
+	for (auto &c : heights) {
+		c++;
+	}
+	cout <<"hi2"<< endl;
 
 	return heights;
 }
@@ -494,17 +520,26 @@ void Grid::random(bool flag) {
 	isRandom = flag;
 }
 
+
+
 int Grid::countHoles() {
 	std::vector<int> heights = getHeights();
+	for (auto i : heights) {
+		//cout << "the height is " << i << endl;
+	}
 	int numHoles = 0; 
 	// for all the cells below the highest cell
-	for (unsigned int i = 0; i < heights.size(); i++) {
-		for (int row = 0; row < heights[i]; row++) {
-			if (theGrid[row][i].getInfo().state == StateType::NONE) {
-				numHoles++;
+	
+		for (int i = 0; i < heights.size(); i++) {
+			for (int row = 0; row < heights[i] - 1; row++) {
+				if (theGrid[17 - row][i].getInfo().state == StateType::NONE) {
+					numHoles++;
+				}
 			}
 		}
-	}
+
+	
+
 
 	return numHoles;
 
@@ -522,15 +557,45 @@ struct HintInfo {
 };
 
 void Grid::hint() {
+	vector<Cell> hintCells;
+
+
+	for (int i = 0; i < 4; i++) {
+
+		double smoothness = calculateSmoothness();
+		//	cout << "hi" << endl;
+
+		int completeLines = static_cast<double>(countCompleteLines());
+		//	cout << "hi" << endl;
+
+		double density  = calculateDensity();
+	//	cout << "smoothness:" << smoothness << " completeLines: " << completeLines << "numHoles: " << numHoles << endl;
+		//double priority = (1/ (1+smoothness)) * completeLines * 1/(numHoles+1);
+		cout << "SCORE IS " << completeLines + density + smoothness << endl;
+
+
+
+	}
+
+		
+
+}
+/**
+void Grid::hint() {
+	cout << "HINT" << endl;
 
 	// MAKE SURE TO RESET HINTINFO
 	// RESET THE HINT BLOCK
 	// CODE THE MOVE TO HINT INFO WITH ROTATIONS AND TRANSLATIONS
 
 	std::vector<HintInfo> hintInfo;
+		cout << "HINT" << endl;
 
-	Block temp{*currentBlock}; // implement the Copy Ctor
-	hintBlock = &temp;
+
+	//Block temp{*currentBlock}; // implement the Copy Ctor
+	hintBlock = theLevel->createBlock();
+		cout << "HINT" << endl;
+
 
 	for (unsigned int i = 0; i < 4; i++) {
 		try {
@@ -542,15 +607,16 @@ void Grid::hint() {
 		int horizontal = 0;
 		// make default params to be currenbloc cells
 		while (isValidMove(horizontal, 0)) {
-			hintBlock->move(horizontal, 0);
+			hintBlock->right(horizontal);
 			while (isValidMove(0, -1)) {
-				hintBlock->move(0, -1);
+				hintBlock->down(1);
 			}
 
 			// /setBlock(hintBlock);
 			double smoothness = calculateSmoothness();
 			int completeLines = countCompleteLines();
 			int numHoles = countHoles();
+			cout << "smoothness:" << smoothness << " completeLines: " << completeLines << "numHoles: " << numHoles << endl;
 			double priority = (1/ (1+smoothness)) * completeLines * 1/(numHoles+1);
 			hintInfo.emplace_back(HintInfo{hintBlock->getBottomLeftRow(), hintBlock->getBottomLeftCol(), i, priority});
 			unsetBlock(hintBlock);
@@ -574,7 +640,7 @@ void Grid::hint() {
 
 	}
 }
-
+**/
 Block * Grid::getNextBlock() {
 	return nextBlock;
 }
