@@ -133,6 +133,7 @@ double Grid::calculateDensity() {
 	return 1/ (1 + countHoles());
 }
 
+
 double Grid::getAverageHeights(std::vector<int> v) {      
 		double sum=0;
        for(int i=0;i<v.size();i++) {
@@ -191,8 +192,6 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 		c.setCoords(c.getInfo().row + deltaRow, c.getInfo().col + deltaCol);
 
 	}
-
-
 
 }
 
@@ -562,22 +561,50 @@ struct HintInfo {
 
 };
 
+double Grid::calculatePriority() {
+	return calculateSmoothness() + countCompleteLines() + calculateDensity();
+}
+
+
+
 void Grid::hint() {
 	vector<Cell> hintCells;
+	int oldBottomLeftRow = currentBlock->getBottomLeftRow();
+	int oldBottomLeftCol = currentBlock->getBottomLeftCol();
 
 
 	for (int i = 0; i < 4; i++) {
+		HintInfo best{0,0,0,0};
+		int horizontal = 0;
 
-		double smoothness = calculateSmoothness();
-		//	cout << "hi" << endl;
 
-		int completeLines = static_cast<double>(countCompleteLines());
-		//	cout << "hi" << endl;
+		while (isValidMove(horizontal, 0)) {
+			currentBlock->right(horizontal);
+			while (isValidMove(0, -1)) {
+				currentBlock->down(1);
+			}
+			horizontal++;
 
-		double density  = calculateDensity();
+		}
+
+		updateCells(currentBlock, StateType::MOVING);
+
+
+		double tempPriority = calculatePriority();
+
+		if (tempPriority > best.priority) {
+			best.priority = tempPriority;
+			best.numRotations = 3;
+			best.bottomLeftCol = 3;
+			best.bottomLeftRow = 2;
+		}
+		updateCells(currentBlock, StateType::NONE);
+		currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
+		currentBlock->clockwise(1);
+
 	//	cout << "smoothness:" << smoothness << " completeLines: " << completeLines << "numHoles: " << numHoles << endl;
 		//double priority = (1/ (1+smoothness)) * completeLines * 1/(numHoles+1);
-		cout << "SCORE IS " << completeLines + density + smoothness << endl;
+		cout << "the hint we want to give: " << best.bottomLeftCol << " BL" << "with Rotations " << best.numRotations << endl;
 
 
 

@@ -1,3 +1,4 @@
+
 #ifndef GRID_H
 #define GRID_H
 #include <vector>
@@ -35,6 +36,7 @@ class Grid {
   void moveTo(int, int, Block*);
   bool isCurrentBlockOverlap();
   double calculateDensity();
+    double calculatePriority();
 
 
 public:
