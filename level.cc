@@ -12,20 +12,8 @@ Level::Level(int seed, std::string file, bool heavy):seed{seed},sourceFile{file}
 Block *Level::generateFromFile(bool heavy) {
     char b;
     seq >> b;
-    if (b=='I')
-        return new IBlock(getLevel(), heavy);
-    else if (b=='J')
-        return new JBlock(getLevel(), heavy);
-    else if (b=='L')
-        return new LBlock(getLevel(), heavy);
-    else if (b=='O')
-        return new OBlock(getLevel(), heavy);
-    else if (b=='S')
-        return new SBlock(getLevel(), heavy);
-    else if (b=='T')
-        return new TBlock(getLevel(), heavy);
-    else if (b=='Z')
-        return new ZBlock(getLevel(), heavy);
+    Block *block = getBlock(b);
+    if(block) return block;
     //Loops through file again
     seq.close();
     seq.open(randFile);
@@ -47,6 +35,24 @@ void Level::setDefaultSelector(int i, int j, int l, int o, int s, int t, int z) 
         selector.emplace_back([](int a, bool b)->Block *{return new TBlock(a, b);});
     for(;z>0;--z)
         selector.emplace_back([](int a, bool b)->Block *{return new ZBlock(a, b);});
+}
+
+Block * Level::getBlock(char b) {
+    if (b=='I')
+        return new IBlock(getLevel(), heavy);
+    else if (b=='J')
+        return new JBlock(getLevel(), heavy);
+    else if (b=='L')
+        return new LBlock(getLevel(), heavy);
+    else if (b=='O')
+        return new OBlock(getLevel(), heavy);
+    else if (b=='S')
+        return new SBlock(getLevel(), heavy);
+    else if (b=='T')
+        return new TBlock(getLevel(), heavy);
+    else if (b=='Z')
+        return new ZBlock(getLevel(), heavy);
+    return nullptr;
 }
 
 void Level::setSeed(int seed) {

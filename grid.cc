@@ -352,7 +352,7 @@ void Grid::left(int x) {
 		shift++;
 	}
 	updateCells(currentBlock);
-	if(theLevel->isHeavy()) down(1);
+	if(currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
 
@@ -370,14 +370,14 @@ void Grid::right(int x) {
 		shift++;
 	}
 	updateCells(currentBlock);
-	if(theLevel->isHeavy()) down(1);
+	if(currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
 }
 void Grid::down(int x) {
 	deleteCurrentBlock();
 	int shift = 0;
-	if(theLevel->isHeavy()) shift++;
+	if(currentBlock->isBlockHeavy()) shift++;
 	while (shift < x) {
 		if (isValidMove( 0, -1)) {
 			currentBlock->down();
@@ -388,7 +388,7 @@ void Grid::down(int x) {
 		shift++;
 	}
 	
-	if(theLevel->isHeavy()) {
+	if(currentBlock->isBlockHeavy()) {
 		if (isValidMove( 0, -1)) {
 			currentBlock->down();
 		}
@@ -410,7 +410,7 @@ void Grid::rotateCW(int x) {
 	//}
 
 	updateCells(currentBlock);
-	if(theLevel->isHeavy()) down(1);
+	if(currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
 }
@@ -504,7 +504,7 @@ void Grid::rotateCCW(int x) {
 	}
 	updateCells(currentBlock, StateType::MOVING);
 	//playBlock(currentBlock);
-	if(theLevel->isHeavy()) down(1);
+	if(currentBlock->isBlockHeavy()) down(1);
 }
 void Grid::levelUp(int x) {
 	for(int i=0; i<x; i++)
@@ -687,7 +687,7 @@ int Grid::getLevel() {
 }
 
 // void Grid::heavyMove() {
-// 	if(theLevel->isHeavy()) down(1);
+// 	if(currentBlock->isBlockHeavy()) down(1);
 // }
 
 

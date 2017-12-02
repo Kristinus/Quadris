@@ -23,6 +23,7 @@ public:
     void setRandom(bool);
     void setFile(std::string);
     bool isHeavy();
+    Block *getBlock(char);
     virtual int getLevel() = 0;
     virtual Block *createBlock() = 0;
     virtual ~Level();

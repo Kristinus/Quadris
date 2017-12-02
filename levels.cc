@@ -10,20 +10,8 @@ Level0::Level0(int seed, std::string file): Level(seed, file, false) {
 Block *Level0::createBlock() {
     char b;
     seq >> b;
-    if (b=='I')
-        return new IBlock(0);
-    else if (b=='J')
-        return new JBlock(0);
-    else if (b=='L')
-        return new LBlock(0);
-    else if (b=='O')
-        return new OBlock(0);
-    else if (b=='S')
-        return new SBlock(0);
-    else if (b=='T')
-        return new TBlock(0);
-    else if (b=='Z')
-        return new ZBlock(0);
+    Block *block = getBlock(b);
+    if(block) return block;
     //Loops through file again
     seq.close();
     seq.open(sourceFile);
