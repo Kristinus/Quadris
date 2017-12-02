@@ -54,7 +54,7 @@ void Grid::initGrid() {
 	// for (auto c: currentBlock->getBlockCells()) {
 	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	// }
-	updateCells(currentBlock, StateType::MOVING);
+	updateCells(currentBlock, StateType::NONE);
 
 	nextBlock = theLevel->createBlock();
 	nextBlock->setGridPointer(this);
@@ -64,16 +64,9 @@ void Grid::initGrid() {
 }
 
 bool Grid::isCurrentBlockOverlap() {
-	/**bool isFound = false;
 	for (auto &c : currentBlock->getBlockCells()) {
-		for (auto &b : setBlocks) {
-			for (auto cells: b.getBlockCells()) {
-				if ((cells.getInfo().row == c.getInfo().row && cells.getInfo().col == c.getInfo().col)) continue;
-				else 
-			} 
-		}
 		if (theGrid[17 - c.getInfo().row][c.getInfo().col].getInfo().state == StateType::STATIC) return true;
-	} **/
+	}
 	return false;
 }
 
@@ -194,6 +187,15 @@ void Grid::updateCells(Block *b, StateType s) {
 
 }
 
+void Grid::updateCells(Block *b) {
+	for (auto &c : b->getBlockCells()) {
+		c.setBlock(b->getBlockType()); // is this necessary
+		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
+		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
+	}
+
+}
+
 
 void Grid::deleteRow() {
 	int rowsToDelete = 0;
@@ -289,7 +291,7 @@ void Grid::left(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock, StateType::MOVING);
+	updateCells(currentBlock);
 
 	//playBlock(currentBlock);
 
@@ -307,7 +309,7 @@ void Grid::right(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock, StateType::MOVING);
+	updateCells(currentBlock);
 	//playBlock(currentBlock);
 
 }
@@ -323,7 +325,7 @@ void Grid::down(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock, StateType::MOVING);
+	updateCells(currentBlock);
 
 	//playBlock(currentBlock);
 }
@@ -340,7 +342,7 @@ void Grid::rotateCW(int x) {
 		 for (auto c: currentBlock->getBlockCells()) {
 		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	 }
-	updateCells(currentBlock, StateType::MOVING);
+	updateCells(currentBlock);
 
 	//playBlock(currentBlock);
 
@@ -370,7 +372,7 @@ void Grid::drop(int x) {
 		currentBlock = nextBlock;
 		currentBlock->setGridPointer(this);
 		currentBlock->moveTo(14,0);
-		updateCells(currentBlock, StateType::MOVING);
+		updateCells(currentBlock);
 
 		//cout <<"hi";
 		nextBlock = theLevel->createBlock();
