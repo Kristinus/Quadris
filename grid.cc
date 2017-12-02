@@ -60,7 +60,6 @@ void Grid::initGrid() {
 	nextBlock->setGridPointer(this);
 	nextBlock->displayNext(ob);
 
-
 }
 
 bool Grid::isCurrentBlockOverlap() {
@@ -368,6 +367,7 @@ void Grid::drop(int x) {
 		//cout <<"hi";
 		nextBlock = theLevel->createBlock();
 		nextBlock->setGridPointer(this);
+		ob->clearNext();
 		nextBlock->displayNext(ob);
 		x--;
 

@@ -33,6 +33,8 @@ void TextDisplay::notify(Subject<Info> &whoNotified) {
   theDisplay[i.row][i.col] = c;
 }
 
+void TextDisplay::clearNext() {}
+
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   //Outputs the scoreboard
   out << "Level:\t\t" << td.grid->getLevel() << std::endl;

@@ -19,5 +19,6 @@ class GraphicsDisplay: public Observer<Info> {
   void setGrid(Grid *);
 
   void notify(Subject<Info> &whoNotified) override;
+  void clearNext() override;
 };
 #endif

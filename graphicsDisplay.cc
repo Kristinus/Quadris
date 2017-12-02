@@ -52,3 +52,7 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
   else
     xw.fillRectangle(info.col * cellSize, (17 - info.row) * cellSize, cellSize, cellSize, colour);
 }
+
+void GraphicsDisplay::clearNext() {
+  xw.fillRectangle(15 * cellSize, 0, cellSize*4, cellSize*2, Xwindow::White);
+}
