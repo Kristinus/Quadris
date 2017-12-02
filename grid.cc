@@ -250,28 +250,28 @@ void Grid::deleteRow() {
 				c.notifyObservers();
 			}
 		}
-	}
+	
 
 //	Delete Cells from Block if in deleted row
 //	Decrement cell.row in each block
 
 
-	 // iterate through each block pointer
-	 for (size_t i=0; i<setBlocks.size(); i++) {
-	 	// iterate through each block's cells
-	 	// removes cells that are out of bounds, or sets them to the new location
-	 	setBlocks[i]->updateSetCells(rowsToDelete);
+		// iterate through each block pointer
+		for (size_t i=0; i<setBlocks.size(); i++) {
+			// iterate through each block's cells
+			// removes cells that are out of bounds, or sets them to the new location
+			setBlocks[i]->updateSetCells(rowsToDelete);
 
-	 	if (setBlocks[i]->getBlockCells().size() == 0) {
-	 		theScore->addToCurrentScore(pow((setBlocks[i]->getLevel() + 1), 2));
-	 		delete setBlocks[i];
-	 		setBlocks.erase(setBlocks.begin() + i);
-	 	}
-	
-	 }
+			if (setBlocks[i]->getBlockCells().size() == 0) {
+				theScore->addToCurrentScore(pow((setBlocks[i]->getLevel() + 1), 2));
+				delete setBlocks[i];
+				setBlocks.erase(setBlocks.begin() + i);
+			}
+		
+		}
 
-	theScore->addToCurrentScore(pow(theLevel->getLevel() + rowsToDelete, 2));
-
+		theScore->addToCurrentScore(pow(theLevel->getLevel() + rowsToDelete, 2));
+	}
 }
 
 bool Grid::isValidMove(int colshift, int rowshift) {
