@@ -40,7 +40,7 @@ public:
     void down(int x=1);
     void clockwise(int x=1);
     void counterclockwise(int x =1);
-    void updateSetCells(size_t);
+    void updateSetCells(unsigned int);
     virtual BlockType getBlockType();
 
 friend std::ostream &operator<<(std::ostream &out, Block *);

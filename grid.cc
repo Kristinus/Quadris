@@ -256,22 +256,26 @@ void Grid::deleteRow() {
 
 //	Delete Cells from Block if in deleted row
 //	Decrement cell.row in each block
-
+/**		for (auto &b : setBlocks) {
+	 		cout << "BEFORE the size of the cells of this set block are" << b->getBlockCells().size() << endl;
+	 	}
+cout << setBlocks.size() << endl; **/
 
 	 // iterate through each block pointer
-	 for (size_t i=0; i<setBlocks.size(); i++) {
+	 for (int j = setBlocks.size() - 1 ; j >= 0; j--) {
 	 	// iterate through each block's cells
 	 	// removes cells that are out of bounds, or sets them to the new location
-	 	setBlocks[i]->updateSetCells(rowsToDelete);
 
-	 	if (setBlocks[i]->getBlockCells().size() == 0) {
-	 		theScore->addToCurrentScore(pow((setBlocks[i]->getLevel() + 1), 2));
-	 		delete setBlocks[i];
-	 		setBlocks.erase(setBlocks.begin() + i);
+	 	setBlocks[j]->updateSetCells(rowsToDelete);
+
+	 	if (setBlocks[j]->getBlockCells().size() == 0) {
+	 		theScore->addToCurrentScore(pow((setBlocks[j]->getLevel() + 1), 2));
+	 		delete setBlocks[j];
+	 		setBlocks.erase(setBlocks.begin() + j);
 	 	}
-	 	cout << "size of set blocks is now " << setBlocks.size();
 	
 	 }
+
 
 	theScore->addToCurrentScore(pow(theLevel->getLevel() + rowsToDelete, 2));
 

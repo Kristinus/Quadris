@@ -70,7 +70,7 @@ ProcessedInput parseCommand(string command) {
 	string bd = "";
 	string typedCommand;
 	int res;
-	size_t i;
+	unsigned int i;
 	for (i = 0; i < command.length(); i++) {
 		if (isDigit(command[i])) {
 			bd += command[i];

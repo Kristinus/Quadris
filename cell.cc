@@ -11,12 +11,12 @@ void Cell::setBlock(BlockType block) {
    
 }
 
-void Cell::setCoords(size_t r, size_t c) {
+void Cell::setCoords(unsigned int r, unsigned int c) {
 	info.row = r;
 	info.col = c;
 }
 
-void Cell::moveDown(size_t x) {
+void Cell::moveDown(unsigned int x) {
 	info.row = info.row - x;
 }
 
