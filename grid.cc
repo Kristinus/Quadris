@@ -131,7 +131,12 @@ double Grid::calculateSmoothness() {
 // higher if lessl holes
 double Grid::calculateDensity() {
 	return 1/ (1 + countHoles());
+<<<<<<< HEAD
 }
+=======
+
+
+>>>>>>> e2cfc1e4fdce4addea3a1c7dbfa05f81afee6cc4
 
 double Grid::getAverageHeights(std::vector<int> v) {      
 		double sum=0;
@@ -139,10 +144,13 @@ double Grid::getAverageHeights(std::vector<int> v) {
 			sum+=v[i];
 
        }
-               	cout << "av is " << sum/v.size();
 
 
+<<<<<<< HEAD
 	return sum/v.size();
+=======
+       return sum/v.size();
+>>>>>>> e2cfc1e4fdce4addea3a1c7dbfa05f81afee6cc4
 }
 //DEVIATION
 double Grid::getStandardDeviationHeights(std::vector<int> v) {
@@ -565,6 +573,11 @@ struct HintInfo {
 };
 
 void Grid::hint() {
+	vector<Cell> hintCells;
+
+
+	for (int i = 0; i < 4; i++) {
+
 		double smoothness = calculateSmoothness();
 		//	cout << "hi" << endl;
 
@@ -575,6 +588,13 @@ void Grid::hint() {
 	//	cout << "smoothness:" << smoothness << " completeLines: " << completeLines << "numHoles: " << numHoles << endl;
 		//double priority = (1/ (1+smoothness)) * completeLines * 1/(numHoles+1);
 		cout << "SCORE IS " << completeLines + density + smoothness << endl;
+
+
+
+	}
+
+		
+
 }
 /**
 void Grid::hint() {
