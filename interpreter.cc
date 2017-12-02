@@ -29,6 +29,7 @@ void Interpreter::initCommandMap() {
     commandMap["counterclockwise"] = new CounterClockwiseCommand(grid);
     commandMap["drop"] = new DropCommand(grid);
     commandMap["restart"] = new RestartCommand(grid);
+    commandMap["hint"] = new HintCommand(grid);
     // commandMap["I"] = new ICommand(grid);
     // commandMap["J"] = new JCommand(grid);
     // commandMap["L"] = new LCommand(grid);
