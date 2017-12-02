@@ -181,18 +181,12 @@ void Grid::updateCells(Block *b, StateType s) {
 		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
-}
-
-void Grid::updateCells(Block *b) {
-	for (auto &c : b->getBlockCells()) {
-		c.setBlock(b->getBlockType()); // is this necessary
-		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
-		theGrid[17 - c.getInfo().row][c.getInfo().col].setState(s);
-
-		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
+	if (s == StateType::STATIC) {
+		setBlocks.emplace_back(b);
 	}
 
 }
+
 
 void Grid::deleteRow() {
 	int rowsToDelete = 0;
@@ -288,7 +282,7 @@ void Grid::left(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock);
+	updateCells(currentBlock, StateType::MOVING);
 
 	//playBlock(currentBlock);
 
@@ -306,7 +300,7 @@ void Grid::right(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock);
+	updateCells(currentBlock, StateType::MOVING);
 	//playBlock(currentBlock);
 
 }
@@ -322,7 +316,7 @@ void Grid::down(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock);
+	updateCells(currentBlock, StateType::MOVING);
 
 	//playBlock(currentBlock);
 }
@@ -339,7 +333,7 @@ void Grid::rotateCW(int x) {
 		 for (auto c: currentBlock->getBlockCells()) {
 		cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	 }
-	updateCells(currentBlock);
+	updateCells(currentBlock, StateType::MOVING);
 
 	//playBlock(currentBlock);
 
@@ -361,8 +355,7 @@ void Grid::drop(int x) {
 		while (isValidMove(0, -1)) {
 			currentBlock->down();
 		}
-		updateCells(currentBlock);
-		setBlock(currentBlock);
+		updateCells(currentBlock, StateType::STATIC);
 
 		// x--;
 		delete currentBlock;
@@ -377,7 +370,6 @@ void Grid::drop(int x) {
 		x--;
 
 	}
-	
 
 
 }
@@ -484,7 +476,7 @@ void Grid::hint() {
 				hintBlock->move(0, -1);
 			}
 
-			setBlock(hintBlock);
+			// /setBlock(hintBlock);
 			double smoothness = calculateSmoothness();
 			int completeLines = countCompleteLines();
 			int numHoles = countHoles();

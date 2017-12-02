@@ -146,8 +146,10 @@ void Interpreter::run() {
 
            cout << *grid;
         }
+
+
     }
-    
+
 
     cout << "GAME OVER YOU LOSER" << endl;
 }
