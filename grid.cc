@@ -163,12 +163,13 @@ std::vector<int> Grid::getHeights() {
 	cout << "hi1" << endl;
 	cout << theGrid[0][6].getInfo().row;
 	for ( int row = 17; row >= 0; row--) {
-		for ( int col = 0; col < 11; col++) {
-			// record the index of the highest static block...if no block is there... height is 0
-			if (theGrid[17 - row][col].getInfo().state == StateType::STATIC) {
-				cout << row << "|" << col << endl;
-				if (row + 1 > heights[col]) {
-					heights[col] = row;
+			for ( int col = 0; col < 11; col++) {
+				// record the index of the highest static block...if no block is there... height is 0
+				if (theGrid[17 - row][col].getInfo().state == StateType::STATIC) {
+					cout << row << "|" << col << endl;
+					if (row + 1 > heights[col]) {
+						heights[col] = row;
+				}
 			}
 		}
 	}
