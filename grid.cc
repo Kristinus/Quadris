@@ -177,6 +177,8 @@ void Grid::updateCells(Block *b, StateType s) {
 	for (auto &c : b->getBlockCells()) {
 		c.setBlock(b->getBlockType()); // is this necessary
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
+		theGrid[17 - c.getInfo().row][c.getInfo().col].setState(s);
+
 		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
@@ -360,43 +362,30 @@ void Grid::unsetBlock(Block *block) {
 	// setBlocks.pop_back();
 }
 
-void Grid::drop() {
+void Grid::drop(int x) {
 	deleteCurrentBlock();
-	while (isValidMove(0, -1)) {
-		currentBlock->down();
-	}
-	updateCells(currentBlock);
-	setBlock(currentBlock);
-
-	// x--;
-	delete currentBlock;
-	currentBlock = nextBlock;
-	currentBlock->setGridPointer(this);
-	currentBlock->moveTo(14,0);
-	updateCells(currentBlock, StateType::MOVING);
-
-		for (auto cell: currentBlock->getBlockCells()) {
-			//cout << "(" << cell.getInfo().row << "," << cell.getInfo().col << ")" << endl;
-			if (cell.getInfo().state == StateType::NONE) cout << "cell is none";
-			//if (theGrid[cell.getInfo().row][cell.getInfo().col].getInfo().state == StateType::STATIC) cout << "yesgrid is static";
-		
-	}
-
-	//cout <<"hi";
-	nextBlock = theLevel->createBlock();
-	nextBlock->setGridPointer(this);
-
-
-	// playBlock(currentBlock);
-
-
-	for (int i = 0 ; i < theGrid.size(); i++) {
-		for (int j = 0; j < theGrid[i].size(); j++) {
-			if (theGrid[i][j].getInfo().state == StateType::STATIC) {
-			//	cout << 17 - i << "|" << j << "is static" << endl;
-			}
+	while (x > 0) {
+		while (isValidMove(0, -1)) {
+			currentBlock->down();
 		}
+		updateCells(currentBlock);
+		setBlock(currentBlock);
+
+		// x--;
+		delete currentBlock;
+		currentBlock = nextBlock;
+		currentBlock->setGridPointer(this);
+		currentBlock->moveTo(14,0);
+		updateCells(currentBlock, StateType::MOVING);
+
+		//cout <<"hi";
+		nextBlock = theLevel->createBlock();
+		nextBlock->setGridPointer(this);
+		x--;
+
 	}
+	
+
 
 }
 
