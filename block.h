@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 class Grid;
+template <typename InfoType> class Observer;
 
 class Block {
 protected:
@@ -22,6 +23,7 @@ public:
     // Block(bool isHeavy, int level, std::vector<Cell> cells);
     virtual ~Block();
     void setGridPointer(Grid *);
+    void displayNext(Observer<Info> *ob);
     void move();
     void rotate(int);
     std::vector<Cell> getBlockCells();

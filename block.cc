@@ -76,6 +76,13 @@ void Block::setGridPointer(Grid *theGrid) {
 	grid = theGrid;
 }
 
+void Block::displayNext(Observer<Info> *ob) {
+	for(auto c:cells) {
+		c.attach(ob);
+		c.notifyObservers();
+	}
+}
+
 void Block::down(int x){
 	row++;
    	move(0,-1);

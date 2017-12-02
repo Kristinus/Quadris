@@ -57,8 +57,8 @@ void Grid::initGrid() {
 	updateCells(currentBlock, StateType::MOVING);
 
 	nextBlock = theLevel->createBlock();
-	    nextBlock->setGridPointer(this);
-
+	nextBlock->setGridPointer(this);
+	nextBlock->displayNext(ob);
 
 
 }
