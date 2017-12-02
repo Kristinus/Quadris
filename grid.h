@@ -34,6 +34,8 @@ class Grid {
   int countHoles();
   void moveTo(int, int, Block*);
   bool isCurrentBlockOverlap();
+  double calculateDensity();
+
 
 public:
   Grid(Observer<Info> *);
