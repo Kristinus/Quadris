@@ -179,6 +179,12 @@ void Block::rotate(int dir) {
 
 }
 
+void Block::setBlockCellStates(StateType s) {
+	for (auto &c : cells) {
+		c.setState(s);
+	}
+}
+
 void Block::clockwise(int x) {
 	x = x%4;
 	while (x > 0) {
