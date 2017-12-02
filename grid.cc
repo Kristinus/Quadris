@@ -195,24 +195,40 @@ void Grid::updateCells(Block *b) {
 
 }
 
+void notifyRow(std::vector<Cell> & row) {
+	for (auto &c : row) {
+		c.notifyObservers();
+	}
+
+}
+
 
 void Grid::deleteRow() {
 	int rowsToDelete = 0;
+
 	for (int i = theGrid.size() - 1; i >= 0; i--) {
 		if (isFilled(theGrid[i])) {
+			//(TODO) code a notify all cels function
+			for (auto &c : theGrid[i]) {
+				c.setState(StateType::NONE);
+				c.setBlock(BlockType::NONE);
+				//notifyRow(the);
+				
+
+			}
+
 			theGrid.erase(theGrid.begin() + i);
 			rowsToDelete++;
 		}
 	}
+	//make a notifygrid
 
-	for (auto row : theGrid) {
-		for (auto c: row) {
-			c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
-		}
-	}
+
+
+
 
 	//Recreate Rows
-	for (int i = rowsToDelete - 1; i >= 0; i++) {
+	for (int i = rowsToDelete - 1; i >= 0; i--) {
 		std::vector<Cell> row;
 		for (int j = 0; j < 11; j++) {
 			Info info;
@@ -226,6 +242,13 @@ void Grid::deleteRow() {
 		theGrid.insert(theGrid.begin(), row);
 	}
 
+
+		for (auto &row : theGrid) {
+		for (auto &c: row) {
+			c.notifyObservers();
+		}
+	}
+
 //	Delete Cells from Block if in deleted row
 //	Decrement cell.row in each block
 
@@ -235,6 +258,7 @@ void Grid::deleteRow() {
 	 	// iterate through each block's cells
 	 	// removes cells that are out of bounds, or sets them to the new location
 	 	setBlocks[i]->updateSetCells(rowsToDelete);
+
 	 	if (setBlocks[i]->getBlockCells().size() == 0) {
 	 		theScore->addToCurrentScore(pow((setBlocks[i]->getLevel() + 1), 2));
 	 		delete setBlocks[i];
