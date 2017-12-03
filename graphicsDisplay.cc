@@ -44,6 +44,8 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
     colour = Xwindow::Magenta;
   else if(info.block == BlockType::Z)
     colour = Xwindow::Red;
+  else if(info.block == BlockType::HINT)
+    colour = Xwindow::Black;
   
   //If nextBlock
   if(info.state == StateType::NEXT) {
