@@ -177,15 +177,16 @@ void Interpreter::run(std::istream &in) {
                 cout << "GAME OVER YOU LOSER" << endl;           
                 gameOver = true;
             }
-            else 
+            else if(cmd!="sequence")
                 cout << *grid;
         }
         if(gameOver) {
-            cout >> "Wanna play again? [yes/no]" >> endl;
+            cout << "Wanna play again? [yes/no]" << endl;
             in >> s;
             if(s=="yes") {
                 (commandMap.find("restart")->second)->execute(1,"");
                 gameOver = true;
+                cout << *grid;
             }
             else break;
         }
