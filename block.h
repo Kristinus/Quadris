@@ -35,9 +35,6 @@ public:
     void move(int, int);
 	void setBlockCellStates(StateType s);
 	void setBlockCellTypes(BlockType);
-
-
-
     int getBottomLeftCol();
     int getBottomLeftRow();
     void playBlock();
@@ -49,7 +46,7 @@ public:
     void clockwise(int x=1);
     void counterclockwise(int x =1);
     void updateSetCells(unsigned int);
-    virtual Block* clone() const;
+    //virtual Block* clone() const;
 
     virtual BlockType getBlockType();
 

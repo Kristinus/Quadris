@@ -3,11 +3,15 @@
 #define CONSTANTS_H
 #include <map>
 #include <vector>
-
-const int GRID_H = 18;
-const int GRID_W = 11;
-const std::vector<char> BLOCKS = {
-	'I','J','L','O','S','T','Z'
-};
+namespace constants {
+	const int GRID_HEIGHT = 18;
+	const int GRID_WIDTH = 11;
+	const int MIN_LEVEL = 0;
+	const int MAX_LEVEL = 4;
+	const string DEFAULT_SCRIPT_FILE = "sequence.txt";
+	const std::vector<char> BLOCKS = {
+		'I','J','L','O','S','T','Z'
+	};
+}
 
 #endif

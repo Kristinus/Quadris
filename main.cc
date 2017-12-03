@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "constants.h"
 #include "interpreter.h"
+#include "constants.h"
 #include <ctime>
 
 using namespace std;
@@ -15,14 +15,11 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
-  const int MIN_LEVEL = 0;
-  const int MAX_LEVEL = 4;
-
   cin.exceptions(ios::eofbit|ios::failbit);
   bool textOnly = false;
   int seed = time(NULL);
   cout <<seed << endl;
-  string scriptFile = "sequence.txt";
+  string scriptFile = constants::DEFAULT_SCRIPT_FILE;
   int startLevel = 0;
 
   for (int i = 1; i < argc; ++i) {
@@ -64,7 +61,7 @@ int main(int argc, char *argv[]) {
       else {
         istringstream iss {argv[i + 1]};
         if (!(iss >> startLevel) && 
-          (startLevel > MAX_LEVEL || startLevel < MIN_LEVEL )) {
+          (startLevel > constants::MAX_LEVEL || startLevel < constants::MIN_LEVEL )) {
           cerr << "wrong level" << endl;
           return 1;
         }

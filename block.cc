@@ -12,12 +12,12 @@ col{0}, row{0}, blockType{blockType}/**, grid {grid ? grid : nullptr} **/{
 // Block::Block(int col, int row, bool isHeavy, int level, vector<Cell> cells, Grid *theGrid): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, grid{theGrid} {}
 
 Block::Block(const Block &b):
-cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, col{b.col}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
+cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, row{b.row},col{b.col}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
 
 
-Block* Block::clone() const {
-	return new Block(blockType, level, isHeavy);
-}
+// Block* Block::clone() const {
+// 	return new Block(blockType, level, isHeavy);
+// }
 
 /**
 Block::Block(bool isHeavy, int level, vector<Cell> cells): cells{cells}, isHeavy{isHeavy}, level{level} {

@@ -5,6 +5,7 @@
 #include <vector>
 #include <climits>
 #include "info.h"
+#include "constants.h"
 #include "levels.h"
 #include <iostream>
 using namespace std;
@@ -164,7 +165,7 @@ double Grid::getStandardDeviationHeights(std::vector<int> v) {
 int Grid::getBumpiness() {
 	std::vector<int> heights = getHeights();
 	int bumpiness = 0;
-	for (int i = 0; i < heights.size() - 1; i++) {
+	for (int i = 0; i < constants::GRID_WIDTH; i++) {
 		bumpiness += abs(heights[i]-heights[i+1]);
 	}
 	return bumpiness;
@@ -732,7 +733,7 @@ void Grid::hint() {
 	updateCells(currentBlock, StateType::NONE, shouldNotify);
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 	updateCells(currentBlock, StateType::MOVING);
-	hintBlock = currentBlock->clone();
+	hintBlock = new Block(*currentBlock);
 	hintBlock->setGridPointer(this);
 	int numRotations = best.numRotations;
 	int newBottomLeftCol = best.bottomLeftCol;
