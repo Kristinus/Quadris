@@ -1,6 +1,7 @@
 
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
+#include <string>
 #include <map>
 #include <vector>
 #include <string>

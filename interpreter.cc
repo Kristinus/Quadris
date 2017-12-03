@@ -21,25 +21,25 @@ struct ProcessedInput {
 };
 
 void Interpreter::initCommandMap() {
-	commandMap["left"] = std::make_unique<LeftCommand>(grid);
-	commandMap["right"] = std::make_unique<RightCommand>(grid);
-	commandMap["down"] = std::make_unique<DownCommand>(grid);
-	commandMap["levelup"] = std::make_unique<LevelUpCommand>(grid);
-	commandMap["leveldown"] = std::make_unique<LevelDownCommand>(grid);
-	commandMap["norandom"] = std::make_unique<NoRandomCommand>(grid);
-	commandMap["sequence"] = std::make_unique<SequenceCommand>(grid, this);
-	commandMap["clockwise"] = std::make_unique<ClockwiseCommand>(grid);
-	commandMap["counterclockwise"] = std::make_unique<CounterClockwiseCommand>(grid);
-	commandMap["drop"] =  std::make_unique<DropCommand>(grid);
-	commandMap["restart"] =  std::make_unique<RestartCommand>(grid);
-	commandMap["hint"] =  std::make_unique<HintCommand>(grid);
-	commandMap["I"] =  std::make_unique<ReplaceCommand>(grid, 'I');
-	commandMap["J"] =  std::make_unique<ReplaceCommand>(grid, 'J');
-	commandMap["L"] =  std::make_unique<ReplaceCommand>(grid, 'L');
-	commandMap["O"] =  std::make_unique<ReplaceCommand>(grid, 'O');
-	commandMap["T"] =  std::make_unique<ReplaceCommand>(grid, 'S');
-	commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid, 'T');
-	commandMap["S"] =  std::make_unique<ReplaceCommand>(grid, 'Z'); 
+    commandMap["left"] = std::make_unique<LeftCommand>(grid);
+    commandMap["right"] = std::make_unique<RightCommand>(grid);
+    commandMap["down"] = std::make_unique<DownCommand>(grid);
+    commandMap["levelup"] = std::make_unique<LevelUpCommand>(grid);
+    commandMap["leveldown"] = std::make_unique<LevelDownCommand>(grid);
+    commandMap["norandom"] = std::make_unique<NoRandomCommand>(grid);
+    commandMap["sequence"] = std::make_unique<SequenceCommand>(grid, this);
+    commandMap["clockwise"] = std::make_unique<ClockwiseCommand>(grid);
+    commandMap["counterclockwise"] = std::make_unique<CounterClockwiseCommand>(grid);
+    commandMap["drop"] =  std::make_unique<DropCommand>(grid);
+    commandMap["restart"] =  std::make_unique<RestartCommand>(grid);
+    commandMap["hint"] =  std::make_unique<HintCommand>(grid);
+    commandMap["I"] =  std::make_unique<ReplaceCommand>(grid, 'I');
+    commandMap["J"] =  std::make_unique<ReplaceCommand>(grid, 'J');
+    commandMap["L"] =  std::make_unique<ReplaceCommand>(grid, 'L');
+    commandMap["O"] =  std::make_unique<ReplaceCommand>(grid, 'O');
+    commandMap["S"] =  std::make_unique<ReplaceCommand>(grid, 'S');
+    commandMap["T"] =  std::make_unique<ReplaceCommand>(grid, 'T');
+    commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid, 'Z'); 
 }
 
 Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLevel) {
