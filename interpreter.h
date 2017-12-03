@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <memory>
 // #include "level.h"
 // #include "block.h"
 // #include "grid.h"
@@ -14,7 +15,7 @@ struct ProcessedInput;
 
 class Interpreter {
 	std::istream *in = &std::cin;
-    std::map<std::string, Command *> commandMap;
+    std::map<std::string, std::shared_ptr<Command>> commandMap;
 
     GraphicsDisplay *gd = nullptr;
     Grid *grid = nullptr;

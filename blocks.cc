@@ -1,5 +1,6 @@
 #include "blocks.h"
 #include "info.h"
+#include <memory>
 
 IBlock::IBlock(int level, bool isHeavy): Block(level, isHeavy) {
     type = 'I';
@@ -13,8 +14,8 @@ IBlock::IBlock(int level, bool isHeavy): Block(level, isHeavy) {
     }
 }
 
-IBlock* IBlock::clone() const {
-	IBlock *cpy = new IBlock(level, isHeavy);
+std::unique_ptr IBlock::clone() const {
+	auto cpy = std::make_unique<IBlock>(level, isHeavy);
 	return cpy;
 }
 // IBlock::IBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
