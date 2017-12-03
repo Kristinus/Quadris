@@ -462,7 +462,7 @@ void Grid::drop(int x) {
 		x--;
 
 	}
-
+	ob->update();
 
 	
 
