@@ -1,0 +1,9 @@
+drop
+drop
+norandom seq2.txt
+11right
+down
+left
+drop
+drop
+random
