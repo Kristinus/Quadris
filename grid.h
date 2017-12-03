@@ -5,7 +5,7 @@
 #include "textDisplay.h"
 #include "cell.h"
 #include "level.h"
-
+struct HintInfo;
 template <typename InfoType> class Observer;
 
 class Grid {
@@ -25,7 +25,7 @@ class Grid {
   int countCompleteLines();
   bool isFilled(std::vector<Cell>);
   void unsetBlock(Block *);
-  void updateCells(Block *, StateType);
+  void updateCells(Block *, StateType, bool shouldNotify = true);
     void updateCells(Block *);
 
   double calculateSmoothness();
@@ -37,6 +37,12 @@ class Grid {
   bool isCurrentBlockOverlap();
   double calculateDensity();
     double calculatePriority();
+int getBumpiness();
+int countNumCellsOnWall();
+int countNumCellsOnGround();
+std::vector<Cell> getHintCells(Block *b, HintInfo i);
+
+
 
 
 public:

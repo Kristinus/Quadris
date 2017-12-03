@@ -9,6 +9,10 @@ Block::Block(int level, bool isHeavy): isHeavy{isHeavy}, level{level}, row{0}, c
 
 Block::Block(int col, int row, bool isHeavy, int level, vector<Cell> cells, Grid *theGrid): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, grid{theGrid} {}
 
+Block* Block::clone() const {
+	return new Block(level, isHeavy);
+}
+
 /**
 Block::Block(bool isHeavy, int level, vector<Cell> cells): cells{cells}, isHeavy{isHeavy}, level{level} {
    col = 0;
@@ -143,7 +147,7 @@ void Block::rotate(int dir) {
 	rotatedCol.emplace_back(newBottomLeftCol);
 	rotatedRow.emplace_back(newBottomLeftRow);
 
-	for (unsigned int i = 1; i < cells.size(); i++) {
+	for (int i = 1; i < cells.size(); i++) {
 		rotatedCol.emplace_back(cells[i].getInfo().row * dir);
 		rotatedRow.emplace_back(cells[i].getInfo().col * -dir);
 
@@ -162,15 +166,16 @@ void Block::rotate(int dir) {
 	int deltay = oldBottomLeftRow - newBottomLeftRow;
 
 	// update all cells
-	for (unsigned int i = 0; i < cells.size(); i++) {
+	for (int i = 0; i < cells.size(); i++) {
 		rotatedCol[i] += deltax;
 		rotatedRow[i] += deltay;
 
 	}
+	//(TODO) SHOULD BE IS VALID ROTATION
 
 	//if (grid == nullptr) cout << "its null" << endl;
-	for (unsigned int i = 0; i < cells.size(); i++) {
-		if (!isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
+	for (int i = 0; i < cells.size(); i++) {
+		if (cells[i].getInfo().block != BlockType::HINT && !isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
 			return;
 			// or we can throw an exception!!!!!!!!!!1
 		}
@@ -187,11 +192,21 @@ void Block::rotate(int dir) {
 
 }
 
+
+//(TODO) make this prettier.. TWO OPTIONAL APRAMES?/?
 void Block::setBlockCellStates(StateType s) {
 	for (auto &c : cells) {
 		c.setState(s);
 	}
 }
+
+void Block::setBlockCellTypes(BlockType b) {
+	for (auto &c : cells) {
+		c.setBlock(b);
+	}
+}
+
+
 
 void Block::clockwise(int x) {
 	x = x%4;
@@ -202,8 +217,8 @@ void Block::clockwise(int x) {
 		x--;
 
 	}
-
 }
+
 
 void Block::counterclockwise(int x) {
 	x = x%4;

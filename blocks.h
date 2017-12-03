@@ -7,6 +7,7 @@ class IBlock: public Block {
 	
 public:
     IBlock(int level, bool isHeavy = false);
+    IBlock* clone() const;
 	// IBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // IBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~IBlock();
@@ -19,10 +20,13 @@ class JBlock: public Block {
 	
 public:
     JBlock(int level, bool isHeavy = false);
+    JBlock* clone() const;
+
 	// JBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // JBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~JBlock();
     BlockType getBlockType();
+
     // void clockwise(int x=1) override;
     // void counterclockwise(int x=1) override;
 };
@@ -31,6 +35,8 @@ class LBlock: public Block {
 	
 public:
     LBlock(int level, bool isHeavy = false);
+    LBlock* clone() const;
+
 	// LBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // LBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~LBlock();
@@ -43,6 +49,8 @@ class OBlock: public Block {
 	
 public:
     OBlock(int level, bool isHeavy = false);
+    OBlock* clone() const;
+
 	// OBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // OBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~OBlock();
@@ -55,6 +63,8 @@ class SBlock: public Block {
 	
 public:
 	SBlock(int level, bool isHeavy = false);
+	SBlock* clone() const;
+
     // SBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // SBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~SBlock();
@@ -67,6 +77,8 @@ class TBlock: public Block {
 	
 public:
     TBlock(int level, bool isHeavy = false);
+    TBlock* clone() const;
+
 	// TBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // TBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~TBlock();
@@ -79,6 +91,8 @@ class ZBlock: public Block {
 	
 public:
     ZBlock(int level, bool isHeavy = false);
+    ZBlock* clone() const;
+
 	// ZBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // ZBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~ZBlock();

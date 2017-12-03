@@ -12,6 +12,11 @@ IBlock::IBlock(int level, bool isHeavy): Block(level, isHeavy) {
         cells.emplace_back(Cell(i));   
     }
 }
+
+IBlock* IBlock::clone() const {
+	IBlock *cpy = new IBlock(level, isHeavy);
+	return cpy;
+}
 // IBlock::IBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
 // IBlock::IBlock(int level, bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
@@ -42,6 +47,11 @@ JBlock::JBlock(int level, bool isHeavy): Block(level, isHeavy) {
  //       row = 0;
    // col  = 0;
 }
+
+JBlock* JBlock::clone() const {
+	JBlock *cpy = new JBlock(level, isHeavy);
+	return cpy;
+}
 // JBlock::JBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
 // JBlock::JBlock(int level, bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
@@ -70,6 +80,11 @@ LBlock::LBlock(int level, bool isHeavy): Block(level, isHeavy) {
     cells.emplace_back(Cell(i));
     
 
+}
+
+LBlock* LBlock::clone() const {
+	LBlock *cpy = new LBlock(level, isHeavy);
+	return cpy;
 }
 // LBlock::LBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
@@ -108,7 +123,10 @@ BlockType OBlock::getBlockType() {
 	return BlockType::O;
 }
 
-
+OBlock* OBlock::clone() const {
+	OBlock *cpy = new OBlock(level, isHeavy);
+	return cpy;
+}
 
 
 /*****************************************************************************/
@@ -138,13 +156,18 @@ BlockType SBlock::getBlockType() {
 	return BlockType::S;
 }
 
+SBlock* SBlock::clone() const {
+	SBlock *cpy = new SBlock(level, isHeavy);
+	return cpy;
+}
+
 
 
 /*****************************************************************************/
 
 TBlock::TBlock(int level, bool isHeavy): Block(level, isHeavy) {
     type = 'T'; 
-        grid = nullptr;
+    grid = nullptr;
 
     Info i;
     i.state = StateType::NEXT;
@@ -158,6 +181,12 @@ TBlock::TBlock(int level, bool isHeavy): Block(level, isHeavy) {
     i.row = 0;
     cells.emplace_back(Cell(i));
 }
+
+TBlock* TBlock::clone() const {
+	TBlock *cpy = new TBlock(level, isHeavy);
+	return cpy;
+}
+
 // TBlock::TBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 
 // TBlock::TBlock(int level, bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
@@ -188,6 +217,10 @@ ZBlock::ZBlock(int level, bool isHeavy): Block(level, isHeavy) {
     }
 
 
+}
+ZBlock* ZBlock::clone() const {
+	ZBlock *cpy = new ZBlock(level, isHeavy);
+	return cpy;
 }
 // ZBlock::ZBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
 

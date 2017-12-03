@@ -31,6 +31,9 @@ public:
     int getLevel();
     void move(int, int);
 	void setBlockCellStates(StateType s);
+	void setBlockCellTypes(BlockType);
+
+
 
     int getBottomLeftCol();
     int getBottomLeftRow();
@@ -43,6 +46,8 @@ public:
     void clockwise(int x=1);
     void counterclockwise(int x =1);
     void updateSetCells(unsigned int);
+    virtual Block* clone() const;
+
     virtual BlockType getBlockType();
 
 friend std::ostream &operator<<(std::ostream &out, Block *);
