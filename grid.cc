@@ -206,6 +206,17 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 
 // update cell Grid (TODO) refactor for setting block states
 void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
+	if (hintBlock != nullptr) {
+
+		// (TODO) refactor code
+		for (auto &c: hintBlock->getBlockCells()) {
+			theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
+			theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
+
+		}
+		delete hintBlock;
+		hintBlock = nullptr;
+	}
 	b->setBlockCellStates(s);
 	for (auto &c : b->getBlockCells()) {
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
@@ -224,6 +235,14 @@ void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
 }
 
 void Grid::updateCells(Block *b) {
+	if (hintBlock != nullptr) {
+		for (auto &c: hintBlock->getBlockCells()) {
+			theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
+			theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
+		}
+		delete hintBlock;
+		hintBlock = nullptr;
+	}
 	for (auto &c : b->getBlockCells()) {
 		c.setBlock(b->getBlockType()); // is this necessary
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
@@ -710,23 +729,20 @@ void Grid::hint() {
 
 	
 
-
-
-
 	updateCells(currentBlock, StateType::NONE, shouldNotify);
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 	updateCells(currentBlock, StateType::MOVING);
-	Block* cpy = currentBlock->clone();
-	cpy->setGridPointer(this);
+	hintBlock = currentBlock->clone();
+	hintBlock->setGridPointer(this);
 	int numRotations = best.numRotations;
 	int newBottomLeftCol = best.bottomLeftCol;
 	int newBottomLeftRow = best.bottomLeftRow;
-	cpy->clockwise(numRotations);
-	cpy->moveTo(newBottomLeftRow, newBottomLeftCol);
+	hintBlock->clockwise(numRotations);
+	hintBlock->moveTo(newBottomLeftRow, newBottomLeftCol);
 
 	//combine these two for loops (TODO)
-	cpy->setBlockCellTypes(BlockType::HINT);
-	for (auto &c: cpy->getBlockCells()) {
+	hintBlock->setBlockCellTypes(BlockType::HINT);
+	for (auto &c: hintBlock->getBlockCells()) {
 		theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::HINT);
 		theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
@@ -746,6 +762,8 @@ int Grid::getLevel() {
 }
 
 void Grid::replaceBlock(char type) {
+
+
 
 	BlockType currentT = currentBlock->getBlockType();
 	int col = currentBlock->getBottomLeftCol();
