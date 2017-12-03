@@ -3,6 +3,7 @@
 #include "cell.h"
 #include "blocks.h"
 #include <vector>
+#include <climits>
 #include "info.h"
 #include "levels.h"
 #include <iostream>
@@ -653,20 +654,19 @@ void Grid::hint() {
 	vector<Cell> hintCells;
 	int oldBottomLeftRow = currentBlock->getBottomLeftRow();
 	int oldBottomLeftCol = currentBlock->getBottomLeftCol();
-	currentBlock->down(1);
-	currentBlock->right(1);
 
 	//(TODO) SCREW REPEATED CODE
-	HintInfo best{0,0,0,0};
-	bool hasMovedLeft = false;
+	HintInfo best{0,0,0,INT_MIN};
 	int dir = 1;
-
-	for (int i = 0; i < 4; i++) {
+	bool hasLeft = false;
+	for (int turn = 0; turn < 2; turn ++) {
+		for (int i = 0; i < 4; i++) {
 		int horizontal = 0;
 
 		while (isValidMove(dir * horizontal, 0)) {
 			for (int i = 0; i < horizontal; i++) {
-				currentBlock->right(1);
+				if (hasLeft == false) currentBlock->right(1);
+				else currentBlock->left(1);
 
 			}
 			while (isValidMove(0, -1)) {
@@ -681,8 +681,8 @@ void Grid::hint() {
 			}
 			cout << endl;
 			cout << "PRIORITY : " << tempPriority << " at rotation " << i << " and B L " 
-			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl; **/
-
+			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl; 
+**/
 			if (tempPriority > best.priority) {
 				best.priority = tempPriority;
 				best.numRotations = i;
@@ -700,6 +700,15 @@ void Grid::hint() {
 		currentBlock->clockwise(1);
 
 	}
+
+		if (hasLeft == false) {
+			dir = -1;
+			hasLeft = true;
+		}
+	}
+	//cout << "the recommendation is to rotate " << best.numRotations << " and B L" << best.bottomLeftRow << "|" << best.bottomLeftCol << endl;
+
+	
 
 
 
