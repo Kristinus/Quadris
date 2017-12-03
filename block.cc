@@ -35,10 +35,11 @@ void Block::updateSetCells(std::vector<int> rowsToDelete) {
 			// if the row goes out of bounds, then erase the cell
 			if (cells[i].getInfo().row == rowsToDelete[r]) {
 				cells.erase(cells.begin() + i);
-			} else {
-				cells[i].moveDown(1);	
+				break;
 			}
 		}
+		if(i<cells.size())
+			cells[i].moveDown(1);	
 	}
 }
 
