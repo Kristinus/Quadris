@@ -180,7 +180,7 @@ void Interpreter::run(std::istream &in) {
             else if(cmd!="sequence")
                 cout << *grid;
         }
-        if(gameOver) {
+        if (gameOver) {
             cout << "Wanna play again? [yes/no]" << endl;
             in >> s;
             if(s=="yes") {

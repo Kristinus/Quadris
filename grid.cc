@@ -3,6 +3,7 @@
 #include "cell.h"
 #include "blocks.h"
 #include <vector>
+#include <climits>
 #include "info.h"
 #include "levels.h"
 #include <iostream>
@@ -205,6 +206,17 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 
 // update cell Grid (TODO) refactor for setting block states
 void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
+	if (hintBlock != nullptr) {
+
+		// (TODO) refactor code
+		for (auto &c: hintBlock->getBlockCells()) {
+			theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
+			theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
+
+		}
+		delete hintBlock;
+		hintBlock = nullptr;
+	}
 	b->setBlockCellStates(s);
 	for (auto &c : b->getBlockCells()) {
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
@@ -223,6 +235,14 @@ void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
 }
 
 void Grid::updateCells(Block *b) {
+	if (hintBlock != nullptr) {
+		for (auto &c: hintBlock->getBlockCells()) {
+			theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
+			theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
+		}
+		delete hintBlock;
+		hintBlock = nullptr;
+	}
 	for (auto &c : b->getBlockCells()) {
 		c.setBlock(b->getBlockType()); // is this necessary
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
@@ -653,20 +673,19 @@ void Grid::hint() {
 	vector<Cell> hintCells;
 	int oldBottomLeftRow = currentBlock->getBottomLeftRow();
 	int oldBottomLeftCol = currentBlock->getBottomLeftCol();
-	currentBlock->down(1);
-	currentBlock->right(1);
 
 	//(TODO) SCREW REPEATED CODE
-	HintInfo best{0,0,0,0};
-	bool hasMovedLeft = false;
+	HintInfo best{0,0,0,INT_MIN};
 	int dir = 1;
-
-	for (int i = 0; i < 4; i++) {
+	bool hasLeft = false;
+	for (int turn = 0; turn < 2; turn ++) {
+		for (int i = 0; i < 4; i++) {
 		int horizontal = 0;
 
 		while (isValidMove(dir * horizontal, 0)) {
 			for (int i = 0; i < horizontal; i++) {
-				currentBlock->right(1);
+				if (hasLeft == false) currentBlock->right(1);
+				else currentBlock->left(1);
 
 			}
 			while (isValidMove(0, -1)) {
@@ -681,8 +700,8 @@ void Grid::hint() {
 			}
 			cout << endl;
 			cout << "PRIORITY : " << tempPriority << " at rotation " << i << " and B L " 
-			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl; **/
-
+			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl; 
+**/
 			if (tempPriority > best.priority) {
 				best.priority = tempPriority;
 				best.numRotations = i;
@@ -701,23 +720,29 @@ void Grid::hint() {
 
 	}
 
+		if (hasLeft == false) {
+			dir = -1;
+			hasLeft = true;
+		}
+	}
+	//cout << "the recommendation is to rotate " << best.numRotations << " and B L" << best.bottomLeftRow << "|" << best.bottomLeftCol << endl;
 
-
+	
 
 	updateCells(currentBlock, StateType::NONE, shouldNotify);
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 	updateCells(currentBlock, StateType::MOVING);
-	Block* cpy = currentBlock->clone();
-	cpy->setGridPointer(this);
+	hintBlock = currentBlock->clone();
+	hintBlock->setGridPointer(this);
 	int numRotations = best.numRotations;
 	int newBottomLeftCol = best.bottomLeftCol;
 	int newBottomLeftRow = best.bottomLeftRow;
-	cpy->clockwise(numRotations);
-	cpy->moveTo(newBottomLeftRow, newBottomLeftCol);
+	hintBlock->clockwise(numRotations);
+	hintBlock->moveTo(newBottomLeftRow, newBottomLeftCol);
 
 	//combine these two for loops (TODO)
-	cpy->setBlockCellTypes(BlockType::HINT);
-	for (auto &c: cpy->getBlockCells()) {
+	hintBlock->setBlockCellTypes(BlockType::HINT);
+	for (auto &c: hintBlock->getBlockCells()) {
 		theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::HINT);
 		theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
