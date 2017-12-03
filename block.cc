@@ -1,6 +1,7 @@
 #include "block.h"
 #include "grid.h"
 #include "info.h"
+#include <utility>
 
 using namespace std;
 
@@ -11,12 +12,12 @@ col{0}, row{0}, blockType{blockType}/**, grid {grid ? grid : nullptr} **/{
 // Block::Block(int col, int row, bool isHeavy, int level, vector<Cell> cells, Grid *theGrid): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, grid{theGrid} {}
 
 Block::Block(const Block &b):
-cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, col{b.col}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
+cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, row{b.row},col{b.col}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
 
 
-Block* Block::clone() const {
-	return new Block(blockType, level, isHeavy);
-}
+// Block* Block::clone() const {
+// 	return new Block(blockType, level, isHeavy);
+// }
 
 /**
 Block::Block(bool isHeavy, int level, vector<Cell> cells): cells{cells}, isHeavy{isHeavy}, level{level} {
@@ -28,23 +29,35 @@ Block::~Block(){
    cells.clear();
 }
 
-
-void Block::updateSetCells(unsigned int rowsToDelete) {
-	for (int i = cells.size() - 1; i >= 0; i--) {
-	 		// if the row goes out of bounds, then erase the cell
-	 		if (cells[i].getInfo().row  < rowsToDelete) {
-	 			cells.erase(cells.begin() + i);
-
-	 		} else {
-	 			// decrement each setBlock's
-	 			//cout << "cell was at row: " << cells[i].getInfo().row << endl;
-	 			cells[i].moveDown(rowsToDelete);	
-	 			//cout << "cell now at row: " << cells[i].getInfo().row << endl;
-
-	 			// block->cells.block->cells.getInfo().row - rowsToDelete;
-	 		}
-	 	}
+void Block::updateSetCells(std::vector<int> rowsToDelete) {
+	for(int r=0; r< rowsToDelete.size(); r++) {
+		for (int i=cells.size()-1; i>=0; i--) {
+			// if the row goes out of bounds, then erase the cell
+			if (cells[i].getInfo().row < rowsToDelete[r]) {
+				cells.erase(cells.begin() + i);
+			} else {
+				cells[i].moveDown(r);	
+			}
+		}
+	}
 }
+
+// void Block::updateSetCells(unsigned int rowsToDelete) {
+// 	for (int i = cells.size() - 1; i >= 0; i--) {
+// 	 		// if the row goes out of bounds, then erase the cell
+// 	 		if (cells[i].getInfo().row  < rowsToDelete) {
+// 	 			cells.erase(cells.begin() + i);
+
+// 	 		} else {
+// 	 			// decrement each setBlock's
+// 	 			//cout << "cell was at row: " << cells[i].getInfo().row << endl;
+// 	 			cells[i].moveDown(rowsToDelete);	
+// 	 			//cout << "cell now at row: " << cells[i].getInfo().row << endl;
+
+// 	 			// block->cells.block->cells.getInfo().row - rowsToDelete;
+// 	 		}
+// 	 	}
+// }
 
 std::vector<Cell> Block::getBlockCells() {
 	return cells;

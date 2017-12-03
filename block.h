@@ -35,9 +35,6 @@ public:
     void move(int, int);
 	void setBlockCellStates(StateType s);
 	void setBlockCellTypes(BlockType);
-
-
-
     int getBottomLeftCol();
     int getBottomLeftRow();
     void playBlock();
@@ -48,8 +45,9 @@ public:
     void down(int x=1);
     void clockwise(int x=1);
     void counterclockwise(int x =1);
-    void updateSetCells(unsigned int);
-    virtual Block* clone() const;
+    // void updateSetCells(unsigned int);
+    void updateSetCells(std::vector<int>);
+    //virtual Block* clone() const;
 
     virtual BlockType getBlockType();
 
