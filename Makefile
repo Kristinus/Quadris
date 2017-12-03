@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -Werror=vla -MMD -g
 EXEC = quadris
-OBJECTS = main.o level.o levels.o textDisplay.o graphicsDisplay.o window.o interpreter.o commands.o command.o block.o blocks.o grid.o cell.o score.o
+OBJECTS = main.o level.o levels.o textDisplay.o graphicsDisplay.o window.o interpreter.o commands.o command.o block.o blocks.o grid.o cell.o score.o invalidinputexception.o
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}

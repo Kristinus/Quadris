@@ -17,7 +17,7 @@ void Cell::setCoords(unsigned int r, unsigned int c) {
 }
 
 void Cell::moveDown(unsigned int x) {
-	info.row = info.row - x;
+	info.row -= x;
 }
 
 void Cell::setState(StateType state) {

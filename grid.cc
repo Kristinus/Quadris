@@ -264,53 +264,88 @@ void notifyRow(std::vector<Cell> & row) {
 void Grid::deleteRow() {
 	int rowsToDelete = 0;
 	int lowerRow=0;
-	for (int i = theGrid.size() - 1; i >= 0; i--) {
-		if (isFilled(theGrid[i])) {
+	vector<int> deletedRows;
+	
+	for (int r = theGrid.size()-1; r >=0; r--) {
+		if (isFilled(theGrid[r])) {
 			//(TODO) code a notify all cels function
-			lowerRow = i;
-			for (auto &c : theGrid[i]) {
-				c.setState(StateType::NONE);
-				c.setBlock(BlockType::NONE);
-				//notifyRow(the);
-
+			deletedRows.emplace_back(r);
+			theGrid.erase(theGrid.begin() + r);
+			
+			//Add row to top
+			std::vector<Cell> row;
+			for (int j = 0; j < 11; j++) {
+				Info info;
+				info.row = 17 - rowsToDelete ;
+				info.col = j;
+				info.state = StateType::NONE;
+				info.block = BlockType::NONE;
+				Cell c = Cell{info};
+				c.attach(td);
+				if(ob) c.attach(ob);
+				c.notifyObservers();
+				row.emplace_back(c);
 			}
-
-			theGrid.erase(theGrid.begin() + i);
+			theGrid.insert(theGrid.begin(), row);
+			
 			rowsToDelete++;
+
 			//Best Hack
 			//(TODO) find a btter way
+			
 			if(getLevel()==4) {
 				theLevel->restart();
 			}
 		}
-	}
-	//make a notifygrid
-
-
-	for (int i=0; i<lowerRow; i++) {
-		for (auto &c: theGrid[i]) {
+		for (auto &c: theGrid[r]) {
 			c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
 			c.notifyObservers();
 		}
 	}
+	// for (int i = theGrid.size() - 1; i >= 0; i--) {
+	// 	if (isFilled(theGrid[i])) {
+	// 		//(TODO) code a notify all cels function
+	// 		lowerRow = i;
+	// 		for (auto &c : theGrid[i]) {
+	// 			c.setState(StateType::NONE);
+	// 			c.setBlock(BlockType::NONE);
+	// 			//notifyRow(the);
+	// 		}
+
+	// 		theGrid.erase(theGrid.begin() + i);
+	// 		rowsToDelete++;
+	// 		//Best Hack
+	// 		//(TODO) find a btter way
+	// 		if(getLevel()==4) {
+	// 			theLevel->restart();
+	// 		}
+	// 	}
+	// }
+
+	// for (int i=0; i<lowerRow; i++) {
+	// 	for (auto &c: theGrid[i]) {
+	// 		c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
+	// 		c.notifyObservers();
+	// 	}
+	// }
 
 	//Recreate Rows
-	for (int i = rowsToDelete - 1; i >= 0; i--) {
-		std::vector<Cell> row;
-		for (int j = 0; j < 11; j++) {
-			Info info;
-			info.row = 17 - i;
-			info.col = j;
-			info.state = StateType::NONE;
-			info.block = BlockType::NONE;
-			Cell c = Cell{info};
-			c.attach(td);
-			if(ob) c.attach(ob);
-			c.notifyObservers();
-			row.emplace_back(c);
-		}
-		theGrid.insert(theGrid.begin(), row);
-	}
+	// for (int i = rowsToDelete - 1; i >= 0; i--) {
+	// 	std::vector<Cell> row;
+	// 	for (int j = 0; j < 11; j++) {
+	// 		Info info;
+	// 		info.row = 17 - i;
+	// 		info.col = j;
+	// 		info.state = StateType::NONE;
+	// 		info.block = BlockType::NONE;
+	// 		Cell c = Cell{info};
+	// 		c.attach(td);
+	// 		if(ob) c.attach(ob);
+	// 		c.notifyObservers();
+	// 		row.emplace_back(c);
+	// 	}
+	// 	theGrid.insert(theGrid.begin(), row);
+	// }
 
 	//Update whole grid if row is deleted
 	if(rowsToDelete>0) {
@@ -333,7 +368,7 @@ cout << setBlocks.size() << endl; **/
 	 	// iterate through each block's cells
 	 	// removes cells that are out of bounds, or sets them to the new location
 
-	 	setBlocks[j]->updateSetCells(rowsToDelete);
+	 	setBlocks[j]->updateSetCells(deletedRows);
 
 	 	if (setBlocks[j]->getBlockCells().size() == 0) {
 	 		theScore->addToCurrentScore(pow((setBlocks[j]->getLevel() + 1), 2));

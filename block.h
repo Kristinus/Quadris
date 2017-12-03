@@ -45,7 +45,8 @@ public:
     void down(int x=1);
     void clockwise(int x=1);
     void counterclockwise(int x =1);
-    void updateSetCells(unsigned int);
+    // void updateSetCells(unsigned int);
+    void updateSetCells(std::vector<int>);
     //virtual Block* clone() const;
 
     virtual BlockType getBlockType();

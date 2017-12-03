@@ -8,9 +8,9 @@
 using namespace std;
 
 // -text runs the program in text only mode (no graphics) defult is ns show both text and graphics
-// -seed number, sets the random number generator's seed to xxx
-// -screiptfile xxx, use xxx instead of sequence as a source of blocks for level 0
-// - startleevl n, starts the game in level n... otherwise default is zero
+// -seed [number], sets the random number generator's seed to xxx
+// -scriptfile xxx, use xxx instead of sequence as a source of blocks for level 0
+// -startlevel [0-4], starts the game in level n... otherwise default is zero
 
 
 int main(int argc, char *argv[]) {
@@ -18,35 +18,37 @@ int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
   bool textOnly = false;
   int seed = time(NULL);
-  cout <<seed << endl;
   string scriptFile = constants::DEFAULT_SCRIPT_FILE;
   int startLevel = 0;
 
   for (int i = 1; i < argc; ++i) {
     string cmd = argv[i];
-
     if (cmd == "-text") {
       textOnly = true;
     }
+
     else if (cmd == "-seed") {
+      // case for missing seed argument
       if (i + 1 == argc) {
-        // there is no seed argument
+        cerr << "Missing Argument: -seed [number] .";
+        return 1;
       }
       else {
-        // make sure it sucessful converts to int
-        istringstream iss{argv[i+1]};
+        // check that seed is fed a number
+        istringstream iss{argv[i + 1]};
         if (!(iss >> seed)) {
-          cerr << "seed is not number" << endl;
+          cerr << "Invalid Input: Please provide a number for the seed" << endl;
           return 1;
         }
         i++;
         
       }
     }
+
     else if (cmd == "-scriptfile") {
       if (i + 1 == argc) {
-        // no 
-        cerr << "no scriptfile field" << endl;
+        cerr << "Missing Argument: -scriptfile [filename]" << endl;
+        return 1;
       }
       else {
         scriptFile = argv[i + 1];
@@ -60,20 +62,22 @@ int main(int argc, char *argv[]) {
       }
       else {
         istringstream iss {argv[i + 1]};
+
+        // check that the input is an integer and is one of the five levels
         if (!(iss >> startLevel) && 
           (startLevel > constants::MAX_LEVEL || startLevel < constants::MIN_LEVEL )) {
-          cerr << "wrong level" << endl;
-          return 1;
-        }
-        i++;
-      }
+          cerr << "Invalid Input: Use -startlevel [integer between 0 - 4 ]" << endl;
+        return 1;
+      } 
+      i++;
     }
-
   }
 
-  Interpreter in = Interpreter(seed, textOnly, scriptFile, startLevel);
-  in.run();
+}
+
+Interpreter in = Interpreter(seed, textOnly, scriptFile, startLevel);
+in.run();
 
 
-  // catch (ios::failure &) {}  // Any I/O failure quits
+   //catch (ios::failure &) {}  // Any I/O failure quits
 }

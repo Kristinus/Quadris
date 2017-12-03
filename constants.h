@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <string>
 namespace constants {
 	const int GRID_HEIGHT = 18;
 	const int GRID_WIDTH = 11;
@@ -13,6 +14,10 @@ namespace constants {
 	const std::vector<char> BLOCKS = {
 		'I','J','L','O','S','T','Z'
 	};
+	const std::string NO_INPUT = "Invalid Input: Please provide a command.";
+
 }
+
+
 
 #endif
