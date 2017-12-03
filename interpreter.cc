@@ -34,9 +34,9 @@ void Interpreter::initCommandMap() {
     commandMap["J"] = new ReplaceCommand(grid, 'J');
     commandMap["L"] = new ReplaceCommand(grid, 'L');
     commandMap["O"] = new ReplaceCommand(grid, 'O');
-    commandMap["T"] = new ReplaceCommand(grid, 'S');
-    commandMap["Z"] = new ReplaceCommand(grid, 'T');
-    commandMap["S"] = new ReplaceCommand(grid, 'Z');
+    commandMap["S"] = new ReplaceCommand(grid, 'S');
+    commandMap["T"] = new ReplaceCommand(grid, 'T');
+    commandMap["Z"] = new ReplaceCommand(grid, 'Z');
 }
 
 Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLevel) {

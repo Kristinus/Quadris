@@ -263,18 +263,13 @@ void notifyRow(std::vector<Cell> & row) {
 void Grid::deleteRow() {
 	int rowsToDelete = 0;
 	int lowerRow=0;
-	for (int i = theGrid.size() - 1; i >= 0; i--) {
-		if (isFilled(theGrid[i])) {
+	vector<int> deletedRows;
+	
+	for (int r = 0; r < theGrid.size(); r++) {
+		if (isFilled(theGrid[r])) {
 			//(TODO) code a notify all cels function
-			lowerRow = i;
-			for (auto &c : theGrid[i]) {
-				c.setState(StateType::NONE);
-				c.setBlock(BlockType::NONE);
-				//notifyRow(the);
-
-			}
-
-			theGrid.erase(theGrid.begin() + i);
+			deletedRows.emplace_back(r);
+			theGrid.erase(theGrid.begin() + r);
 			rowsToDelete++;
 			//Best Hack
 			//(TODO) find a btter way
@@ -282,16 +277,39 @@ void Grid::deleteRow() {
 				theLevel->restart();
 			}
 		}
-	}
-	//make a notifygrid
-
-
-	for (int i=0; i<lowerRow; i++) {
-		for (auto &c: theGrid[i]) {
-			c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
-			c.notifyObservers();
+		else {
+			for (auto &c: theGrid[r]) {
+				c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
+				c.notifyObservers();
+			}
 		}
 	}
+	// for (int i = theGrid.size() - 1; i >= 0; i--) {
+	// 	if (isFilled(theGrid[i])) {
+	// 		//(TODO) code a notify all cels function
+	// 		lowerRow = i;
+	// 		for (auto &c : theGrid[i]) {
+	// 			c.setState(StateType::NONE);
+	// 			c.setBlock(BlockType::NONE);
+	// 			//notifyRow(the);
+	// 		}
+
+	// 		theGrid.erase(theGrid.begin() + i);
+	// 		rowsToDelete++;
+	// 		//Best Hack
+	// 		//(TODO) find a btter way
+	// 		if(getLevel()==4) {
+	// 			theLevel->restart();
+	// 		}
+	// 	}
+	// }
+
+	// for (int i=0; i<lowerRow; i++) {
+	// 	for (auto &c: theGrid[i]) {
+	// 		c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
+	// 		c.notifyObservers();
+	// 	}
+	// }
 
 	//Recreate Rows
 	for (int i = rowsToDelete - 1; i >= 0; i--) {
