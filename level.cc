@@ -80,13 +80,13 @@ void Level::setSeed(int seed) {
 
 void Level::setRandom(bool flag) {
     random = flag;
-    if(random) seq.open(randFile);
+    if(!random) seq.open(randFile);
     else seq.close();
 }
 
 void Level::setFile(std::string file) {
     randFile = file;
-    setRandom(false);
+    setRandom(true);
 }
 
 bool Level::isHeavy() {
