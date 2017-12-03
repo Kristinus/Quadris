@@ -215,9 +215,6 @@ void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
 		if (shouldNotify) theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
-	if (s == StateType::STATIC) {
-		setBlocks.emplace_back(b);
-	}
 
 
 
@@ -448,6 +445,7 @@ void Grid::drop(int x) {
 		}
 
 		updateCells(currentBlock, StateType::STATIC, true);
+		setBlocks.emplace_back(currentBlock);
 
 
 
@@ -621,8 +619,9 @@ void Grid::hint() {
 	currentBlock->right(1);
 	//cout << "AFTER" << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
 
-
+	//(TODO) SCREW REPEATED CODE
 	HintInfo best{0,0,0,0};
+	bool hasMovedLeft = false;
 
 	for (int i = 0; i < 4; i++) {
 		int horizontal = 0;
@@ -658,7 +657,6 @@ void Grid::hint() {
 
 			updateCells(currentBlock, StateType::NONE, shouldNotify);
 			currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
-
 			horizontal++;
 
 		}
@@ -677,6 +675,52 @@ void Grid::hint() {
 
 
 	}
+
+
+	for (int i = 0; i < 4; i++) {
+		int horizontal = 0;
+
+
+		while (isValidMove(-horizontal, 0)) {
+			for (int i = 0; i < horizontal; i++) {
+							currentBlock->left(1);
+
+			}
+
+			while (isValidMove(0, -1)) {
+
+				currentBlock->down(1);
+			}
+			//cout << "BL AFTER DOWN" << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
+
+			updateCells(currentBlock, StateType::STATIC, shouldNotify);
+			double tempPriority = calculatePriority();
+			for (auto h : getHeights()) {
+				cout << h << " ";
+			}
+			cout << endl;
+			cout << "PRIORITY : " << tempPriority << " at rotation " << i << " and B L " 
+			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl;
+
+			if (tempPriority > best.priority) {
+				best.priority = tempPriority;
+				best.numRotations = i;
+				best.bottomLeftCol = currentBlock->getBottomLeftCol();
+				best.bottomLeftRow = currentBlock->getBottomLeftRow();
+			}
+
+			updateCells(currentBlock, StateType::NONE, shouldNotify);
+			currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
+			horizontal++;
+
+		}
+
+
+		currentBlock->clockwise(1);
+		//deleteCurrentBlock();
+
+	}
+
 	cout << "the hint we want to give: " << best.bottomLeftRow << "," << best.bottomLeftCol <<" BL" << "with Rotations " << best.numRotations << "and priority " << best.priority << endl;
 	updateCells(currentBlock, StateType::NONE, shouldNotify);
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
@@ -696,7 +740,8 @@ void Grid::hint() {
 	//combine these two for loops (TODO)
 	cpy->setBlockCellTypes(BlockType::HINT);
 	for (auto &c: cpy->getBlockCells()) {
-		c.notifyObservers();
+		theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::HINT);
+		theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
 	/**for (auto &row : theGrid) {
