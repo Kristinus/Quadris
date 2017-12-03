@@ -1,8 +1,9 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <X11/XKBlib.h>
 #include <iostream>
 #include <cstdlib>
-#include <string>
+#include <string.h>
 #include <sstream>
 #include <unistd.h>
 #include "window.h"
@@ -106,4 +107,45 @@ void Xwindow::showAvailableFonts() {
   char** fnts = XListFonts(d, "*", 10000, &count);
 
   for (int i = 0; i < count; ++i) cout << fnts[i] << endl;
+}
+
+void Xwindow::readInput() {
+  char szKey[32];
+  char szKeyOld[32] = {0};
+
+  char szBit;
+  char szBitOld;
+  int  iCheck;
+
+  char szKeysym;
+  char * szKeyString;
+
+  int iKeyCode;
+
+  // Window focusWin = NULL;
+  // int iReverToReturn = NULL;
+  while(1) {
+    XQueryKeymap( d, szKey );
+    if( memcmp( szKey, szKeyOld, 32 ) != 0 ) {
+      for( size_t i = 0; i < sizeof( szKey ); i++ ) {
+        szBit = szKey[i];
+        szBitOld = szKeyOld[i];
+        iCheck = 1;
+
+        for ( int j = 0 ; j < 8 ; j++ ) {
+          if ( ( szBit & iCheck ) && !( szBitOld & iCheck ) ) {
+            iKeyCode = i * 8 + j ;
+
+            szKeysym = XKeycodeToKeysym( d, iKeyCode, 0 );
+            szKeyString = XKeysymToString( szKeysym );
+
+            // XGetInputFocus( d, &focusWin, &iReverToReturn );
+            printf( "Key: %s\n", szKeyString );
+          }
+        iCheck = iCheck << 1 ;
+        }
+      }
+    }
+    memcpy( szKeyOld, szKey, 32 );
+  }
 }

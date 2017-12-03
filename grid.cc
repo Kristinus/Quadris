@@ -16,6 +16,7 @@ Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile)
 	theLevel = new Level0(this, seed, scriptFile);
 	while(theLevel->getLevel()<startLevel) {
 		theLevel = theLevel->levelUp();
+		theLevel->setCounter(-2);
 	}
 	theScore = new Score();
 	td = new TextDisplay(this);
@@ -279,8 +280,7 @@ void Grid::deleteRow() {
 			//Best Hack
 			//(TODO) find a btter way
 			if(getLevel()==4) {
-				theLevel = theLevel->levelDown();
-				theLevel = theLevel->levelUp();
+				theLevel->restart();
 			}
 		}
 	}
@@ -290,6 +290,7 @@ void Grid::deleteRow() {
 	for (int i=0; i<lowerRow; i++) {
 		for (auto &c: theGrid[i]) {
 			c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
+			c.notifyObservers();
 		}
 	}
 
@@ -305,6 +306,7 @@ void Grid::deleteRow() {
 			Cell c = Cell{info};
 			c.attach(td);
 			if(ob) c.attach(ob);
+			c.notifyObservers();
 			row.emplace_back(c);
 		}
 		theGrid.insert(theGrid.begin(), row);
@@ -312,12 +314,11 @@ void Grid::deleteRow() {
 
 	//Update whole grid if row is deleted
 	if(rowsToDelete>0) {
-		for (auto &row : theGrid) {
-			for (auto &c: row) {
-				c.notifyObservers();
-			}
-		}
-	
+		// for (int i = rowsToDelete - 1; i >= 0; i--) {
+		// 	for (auto &c: theGrid[i]) {
+		// 		c.notifyObservers();
+		// 	}
+		// }	
 
 //	Delete Cells from Block if in deleted row
 //	Decrement cell.row in each block
@@ -549,17 +550,18 @@ void Grid::restart() {
     delete currentBlock;
     delete nextBlock;
     
-	//Go back to level 0
+	//Go back to level startLevel
 	while(getLevel()>startLevel) {
 		theLevel = theLevel->levelDown();
 	}
 	while(getLevel()<startLevel) {
 		theLevel = theLevel->levelUp();
 	}
+	theLevel->restart();
 	
 	theScore->setCurrentScore(0);  
 	td->clear();
-	ob->clear();
+	if(ob) ob->clear();
     initGrid(); 
 	//(TODO) clear level(reset file and level 4 counter)
 

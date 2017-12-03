@@ -31,6 +31,8 @@ class Xwindow {
 
   // Prints the first 10000 available fonts
   void showAvailableFonts();
+
+  void readInput();
 };
 
 #endif

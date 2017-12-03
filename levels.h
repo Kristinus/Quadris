@@ -55,5 +55,6 @@ public:
     Level *levelDown();
     int getLevel();
     void restart() override;
+    void setCounter(int) override;
 };
 #endif

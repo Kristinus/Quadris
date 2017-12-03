@@ -97,4 +97,7 @@ void Level::restart() {
     srand(seed);
 }
 
+void Level::setCounter(int i) {
+}
+
 Level::~Level() {}
