@@ -86,9 +86,8 @@ void RandomCommand::execute(int m, std::string file) {
 SequenceCommand::SequenceCommand(Grid *g, Interpreter *i): Command(g), i{i} {}
 
 void SequenceCommand::execute(int m, std::string file) {
-    seq.open(file);
-    i->run(seq);
-    seq.close();
+    std::ifstream fs{file};
+    i->run(fs);
 }
 
 /******************************************************************************/

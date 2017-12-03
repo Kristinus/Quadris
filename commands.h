@@ -66,7 +66,6 @@ public:
 };
 
 class SequenceCommand: public Command {
-	std::ifstream seq;
 	Interpreter *i;
 public:
 	SequenceCommand(Grid *, Interpreter *);
@@ -91,38 +90,6 @@ public:
 	ReplaceCommand(Grid *, char);
 	void execute(int m, std::string) override;
 };
-
-// class JCommand: public Command {
-// public:
-// 	JCommand(Grid *);
-// 	void execute(int m, std::string) override;
-// };
-
-// class LCommand: public Command {
-// public:
-// 	LCommand(Grid *);
-// 	void execute(int m, std::string) override;
-// };
-// class TCommand: public Command {
-// public:
-// 	TCommand(Grid *);
-// 	void execute(int m, std::string) override;
-// };
-// class OCommand: public Command {
-// public:
-// 	OCommand(Grid *);
-// 	void execute(int m, std::string) override;
-// };
-// class SCommand: public Command {
-// public:
-// 	SCommand(Grid *);
-// 	void execute(int m, std::string) override;
-// };
-// class ZCommand: public Command {
-// public:
-// 	ZCommand(Grid *);
-// 	void execute(int m, std::string) override;
-// };
 
 #endif
 
