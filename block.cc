@@ -176,7 +176,7 @@ void Block::rotate(int dir) {
 	//if (grid == nullptr) cout << "its null" << endl;
 	for (int i = 0; i < cells.size(); i++) {
 		if (cells[i].getInfo().block != BlockType::HINT && !isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
-			return;
+			//return;
 			// or we can throw an exception!!!!!!!!!!1
 		}
 		cells[i].setCoords(rotatedRow[i], rotatedCol[i]);
