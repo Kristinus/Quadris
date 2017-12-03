@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "blocks.h"
 
-Level0::Level0(Grid * grid, int seed, std::string file): Level(grid,, seed, file, false) {
+Level0::Level0(Grid * grid, int seed, std::string file): Level(grid, seed, file, false) {
     seq.open(sourceFile);
 }
 
