@@ -18,10 +18,6 @@ int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
   bool textOnly = false;
   int seed = time(NULL);
-<<<<<<< HEAD
-=======
-  cout << seed << endl; // UNCOMMENT THIS AFTER PLS
->>>>>>> ae706162adc0b387ec34769f157872a50b478c82
   string scriptFile = constants::DEFAULT_SCRIPT_FILE;
   int startLevel = 0;
 
