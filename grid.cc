@@ -204,7 +204,6 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
 	b->setBlockCellStates(s);
 	for (auto &c : b->getBlockCells()) {
-		c.setBlock(b->getBlockType()); // is this necessary
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setState(s);
 
@@ -316,6 +315,28 @@ cout << setBlocks.size() << endl; **/
 		theScore->addToCurrentScore(pow(theLevel->getLevel() + rowsToDelete, 2));
 	}
 }
+/**
+bool Grid::isValidMove(void (*f)(int), int mult) {
+
+	Block * cpy = currentBlock->clone();
+	cpy.setGridPointer(this);
+	while (mult > 0) {
+		f(1);
+		mult--;
+	}
+
+	for (auto &cell: cpy->getBlockCells()) {
+		int newrow = cell.getInfo().row;
+		int newcol = cell.getInfo().col;
+		if ((!(newcol >= 0 && newcol < 11 && newrow >= 0)) || 
+			(theGrid[17 - cell.getInfo().row][cell.getInfo().row].getInfo().state == StateType::STATIC)) {
+			cout << "INVALID MOVE!" << endl;
+			return false;
+		}
+	
+	}
+	return true;	
+} **/
 
 bool Grid::isValidMove(int colshift, int rowshift) {
 	for (auto &cell: currentBlock->getBlockCells()) {
@@ -363,7 +384,7 @@ void Grid::left(int x) {
 		shift++;
 	}
 	updateCells(currentBlock);
-	if(currentBlock->isBlockHeavy()) down(1);
+	if (currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
 
@@ -608,39 +629,35 @@ void Grid::hint() {
 	vector<Cell> hintCells;
 	int oldBottomLeftRow = currentBlock->getBottomLeftRow();
 	int oldBottomLeftCol = currentBlock->getBottomLeftCol();
-	//cout << "BEFORE: " << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
 	currentBlock->down(1);
 	currentBlock->right(1);
-	//cout << "AFTER" << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
 
 	//(TODO) SCREW REPEATED CODE
 	HintInfo best{0,0,0,0};
 	bool hasMovedLeft = false;
+	int dir = 1;
 
 	for (int i = 0; i < 4; i++) {
 		int horizontal = 0;
 
-
-		while (isValidMove(horizontal, 0)) {
+		while (isValidMove(dir * horizontal, 0)) {
 			for (int i = 0; i < horizontal; i++) {
-							currentBlock->right(1);
+				currentBlock->right(1);
 
 			}
-
 			while (isValidMove(0, -1)) {
-
 				currentBlock->down(1);
 			}
 			//cout << "BL AFTER DOWN" << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
 
 			updateCells(currentBlock, StateType::STATIC, shouldNotify);
 			double tempPriority = calculatePriority();
-			for (auto h : getHeights()) {
+			/**for (auto h : getHeights()) {
 				cout << h << " ";
 			}
 			cout << endl;
 			cout << "PRIORITY : " << tempPriority << " at rotation " << i << " and B L " 
-			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl;
+			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl; **/
 
 			if (tempPriority > best.priority) {
 				best.priority = tempPriority;
@@ -657,78 +674,21 @@ void Grid::hint() {
 
 
 		currentBlock->clockwise(1);
-		//deleteCurrentBlock();
-
-
-
-		
-
-	//	cout << "smoothness:" << smoothness << " completeLines: " << completeLines << "numHoles: " << numHoles << endl;
-		//double priority = (1/ (1+smoothness)) * completeLines * 1/(numHoles+1);
-
-
 
 	}
 
 
-	for (int i = 0; i < 4; i++) {
-		int horizontal = 0;
 
 
-		while (isValidMove(-horizontal, 0)) {
-			for (int i = 0; i < horizontal; i++) {
-							currentBlock->left(1);
-
-			}
-
-			while (isValidMove(0, -1)) {
-
-				currentBlock->down(1);
-			}
-			//cout << "BL AFTER DOWN" << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
-
-			updateCells(currentBlock, StateType::STATIC, shouldNotify);
-			double tempPriority = calculatePriority();
-			for (auto h : getHeights()) {
-				cout << h << " ";
-			}
-			cout << endl;
-			cout << "PRIORITY : " << tempPriority << " at rotation " << i << " and B L " 
-			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl;
-
-			if (tempPriority > best.priority) {
-				best.priority = tempPriority;
-				best.numRotations = i;
-				best.bottomLeftCol = currentBlock->getBottomLeftCol();
-				best.bottomLeftRow = currentBlock->getBottomLeftRow();
-			}
-
-			updateCells(currentBlock, StateType::NONE, shouldNotify);
-			currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
-			horizontal++;
-
-		}
-
-
-		currentBlock->clockwise(1);
-		//deleteCurrentBlock();
-
-	}
-
-	cout << "the hint we want to give: " << best.bottomLeftRow << "," << best.bottomLeftCol <<" BL" << "with Rotations " << best.numRotations << "and priority " << best.priority << endl;
 	updateCells(currentBlock, StateType::NONE, shouldNotify);
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 	updateCells(currentBlock, StateType::MOVING);
-	
 	Block* cpy = currentBlock->clone();
 	cpy->setGridPointer(this);
 	int numRotations = best.numRotations;
 	int newBottomLeftCol = best.bottomLeftCol;
 	int newBottomLeftRow = best.bottomLeftRow;
-
-
 	cpy->clockwise(numRotations);
-
 	cpy->moveTo(newBottomLeftRow, newBottomLeftCol);
 
 	//combine these two for loops (TODO)
@@ -738,86 +698,8 @@ void Grid::hint() {
 		theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
-	/**for (auto &row : theGrid) {
-		for (auto &c: row) {
-			if (c.getInfo().block == BlockType::I) {
-				cout << "STATIC " << c.getInfo().row << " | " << c.getInfo().col;
-			}
-			cout << endl;
-			if (c.getInfo().block == BlockType::NONE) {
-				cout << "NONE " << c.getInfo().row << " | " << c.getInfo().col;
-			}
-		}
-		cout << endl;
-	}
-	cout << endl; **/
-
-
-		
-
 }
-/**
-void Grid::hint() {
-	cout << "HINT" << endl;
 
-	// MAKE SURE TO RESET HINTINFO
-	// RESET THE HINT BLOCK
-	// CODE THE MOVE TO HINT INFO WITH ROTATIONS AND TRANSLATIONS
-
-	std::vector<HintInfo> hintInfo;
-		cout << "HINT" << endl;
-
-
-	//Block temp{*currentBlock}; // implement the Copy Ctor
-	hintBlock = theLevel->createBlock();
-		cout << "HINT" << endl;
-
-
-	for (unsigned int i = 0; i < 4; i++) {
-		try {
-			hintBlock->clockwise(i);
-		} catch (...) { // rotaetfailexception
-			continue;
-		}
-
-		int horizontal = 0;
-		// make default params to be currenbloc cells
-		while (isValidMove(horizontal, 0)) {
-
-			hintBlock->right(horizontal);
-			while (isValidMove(0, -1)) {
-				hintBlock->down(1);
-			}
-
-			// /setBlock(hintBlock);
-			double smoothness = calculateSmoothness();
-			int completeLines = countCompleteLines();
-			int numHoles = countHoles();
-			cout << "smoothness:" << smoothness << " completeLines: " << completeLines << "numHoles: " << numHoles << endl;
-			double priority = (1/ (1+smoothness)) * completeLines * 1/(numHoles+1);
-			hintInfo.emplace_back(HintInfo{hintBlock->getBottomLeftRow(), hintBlock->getBottomLeftCol(), i, priority});
-			unsetBlock(hintBlock);
-			horizontal++;
-		}
-		horizontal = 0;
-
-		//(TODO) refactor so that we can input horizontal and change direction :)
-
-
-		int max = 0;
-		HintInfo best{0,0,0,0};
-		for (HintInfo h : hintInfo) {
-
-			if (h.priority > max) {
-				max = h.priority;
-				best = h;
-			}
-		}
-
-
-	}
-}
-**/
 Block * Grid::getNextBlock() {
 	return nextBlock;
 }
