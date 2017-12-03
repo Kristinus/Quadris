@@ -1,0 +1,8 @@
+down
+2right
+left
+drop
+sequence tests/basicMove.in
+drop 
+drop
+drop
