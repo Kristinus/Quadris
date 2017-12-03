@@ -11,7 +11,7 @@ using namespace std;
 
 Grid::Grid(int seed, Observer<Info> *ob, std::string scriptFile): ob{ob} {
 // NEED TO FIGURE THIS SHIT OUT
-	theLevel = new Level0(seed, scriptFile);
+	theLevel = new Level0(this, seed, scriptFile);
 	theScore = new Score();
 	td = new TextDisplay(this);
 	//  std::vector<Block *> setBlocks;
@@ -487,15 +487,17 @@ void Grid::drop(int x) {
 		updateCells(currentBlock);
 
 
-		//cout <<"hi";
+		//Makes next block
 		nextBlock = theLevel->createBlock();
 		nextBlock->setGridPointer(this);
-		if(ob)ob->clearNext();
-		if(ob) nextBlock->displayNext(ob);
+		if(ob) {
+			ob->clearNext();
+			nextBlock->displayNext(ob);
+		}
 		x--;
 
 	}
-
+	ob->update();
 
 	
 
@@ -510,7 +512,11 @@ void Grid::restart() {
 
     delete currentBlock;
     delete nextBlock;
-    // note: level doesn't change
+    
+	//Go back to level 0
+	while(getLevel()>0) {
+		theLevel->levelDown();
+	}
 	
 	theScore->setCurrentScore(0);  
 	td->clear();

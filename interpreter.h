@@ -19,6 +19,7 @@ class Interpreter {
     GraphicsDisplay *gd = nullptr;
     Grid *grid = nullptr;
     // Level level;
+    bool gameOver = false;
 
     void initCommandMap();
     ProcessedInput parseCommand(std::string);

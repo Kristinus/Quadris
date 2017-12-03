@@ -5,7 +5,7 @@
 //     return new IBlock();
 // }
 
-Level::Level(int seed, std::string file, bool heavy):seed{seed},sourceFile{file}, heavy{heavy} {
+Level::Level(Grid *, int seed, std::string file, bool heavy):seed{seed},sourceFile{file}, heavy{heavy}, grid{grid} {
     srand(seed);
 }
 

@@ -33,16 +33,20 @@ BlockType IBlock::getBlockType() {
 JBlock::JBlock(int level, bool isHeavy): Block(level, isHeavy) {
     type = 'J';
     Info i;
+    
+    i.state = StateType::NEXT;
+    i.block = BlockType::J;
+    i.col = 0;
     i.row = 1;
+    cells.emplace_back(Cell(i));
+    i.row = 0;
     i.state = StateType::NEXT;
     i.block = BlockType::J;
     for(int c=0; c<3; c++) {
         i.col = c;
         cells.emplace_back(Cell(i));   
     }
-    i.col = 0;
-    i.row = 0;
-    cells.emplace_back(Cell(i));
+    
     
  //       row = 0;
    // col  = 0;
@@ -70,14 +74,16 @@ LBlock::LBlock(int level, bool isHeavy): Block(level, isHeavy) {
     Info i;
     i.state = StateType::NEXT;
     i.block = BlockType::L;
+
     i.row = 1;
+    i.col = 2;
+    cells.emplace_back(Cell(i));
+    i.row = 0;
     for(int c = 0;c < 3; c++) {
         i.col = c;
         cells.emplace_back(Cell(i));
     }
-    i.row = 0;
-    i.col = 2;
-    cells.emplace_back(Cell(i));
+    
     
 
 }
