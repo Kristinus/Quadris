@@ -253,8 +253,11 @@ void Grid::deleteRow() {
 			theGrid.erase(theGrid.begin() + i);
 			rowsToDelete++;
 			//Best Hack
-			theLevel = theLevel->levelDown();
-			theLevel = theLevel->levelUp();
+			//(TODO) find a btter way
+			if(getLevel()==4) {
+				theLevel = theLevel->levelDown();
+				theLevel = theLevel->levelUp();
+			}
 		}
 	}
 	//make a notifygrid
