@@ -71,4 +71,5 @@ void GraphicsDisplay::clear() {
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
   xw.drawString(11*cellSize+10,10,"Next:"); 
+  update();
 }

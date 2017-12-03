@@ -87,12 +87,12 @@ void Block::displayNext(Observer<Info> *ob) {
 
 void Block::down(int x){
 
-	row++;
+	row--;
    	move(0,-1);
 
-   			for (auto c: getBlockCells()) {
+   			// for (auto c: getBlockCells()) {
 		// cout << "DOWN(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	}
+	// }
 }
 
 bool Block::isValidCoordinate(int row , int col) {

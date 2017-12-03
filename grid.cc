@@ -478,23 +478,12 @@ void Grid::restart() {
     delete currentBlock;
     delete nextBlock;
     // note: level doesn't change
+	
+	theScore->setCurrentScore(0);  
 	td->clear();
 	ob->clear();
     initGrid(); 
-//     currentBlock = theLevel->createBlock();
-// 	currentBlock->setGridPointer(this);
-// 	currentBlock->moveTo(14,0);
-// 	//updateCells(currentBlock, StateType::MOVING);
-
-
-
-//    // playBlock(currentBlock);
-//     nextBlock = theLevel->createBlock();
-//     nextBlock->setGridPointer(this);
-
-
-
-    theScore->setCurrentScore(0);  
+	//(TODO) clear level(reset file and level 4 counter)
 
 }
 
@@ -690,8 +679,23 @@ int Grid::getLevel() {
 }
 
 void Grid::replaceBlock(char type) {
-	currentBlock = theLevel->getBlock(type);
 
+	BlockType currentT = currentBlock->getBlockType();
+	int col = currentBlock->getBottomLeftCol();
+	int row = currentBlock->getBottomLeftRow();
+	deleteCurrentBlock();
+	currentBlock = theLevel->getBlock(type);
+	currentBlock->setGridPointer(this);
+	if(isValidMove(col, row)) {
+		currentBlock->moveTo(row, col);
+		updateCells(currentBlock);
+	}
+	else {
+		currentBlock = theLevel->getBlock(currentT);	
+		currentBlock->setGridPointer(this);
+		currentBlock->moveTo(row, col);
+		updateCells(currentBlock);
+	}
 	//(TODO) replace current block (move to location)
 }
 

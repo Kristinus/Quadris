@@ -55,6 +55,24 @@ Block * Level::getBlock(char b) {
     return nullptr;
 }
 
+Block * Level::getBlock(BlockType type) {
+    if (type==BlockType::I)
+        return new IBlock(getLevel(), heavy);
+    else if (type==BlockType::J)
+        return new JBlock(getLevel(), heavy);
+    else if (type==BlockType::L)
+        return new LBlock(getLevel(), heavy);
+    else if (type==BlockType::O)
+        return new OBlock(getLevel(), heavy);
+    else if (type==BlockType::S)
+        return new SBlock(getLevel(), heavy);
+    else if (type==BlockType::T)
+        return new TBlock(getLevel(), heavy);
+    else if (type==BlockType::Z)
+        return new ZBlock(getLevel(), heavy);
+    return nullptr;
+}
+
 void Level::setSeed(int seed) {
     this->seed = seed;
     srand(seed);

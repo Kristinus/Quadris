@@ -2,6 +2,7 @@
 #define LEVEL_H
 #include "block.h"
 #include "blocks.h"
+#include "info.h"
 #include <functional>
 #include <fstream>
 #include <string>
@@ -24,6 +25,7 @@ public:
     void setFile(std::string);
     bool isHeavy();
     Block *getBlock(char);
+    Block *getBlock(BlockType);
     virtual int getLevel() = 0;
     virtual Block *createBlock() = 0;
     virtual ~Level();
