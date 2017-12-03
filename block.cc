@@ -30,13 +30,13 @@ Block::~Block(){
 }
 
 void Block::updateSetCells(std::vector<int> rowsToDelete) {
-	for(int r=0; r< rowsToDelete.size(); r++) {
-		for (int i=cells.size()-1; i>=0; i--) {
+	for (int i=cells.size()-1; i>=0; i--) {
+		for(int r=0; r< rowsToDelete.size(); r++) {
 			// if the row goes out of bounds, then erase the cell
-			if (cells[i].getInfo().row < rowsToDelete[r]) {
+			if (cells[i].getInfo().row == rowsToDelete[r]) {
 				cells.erase(cells.begin() + i);
 			} else {
-				cells[i].moveDown(r);	
+				cells[i].moveDown(1);	
 			}
 		}
 	}
