@@ -93,4 +93,8 @@ bool Level::isHeavy() {
     return heavy;
 }
 
+void Level::restart() {
+    srand(seed);
+}
+
 Level::~Level() {}

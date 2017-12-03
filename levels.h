@@ -13,6 +13,7 @@ public:
     Level *levelUp();
     Level *levelDown();
     int getLevel();
+    void restart() override;
 };
 
 class Level1: public Level {
@@ -53,6 +54,6 @@ public:
     Level *levelUp();
     Level *levelDown();
     int getLevel();
-
+    void restart() override;
 };
 #endif

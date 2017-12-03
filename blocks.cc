@@ -2,7 +2,7 @@
 #include "info.h"
 #include <memory>
 
-IBlock::IBlock(int level, bool isHeavy): Block(level, isHeavy) {
+IBlock::IBlock(int level, bool isHeavy): Block(BlockType::I, level, isHeavy) {
     type = 'I';
     Info i;
     i.row = 0;
@@ -23,15 +23,11 @@ std::unique_ptr IBlock::clone() const {
 // IBlock::IBlock(int level, bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 IBlock::~IBlock() {}
-BlockType IBlock::getBlockType() {
-	return BlockType::I;
-}
-
 
 
 /*****************************************************************************/
 
-JBlock::JBlock(int level, bool isHeavy): Block(level, isHeavy) {
+JBlock::JBlock(int level, bool isHeavy): Block(BlockType::J, level, isHeavy) {
     type = 'J';
     Info i;
     
@@ -62,15 +58,10 @@ JBlock* JBlock::clone() const {
 // JBlock::JBlock(int level, bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 JBlock::~JBlock() {}
-BlockType JBlock::getBlockType() {
-	return BlockType::J;
-}
-
-
 
 /*****************************************************************************/
 
-LBlock::LBlock(int level, bool isHeavy): Block(level, isHeavy) {
+LBlock::LBlock(int level, bool isHeavy): Block(BlockType::L, level, isHeavy) {
     type = 'L';
     Info i;
     i.state = StateType::NEXT;
@@ -98,9 +89,6 @@ LBlock* LBlock::clone() const {
 // LBlock::LBlock(int level, bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 LBlock::~LBlock() {}
-BlockType LBlock::getBlockType() {
-	return BlockType::L;
-}
 
 
 
@@ -108,7 +96,7 @@ BlockType LBlock::getBlockType() {
 
 /*****************************************************************************/
 
-OBlock::OBlock(int level, bool isHeavy): Block(level, isHeavy) {
+OBlock::OBlock(int level, bool isHeavy): Block(BlockType::O, level, isHeavy) {
     type = 'O';
     Info i;
     i.state = StateType::NEXT;
@@ -126,9 +114,6 @@ OBlock::OBlock(int level, bool isHeavy): Block(level, isHeavy) {
 // OBlock::OBlock(int level, bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 OBlock::~OBlock() {}
-BlockType OBlock::getBlockType() {
-	return BlockType::O;
-}
 
 OBlock* OBlock::clone() const {
 	OBlock *cpy = new OBlock(level, isHeavy);
@@ -137,7 +122,7 @@ OBlock* OBlock::clone() const {
 
 
 /*****************************************************************************/
-SBlock::SBlock(int level, bool isHeavy): Block(level, isHeavy) {
+SBlock::SBlock(int level, bool isHeavy): Block(BlockType::S, level, isHeavy) {
     type = 'S'; 
     Info i;
     i.row = 1;
@@ -159,10 +144,6 @@ SBlock::SBlock(int level, bool isHeavy): Block(level, isHeavy) {
 
 SBlock::~SBlock() {}
 
-BlockType SBlock::getBlockType() {
-	return BlockType::S;
-}
-
 SBlock* SBlock::clone() const {
 	SBlock *cpy = new SBlock(level, isHeavy);
 	return cpy;
@@ -172,9 +153,8 @@ SBlock* SBlock::clone() const {
 
 /*****************************************************************************/
 
-TBlock::TBlock(int level, bool isHeavy): Block(level, isHeavy) {
+TBlock::TBlock(int level, bool isHeavy): Block(BlockType::T, level, isHeavy) {
     type = 'T'; 
-    grid = nullptr;
 
     Info i;
     i.state = StateType::NEXT;
@@ -200,14 +180,10 @@ TBlock* TBlock::clone() const {
 
 TBlock::~TBlock() {}
 
-BlockType TBlock::getBlockType() {
-	return BlockType::T;
-}
-
 
 
 /*****************************************************************************/
-ZBlock::ZBlock(int level, bool isHeavy): Block(level, isHeavy) {
+ZBlock::ZBlock(int level, bool isHeavy): Block(BlockType::Z, level, isHeavy) {
     type = 'Z'; 
     Info i;
     i.row = 1;
@@ -235,13 +211,9 @@ ZBlock* ZBlock::clone() const {
 
 ZBlock::~ZBlock() {}
 
-BlockType ZBlock::getBlockType() {
-	return BlockType::Z;
-}
-
 /*****************************************************************************/
 
-DotBlock::DotBlock(int level, bool isHeavy): Block(level, isHeavy) {
+DotBlock::DotBlock(int level, bool isHeavy): Block(BlockType::DOT, level, isHeavy) {
     type = '*'; 
     Info i;
     i.row = 0;
@@ -259,8 +231,4 @@ DotBlock* DotBlock::clone() const {
 // DotBlock::DotBlock(int level, bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
 
 DotBlock::~DotBlock() {}
-
-BlockType DotBlock::getBlockType() {
-	return BlockType::DOT;
-}
 

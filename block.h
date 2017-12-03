@@ -16,10 +16,13 @@ protected:
     int row;
     Grid *grid = nullptr;
     char type;
+    BlockType blockType;
+
 	bool isValidCoordinate(int row , int col);
 public:
-    Block(int level, bool isHeavy=false);
-    Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
+    Block(BlockType, int level, bool isHeavy=false);
+    Block(const Block&);
+    // Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
     // Block(bool isHeavy, int level, std::vector<Cell> cells);
     virtual ~Block();
     void setGridPointer(Grid *);
