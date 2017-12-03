@@ -31,6 +31,9 @@ public:
     int getLevel();
     void move(int, int);
 	void setBlockCellStates(StateType s);
+	void setBlockCellTypes(BlockType);
+
+
 
     int getBottomLeftCol();
     int getBottomLeftRow();

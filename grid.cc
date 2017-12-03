@@ -200,7 +200,7 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 
 }
 
-// update cell Grid
+// update cell Grid (TODO) refactor for setting block states
 void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
 	b->setBlockCellStates(s);
 	for (auto &c : b->getBlockCells()) {
@@ -608,27 +608,7 @@ double Grid::calculatePriority() {
 	return -sqrt((getBumpiness())) - (2.5 * countHoles()) + (countCompleteLines() * 3.5) +  countNumCellsOnGround() + 0.5 * countNumCellsOnWall();
 }
 
-std::vector<Cell> Grid::getHintCells(Block *b, HintInfo i) {
-	Block* cpy = b->clone();
-	cpy->setGridPointer(this);
-	int numRotations = i.numRotations;
-	int newBottomLeftCol = i.bottomLeftCol;
-		int newBottomLeftRow = i.bottomLeftRow;
-	for (auto c: cpy->getBlockCells()) {
-		cout << c.getInfo().row << " |BEFORE| " << c.getInfo().col << endl;
-	}
 
-	cpy->clockwise(numRotations);
-	cout << newBottomLeftRow << "| NEW | " << newBottomLeftCol << endl;
-
-	cpy->moveTo(newBottomLeftRow, newBottomLeftCol);
-	for (auto c: cpy->getBlockCells()) {
-		cout << c.getInfo().row << " |HINT| " << c.getInfo().col << endl;
-	}
-	return cpy->getBlockCells();
-
-
-}
 
 
 
@@ -703,7 +683,23 @@ void Grid::hint() {
 	updateCells(currentBlock, StateType::NONE, shouldNotify);
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 	updateCells(currentBlock, StateType::MOVING);
-		getHintCells(currentBlock, best);
+	
+	Block* cpy = currentBlock->clone();
+	cpy->setGridPointer(this);
+	int numRotations = best.numRotations;
+	int newBottomLeftCol = best.bottomLeftCol;
+	int newBottomLeftRow = best.bottomLeftRow;
+
+
+	cpy->clockwise(numRotations);
+
+	cpy->moveTo(newBottomLeftRow, newBottomLeftCol);
+
+	//combine these two for loops (TODO)
+	cpy->setBlockCellTypes(BlockType::HINT);
+	for (auto &c: cpy->getBlockCells()) {
+		c.notifyObservers();
+	}
 
 	/**for (auto &row : theGrid) {
 		for (auto &c: row) {
