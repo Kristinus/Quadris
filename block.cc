@@ -4,14 +4,18 @@
 
 using namespace std;
 
-Block::Block(int level, bool isHeavy/**, Grid * grid**/): isHeavy{isHeavy}, level{level}, 
-col{0}, row{0}/**, grid {grid ? grid : nullptr} **/{
+Block::Block(BlockType blockType, int level, bool isHeavy/**, Grid * grid**/): isHeavy{isHeavy}, level{level}, 
+col{0}, row{0}, blockType{blockType}/**, grid {grid ? grid : nullptr} **/{
 }
 
 // Block::Block(int col, int row, bool isHeavy, int level, vector<Cell> cells, Grid *theGrid): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, grid{theGrid} {}
 
+Block::Block(const Block &b):
+cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, col{b.col}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
+
+
 Block* Block::clone() const {
-	return new Block(level, isHeavy);
+	return new Block(blockType, level, isHeavy);
 }
 
 /**
@@ -240,7 +244,7 @@ int Block::getBottomLeftRow() {
 
 //(TODO) figure out pure virtual for this!!!!!!
 BlockType Block::getBlockType() {
-	return BlockType::NONE;
+	return blockType;
 }
 
 

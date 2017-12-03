@@ -34,9 +34,10 @@ int Level0::getLevel() {
     return 0;
 }
 
-void Level::restart() {
+void Level0::restart() {
     seq.close();
     seq.open(sourceFile);
+    srand(seed);
 }
 
 
@@ -135,3 +136,7 @@ int Level4::getLevel() {
     return 4;
 }
 
+void Level4::restart() {
+    counter = 0;
+    srand(seed);
+}

@@ -11,7 +11,6 @@ public:
 	// IBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // IBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~IBlock();
-    BlockType getBlockType();
     // void clockwise(int x=1) override;
     // void counterclockwise(int x=1) override;
 };
@@ -25,7 +24,6 @@ public:
 	// JBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // JBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~JBlock();
-    BlockType getBlockType();
 
     // void clockwise(int x=1) override;
     // void counterclockwise(int x=1) override;
@@ -40,7 +38,6 @@ public:
 	// LBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // LBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~LBlock();
-    BlockType getBlockType();
     // void clockwise(int x=1) override;
     // void counterclockwise(int x=1) override;
 };
@@ -54,7 +51,6 @@ public:
 	// OBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // OBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~OBlock();
-    BlockType getBlockType();
     // void clockwise(int x=1) override;
     // void counterclockwise(int x=1) override;
 };
@@ -68,7 +64,6 @@ public:
     // SBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // SBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~SBlock();
-    BlockType getBlockType();
     // void clockwise(int x=1) override;
     // void counterclockwise(int x=1) override;
 };
@@ -82,7 +77,6 @@ public:
 	// TBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // TBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~TBlock();
-    BlockType getBlockType();
     // void clockwise(int x=1) override;
     // void counterclockwise(int x=1) override;
 };
@@ -96,7 +90,6 @@ public:
 	// ZBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // ZBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~ZBlock();
-    BlockType getBlockType();
     // void clockwise(int x=1) override;
     // void counterclockwise(int x=1) override;
 };
@@ -111,7 +104,6 @@ public:
 	// DotBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
     // DotBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
     ~DotBlock();
-    BlockType getBlockType();
     // void clockwise(int x=1) override;
     // void counterclockwise(int x=1) override;
 };

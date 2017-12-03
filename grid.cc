@@ -738,7 +738,7 @@ int Grid::getLevel() {
 
 void Grid::replaceBlock(char type) {
 
-	BlockType currentT = currentBlock->getBlockType();
+	Block *temp = new Block(*currentBlock);
 	int col = currentBlock->getBottomLeftCol();
 	int row = currentBlock->getBottomLeftRow();
 	deleteCurrentBlock();
@@ -749,9 +749,7 @@ void Grid::replaceBlock(char type) {
 		updateCells(currentBlock);
 	}
 	else {
-		currentBlock = theLevel->getBlock(currentT);	
-		currentBlock->setGridPointer(this);
-		currentBlock->moveTo(row, col);
+		currentBlock = temp;
 		updateCells(currentBlock);
 	}
 	//(TODO) replace current block (move to location)

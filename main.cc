@@ -3,6 +3,7 @@
 #include <sstream>
 #include "constants.h"
 #include "interpreter.h"
+#include <ctime>
 
 using namespace std;
 
@@ -19,7 +20,8 @@ int main(int argc, char *argv[]) {
 
   cin.exceptions(ios::eofbit|ios::failbit);
   bool textOnly = false;
-  int seed = 0;
+  int seed = time(NULL);
+  cout <<seed << endl;
   string scriptFile = "sequence.txt";
   int startLevel = 0;
 
