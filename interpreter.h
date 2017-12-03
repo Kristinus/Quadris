@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include "invalidinputexception.h"
 // #include "level.h"
 // #include "block.h"
 // #include "grid.h"

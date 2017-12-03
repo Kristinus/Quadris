@@ -24,7 +24,6 @@ int main(int argc, char *argv[]) {
 
   for (int i = 1; i < argc; ++i) {
     string cmd = argv[i];
-
     if (cmd == "-text") {
       textOnly = true;
     }
@@ -75,5 +74,5 @@ int main(int argc, char *argv[]) {
   in.run();
 
 
-  // catch (ios::failure &) {}  // Any I/O failure quits
+   //catch (ios::failure &) {}  // Any I/O failure quits
 }
