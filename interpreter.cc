@@ -43,7 +43,7 @@ Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLe
 	if (textOnly == false) {
 		gd = new GraphicsDisplay();
 	}
-	grid = new Grid(seed, gd, scriptFile);
+	grid = new Grid(startLevel, seed, gd, scriptFile);
     if(gd) gd->setGrid(grid);
     
     initCommandMap();

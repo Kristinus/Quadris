@@ -9,9 +9,12 @@
 using namespace std;
 
 
-Grid::Grid(int seed, Observer<Info> *ob, std::string scriptFile): ob{ob} {
+Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile): startLevel{startLevel}, ob{ob} {
 // NEED TO FIGURE THIS SHIT OUT
 	theLevel = new Level0(this, seed, scriptFile);
+	while(theLevel->getLevel()<startLevel) {
+		theLevel = theLevel->levelUp();
+	}
 	theScore = new Score();
 	td = new TextDisplay(this);
 	//  std::vector<Block *> setBlocks;
@@ -526,8 +529,11 @@ void Grid::restart() {
     delete nextBlock;
     
 	//Go back to level 0
-	while(getLevel()>0) {
+	while(getLevel()>startLevel) {
 		theLevel = theLevel->levelDown();
+	}
+	while(getLevel()<startLevel) {
+		theLevel = theLevel->levelUp();
 	}
 	
 	theScore->setCurrentScore(0);  

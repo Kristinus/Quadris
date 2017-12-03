@@ -58,16 +58,16 @@ int main(int argc, char *argv[]) {
     else if (cmd == "-startlevel") {
       if (i + 1 == argc) {
         // no start
+      }
+      else {
         istringstream iss {argv[i + 1]};
         if (!(iss >> startLevel) && 
           (startLevel > MAX_LEVEL || startLevel < MIN_LEVEL )) {
           cerr << "wrong level" << endl;
           return 1;
         }
-
+        i++;
       }
-      i++;
-
     }
 
   }

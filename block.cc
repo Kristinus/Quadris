@@ -5,10 +5,10 @@
 using namespace std;
 
 Block::Block(int level, bool isHeavy/**, Grid * grid**/): isHeavy{isHeavy}, level{level}, 
-row{0}, col{0}/**, grid {grid ? grid : nullptr} **/{
+col{0}, row{0}/**, grid {grid ? grid : nullptr} **/{
 }
 
-Block::Block(int col, int row, bool isHeavy, int level, vector<Cell> cells, Grid *theGrid): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, grid{theGrid} {}
+// Block::Block(int col, int row, bool isHeavy, int level, vector<Cell> cells, Grid *theGrid): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, grid{theGrid} {}
 
 Block* Block::clone() const {
 	return new Block(level, isHeavy);

@@ -10,6 +10,7 @@ template <typename InfoType> class Observer;
 
 class Grid {
   std::vector<std::vector<Cell>> theGrid;
+  int startLevel;
   Level *theLevel;
   Score* theScore;
   std::vector<Block *> setBlocks;
@@ -18,6 +19,7 @@ class Grid {
   Block *nextBlock = nullptr;
   TextDisplay *td;
   Observer<Info> *ob;
+
   bool isRandom;
   bool isValidMove(Block *, int, int);
    bool isValidMove(int, int);
@@ -46,7 +48,7 @@ std::vector<Cell> getHintCells(Block *b, HintInfo i);
 
 
 public:
-  Grid(int seed, Observer<Info> *, std::string);
+  Grid(int startLevel, int seed, Observer<Info> *, std::string);
   std::vector<std::vector<Cell>> getGridCells();
   Block *getNextBlock();
   Score *getScore();
