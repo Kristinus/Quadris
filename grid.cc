@@ -269,7 +269,7 @@ void Grid::deleteRow() {
 	for (int r = theGrid.size()-1; r >=0; r--) {
 		if (isFilled(theGrid[r])) {
 			//(TODO) code a notify all cels function
-			deletedRows.emplace_back(r);
+			deletedRows.emplace_back(17-r);
 			theGrid.erase(theGrid.begin() + r);
 			
 			//Add row to top
@@ -289,17 +289,24 @@ void Grid::deleteRow() {
 			theGrid.insert(theGrid.begin(), row);
 			
 			rowsToDelete++;
-
 			//Best Hack
 			//(TODO) find a btter way
-			
+			// for (auto &c: theGrid[r]) {
+			// 	c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
+			// 	c.notifyObservers();
+			// }
 			if(getLevel()==4) {
 				theLevel->restart();
 			}
+			r++;
 		}
-		for (auto &c: theGrid[r]) {
-			c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
-			c.notifyObservers();
+		else {
+			if(rowsToDelete>0) {
+				for (auto &c: theGrid[r]) {
+					c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
+					c.notifyObservers();
+				}
+			}
 		}
 	}
 	// for (int i = theGrid.size() - 1; i >= 0; i--) {
@@ -322,7 +329,7 @@ void Grid::deleteRow() {
 	// 	}
 	// }
 
-	// for (int i=0; i<lowerRow; i++) {
+	// for (int i=0; i<18; i++) {
 	// 	for (auto &c: theGrid[i]) {
 	// 		c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
 	// 		c.notifyObservers();
