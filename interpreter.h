@@ -5,10 +5,7 @@
 #include <map>
 #include <memory>
 #include "invalidinputexception.h"
-// #include "level.h"
-// #include "block.h"
-// #include "grid.h"
-// #include "graphicsDisplay.h"
+
 class Grid;
 class GraphicsDisplay;
 class Command;
@@ -17,12 +14,9 @@ struct ProcessedInput;
 class Interpreter {
 	std::istream *in = &std::cin;
     std::map<std::string, std::shared_ptr<Command>> commandMap;
-
     GraphicsDisplay *gd = nullptr;
     Grid *grid = nullptr;
-    // Level level;
     bool gameOver = false;
-
     void initCommandMap();
     ProcessedInput parseCommand(std::istream &, std::string);
 public:

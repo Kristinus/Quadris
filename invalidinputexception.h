@@ -1,5 +1,5 @@
-#ifndef __INVALID_INPUT_EXCEPTION_
-#define __INVALID_INPUT_EXCEPTION_
+#ifndef __INVALID_INPUT_EXCEPTION__
+#define __INVALID_INPUT_EXCEPTION__
 #include <string>
 
 struct InvalidInputException {
