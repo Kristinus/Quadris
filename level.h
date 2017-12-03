@@ -35,6 +35,7 @@ public:
     virtual Level *levelUp() = 0;
     virtual Level *levelDown() = 0;
     virtual void restart();
+    virtual void setCounter(int);
 
 };
 

@@ -140,3 +140,7 @@ void Level4::restart() {
     counter = 0;
     srand(seed);
 }
+
+void Level4::setCounter(int i) {
+    counter = i;
+}
