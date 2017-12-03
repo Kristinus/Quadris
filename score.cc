@@ -20,4 +20,5 @@ void Score::setCurrentScore(int x) {
 
 void Score::addToCurrentScore(int x) {
 	currentScore += x;
+	if(currentScore>highScore) highScore = currentScore;
 }

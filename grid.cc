@@ -454,11 +454,13 @@ void Grid::drop(int x) {
 		updateCells(currentBlock);
 
 
-		//cout <<"hi";
+		//Makes next block
 		nextBlock = theLevel->createBlock();
 		nextBlock->setGridPointer(this);
-		if(ob)ob->clearNext();
-		if(ob) nextBlock->displayNext(ob);
+		if(ob) {
+			ob->clearNext();
+			nextBlock->displayNext(ob);
+		}
 		x--;
 
 	}

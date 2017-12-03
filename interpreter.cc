@@ -175,9 +175,19 @@ void Interpreter::run(std::istream &in) {
             (i->second)->execute(mult, processedCommand.file);
             if (grid->isOver()) {
                 cout << "GAME OVER YOU LOSER" << endl;           
-                break;
+                gameOver = true;
             }
-            cout << *grid;
+            else 
+                cout << *grid;
+        }
+        if(gameOver) {
+            cout >> "Wanna play again? [yes/no]" >> endl;
+            in >> s;
+            if(s=="yes") {
+                (commandMap.find("restart")->second)->execute(1,"");
+                gameOver = true;
+            }
+            else break;
         }
     }
 }
