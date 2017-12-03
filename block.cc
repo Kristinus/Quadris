@@ -9,6 +9,10 @@ Block::Block(int level, bool isHeavy): isHeavy{isHeavy}, level{level}, row{0}, c
 
 Block::Block(int col, int row, bool isHeavy, int level, vector<Cell> cells, Grid *theGrid): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, grid{theGrid} {}
 
+Block* Block::clone() const {
+	return new Block(level, isHeavy);
+}
+
 /**
 Block::Block(bool isHeavy, int level, vector<Cell> cells): cells{cells}, isHeavy{isHeavy}, level{level} {
    col = 0;
@@ -87,7 +91,7 @@ void Block::displayNext(Observer<Info> *ob) {
 
 void Block::down(int x){
 
-	row++;
+	row--;
    	move(0,-1);
 
    			for (auto c: getBlockCells()) {
@@ -193,6 +197,8 @@ void Block::setBlockCellStates(StateType s) {
 	}
 }
 
+
+
 void Block::clockwise(int x) {
 	x = x%4;
 	while (x > 0) {
@@ -202,8 +208,8 @@ void Block::clockwise(int x) {
 		x--;
 
 	}
-
 }
+
 
 void Block::counterclockwise(int x) {
 	x = x%4;

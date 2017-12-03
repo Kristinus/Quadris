@@ -55,7 +55,7 @@ void Grid::initGrid() {
 	// for (auto c: currentBlock->getBlockCells()) {
 	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	// }
-	updateCells(currentBlock, StateType::NONE);
+	updateCells(currentBlock, StateType::MOVING);
 
 	nextBlock = theLevel->createBlock();
 	nextBlock->setGridPointer(this);
@@ -149,35 +149,40 @@ double Grid::getStandardDeviationHeights(std::vector<int> v) {
 		double ave = getAverageHeights(v);
        double E=0;
        for( int i=0;i<v.size();i++) {
-       	cout << static_cast<double>(v[i]) << endl;
+      // 	cout << static_cast<double>(v[i]) << endl;
        	E += (static_cast<double>(v[i]) - ave) * (static_cast<double>(v[i]) - ave);
 }
        return 1/(E + 1);
-
        // the higher your scre the mo
        //return sqrt(1/v.size()*E);
 }
 
+int Grid::getBumpiness() {
+	std::vector<int> heights = getHeights();
+	int bumpiness = 0;
+	for (int i = 0; i < heights.size() - 1; i++) {
+		bumpiness += abs(heights[i]-heights[i+1]);
+	}
+	return bumpiness;
+}
+
 std::vector<int> Grid::getHeights() {
-	std::vector<int> heights(11);
-	cout << "hi1" << endl;
-	cout << theGrid[0][6].getInfo().row;
-	for ( int row = 17; row >= 0; row--) {
+	std::vector<int> heights(11, 0);
+	//cout << "hi1" << endl;
+	//cout << theGrid[0][6].getInfo().row;
+	for (int row = 17; row >= 0; row--) {
 			for ( int col = 0; col < 11; col++) {
 				// record the index of the highest static block...if no block is there... height is 0
 				if (theGrid[17 - row][col].getInfo().state == StateType::STATIC) {
-					cout << row << "|" << col << endl;
+					//cout << row << "|" << col << endl;
 					if (row + 1 > heights[col]) {
-						heights[col] = row;
+						heights[col] = row + 1;
+					}
 				}
-			}
 		}
 	}
 
-	for (auto &c : heights) {
-		c++;
-	}
-	cout <<"hi2"<< endl;
+	//cout <<"hi2"<< endl;
 
 	return heights;
 }
@@ -196,18 +201,25 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 }
 
 // update cell Grid
-void Grid::updateCells(Block *b, StateType s) {
+void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
 	b->setBlockCellStates(s);
 	for (auto &c : b->getBlockCells()) {
 		c.setBlock(b->getBlockType()); // is this necessary
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setState(s);
-		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
+
+		//(TODO) REFACTOR THIS PART
+		if (s == StateType::NONE) {
+			theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
+		}
+		if (shouldNotify) theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
 	if (s == StateType::STATIC) {
 		setBlocks.emplace_back(b);
 	}
+
+
 
 }
 
@@ -339,6 +351,8 @@ void Grid::deleteCurrentBlock() {
 
 
 
+
+
 void Grid::left(int x) {
 		deleteCurrentBlock();
 	// check if valid move
@@ -434,7 +448,7 @@ void Grid::drop(int x) {
 			currentBlock->down();
 		}
 
-		updateCells(currentBlock, StateType::STATIC);
+		updateCells(currentBlock, StateType::STATIC, true);
 
 
 
@@ -560,54 +574,151 @@ struct HintInfo {
 
 };
 
+int Grid::countNumCellsOnGround(){
+	int numCells = 0;
+	for (auto &c : theGrid[17]) {
+		if (c.getInfo().state == StateType::STATIC) {
+			numCells++;
+		}
+	}
+	return numCells;
+}
+
+int Grid::countNumCellsOnWall(){
+	int numCells = 0;
+	for (auto &row : theGrid) {
+		if (row[0].getInfo().state == StateType::STATIC) {
+			numCells++;
+		}
+		if (row[10].getInfo().state == StateType::STATIC) {
+			numCells++;
+		}
+	}
+	return numCells;
+}
+
 double Grid::calculatePriority() {
-	return calculateSmoothness() + countCompleteLines() + calculateDensity();
+	std::vector<int> heights = getHeights();
+
+	for (auto &h : heights) {
+	//	cout << "height " << h << " " << endl;
+	}
+	//cout << "SMOOTHENESS" << calculateSmoothness() << " " << countCompleteLines() << "COMPLETELINES " << calculateDensity() << " DenSITY" << endl;
+
+	return -sqrt((getBumpiness())) - (2.5 * countHoles()) + (countCompleteLines() * 3.5) +  countNumCellsOnGround() + 0.5 * countNumCellsOnWall();
+}
+
+std::vector<Cell> Grid::getHintCells(Block *b, HintInfo i) {
+	Block* cpy = b->clone();
+	cpy->setGridPointer(this);
+	int numRotations = i.numRotations;
+	int newBottomLeftCol = i.bottomLeftCol;
+		int newBottomLeftRow = i.bottomLeftRow;
+	for (auto c: cpy->getBlockCells()) {
+		cout << c.getInfo().row << " |BEFORE| " << c.getInfo().col << endl;
+	}
+
+	cpy->clockwise(numRotations);
+	cout << newBottomLeftRow << "| NEW | " << newBottomLeftCol << endl;
+
+	cpy->moveTo(newBottomLeftRow, newBottomLeftCol);
+	for (auto c: cpy->getBlockCells()) {
+		cout << c.getInfo().row << " |HINT| " << c.getInfo().col << endl;
+	}
+	return cpy->getBlockCells();
+
+
 }
 
 
 
 void Grid::hint() {
+	bool shouldNotify = false;
+
 	vector<Cell> hintCells;
 	int oldBottomLeftRow = currentBlock->getBottomLeftRow();
 	int oldBottomLeftCol = currentBlock->getBottomLeftCol();
+	//cout << "BEFORE: " << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
+	currentBlock->down(1);
+	currentBlock->right(1);
+	//cout << "AFTER" << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
 
+
+	HintInfo best{0,0,0,0};
 
 	for (int i = 0; i < 4; i++) {
-		HintInfo best{0,0,0,0};
 		int horizontal = 0;
 
 
 		while (isValidMove(horizontal, 0)) {
-			currentBlock->right(horizontal);
+			for (int i = 0; i < horizontal; i++) {
+							currentBlock->right(1);
+
+			}
+
 			while (isValidMove(0, -1)) {
+
 				currentBlock->down(1);
 			}
+			//cout << "BL AFTER DOWN" << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
+
+			updateCells(currentBlock, StateType::STATIC, shouldNotify);
+			double tempPriority = calculatePriority();
+			for (auto h : getHeights()) {
+				cout << h << " ";
+			}
+			cout << endl;
+			cout << "PRIORITY : " << tempPriority << " at rotation " << i << " and B L " 
+			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl;
+
+			if (tempPriority > best.priority) {
+				best.priority = tempPriority;
+				best.numRotations = i;
+				best.bottomLeftCol = currentBlock->getBottomLeftCol();
+				best.bottomLeftRow = currentBlock->getBottomLeftRow();
+			}
+
+			updateCells(currentBlock, StateType::NONE, shouldNotify);
+			currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
+
 			horizontal++;
 
 		}
 
-		updateCells(currentBlock, StateType::MOVING);
 
-
-		double tempPriority = calculatePriority();
-
-		if (tempPriority > best.priority) {
-			best.priority = tempPriority;
-			best.numRotations = 3;
-			best.bottomLeftCol = 3;
-			best.bottomLeftRow = 2;
-		}
-		updateCells(currentBlock, StateType::NONE);
-		currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 		currentBlock->clockwise(1);
+		//deleteCurrentBlock();
+
+
+
+		
 
 	//	cout << "smoothness:" << smoothness << " completeLines: " << completeLines << "numHoles: " << numHoles << endl;
 		//double priority = (1/ (1+smoothness)) * completeLines * 1/(numHoles+1);
-		cout << "the hint we want to give: " << best.bottomLeftCol << " BL" << "with Rotations " << best.numRotations << endl;
 
 
 
 	}
+	cout << "the hint we want to give: " << best.bottomLeftRow << "," << best.bottomLeftCol <<" BL" << "with Rotations " << best.numRotations << "and priority " << best.priority << endl;
+	updateCells(currentBlock, StateType::NONE, shouldNotify);
+	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
+	updateCells(currentBlock, StateType::MOVING);
+		getHintCells(currentBlock, best);
+
+	/**for (auto &row : theGrid) {
+		for (auto &c: row) {
+			if (c.getInfo().block == BlockType::I) {
+				cout << "STATIC " << c.getInfo().row << " | " << c.getInfo().col;
+			}
+			cout << endl;
+			if (c.getInfo().block == BlockType::NONE) {
+				cout << "NONE " << c.getInfo().row << " | " << c.getInfo().col;
+			}
+		}
+		cout << endl;
+	}
+	cout << endl; **/
+
 
 		
 
