@@ -7,7 +7,7 @@
 
 class Level0: public Level {
 public:
-    Level0(int seed, std::string);
+    Level0(Grid *, int, std::string);
     Block *createBlock() override;
     ~Level0() override; 
     Level *levelUp();
@@ -17,7 +17,7 @@ public:
 
 class Level1: public Level {
 public:
-    Level1(int seed, std::string);
+    Level1(Grid *, int, std::string);
     Block *createBlock() override;
     Level *levelUp();
     Level *levelDown();
@@ -27,7 +27,7 @@ public:
 
 class Level2: public Level {
 public:
-    Level2(int seed, std::string);
+    Level2(Grid *, int, std::string);
     Block *createBlock() override;
     Level *levelUp();
     Level *levelDown();
@@ -37,7 +37,7 @@ public:
 
 class Level3: public Level {
 public:
-    Level3(int seed, std::string);
+    Level3(Grid *, int, std::string);
     Block *createBlock() override;
     Level *levelUp();
     Level *levelDown();
@@ -48,7 +48,7 @@ public:
 class Level4: public Level {
     int counter;
 public:
-    Level4(int seed, std::string);
+    Level4(Grid *, int, std::string);
     Block *createBlock() override;
     Level *levelUp();
     Level *levelDown();

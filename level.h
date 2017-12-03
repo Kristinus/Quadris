@@ -7,6 +7,8 @@
 #include <fstream>
 #include <string>
 
+class Grid;
+
 class Level {
 protected:
     int seed;
@@ -14,11 +16,12 @@ protected:
     std::string sourceFile;
     std::string randFile;
     std::vector<std::function<Block *(int, bool)>> selector;
+    Grid *grid;
     bool heavy = false;
     bool random = true;
     Block *generateFromFile(bool);
 public:
-    Level(int, std::string, bool);
+    Level(Grid *,int, std::string, bool);
     void setDefaultSelector(int, int, int, int, int, int, int);
     void setSeed(int);
     void setRandom(bool);
