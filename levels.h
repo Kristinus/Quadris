@@ -46,6 +46,7 @@ public:
 };
 
 class Level4: public Level {
+    int counter;
 public:
     Level4(int seed, std::string);
     Block *createBlock() override;

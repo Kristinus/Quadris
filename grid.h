@@ -66,6 +66,7 @@ public:
   void levelDown(int);
   void random(bool);
   void hint();
+  void replaceBlock(char);
   void heavyMove();
   void setRandomFile(std::string);
   void playBlock(Block *);

@@ -7,7 +7,18 @@
 
 Level::Level(int seed, std::string file, bool heavy):seed{seed},sourceFile{file}, heavy{heavy} {
     srand(seed);
-} 
+}
+
+Block *Level::generateFromFile(bool heavy) {
+    char b;
+    seq >> b;
+    Block *block = getBlock(b);
+    if(block) return block;
+    //Loops through file again
+    seq.close();
+    seq.open(randFile);
+        return generateFromFile(heavy);
+}
 
 void Level::setDefaultSelector(int i, int j, int l, int o, int s, int t, int z) {
     for(;i>0;--i)
@@ -26,9 +37,56 @@ void Level::setDefaultSelector(int i, int j, int l, int o, int s, int t, int z) 
         selector.emplace_back([](int a, bool b)->Block *{return new ZBlock(a, b);});
 }
 
+Block * Level::getBlock(char b) {
+    if (b=='I')
+        return new IBlock(getLevel(), heavy);
+    else if (b=='J')
+        return new JBlock(getLevel(), heavy);
+    else if (b=='L')
+        return new LBlock(getLevel(), heavy);
+    else if (b=='O')
+        return new OBlock(getLevel(), heavy);
+    else if (b=='S')
+        return new SBlock(getLevel(), heavy);
+    else if (b=='T')
+        return new TBlock(getLevel(), heavy);
+    else if (b=='Z')
+        return new ZBlock(getLevel(), heavy);
+    return nullptr;
+}
+
+Block * Level::getBlock(BlockType type) {
+    if (type==BlockType::I)
+        return new IBlock(getLevel(), heavy);
+    else if (type==BlockType::J)
+        return new JBlock(getLevel(), heavy);
+    else if (type==BlockType::L)
+        return new LBlock(getLevel(), heavy);
+    else if (type==BlockType::O)
+        return new OBlock(getLevel(), heavy);
+    else if (type==BlockType::S)
+        return new SBlock(getLevel(), heavy);
+    else if (type==BlockType::T)
+        return new TBlock(getLevel(), heavy);
+    else if (type==BlockType::Z)
+        return new ZBlock(getLevel(), heavy);
+    return nullptr;
+}
+
 void Level::setSeed(int seed) {
     this->seed = seed;
     srand(seed);
+}
+
+void Level::setRandom(bool flag) {
+    random = flag;
+    if(random) seq.open(randFile);
+    else seq.close();
+}
+
+void Level::setFile(std::string file) {
+    randFile = file;
+    setRandom(false);
 }
 
 bool Level::isHeavy() {

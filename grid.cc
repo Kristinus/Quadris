@@ -246,7 +246,7 @@ void Grid::deleteRow() {
 	for (int i = theGrid.size() - 1; i >= 0; i--) {
 		if (isFilled(theGrid[i])) {
 			//(TODO) code a notify all cels function
-			lowerRow = 17 - i;
+			lowerRow = i;
 			for (auto &c : theGrid[i]) {
 				c.setState(StateType::NONE);
 				c.setBlock(BlockType::NONE);
@@ -261,8 +261,7 @@ void Grid::deleteRow() {
 	//make a notifygrid
 
 
-	for (int i=theGrid.size()-1; i>=0; i--) {
-		if(i==lowerRow) break;
+	for (int i=0; i<lowerRow; i++) {
 		for (auto &c: theGrid[i]) {
 			c.setCoords(c.getInfo().row - rowsToDelete, c.getInfo().col);
 		}
@@ -367,7 +366,7 @@ void Grid::left(int x) {
 		shift++;
 	}
 	updateCells(currentBlock);
-	if(theLevel->isHeavy()) down(1);
+	if(currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
 
@@ -385,14 +384,14 @@ void Grid::right(int x) {
 		shift++;
 	}
 	updateCells(currentBlock);
-	if(theLevel->isHeavy()) down(1);
+	if(currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
 }
 void Grid::down(int x) {
 	deleteCurrentBlock();
 	int shift = 0;
-	if(theLevel->isHeavy()) shift++;
+	if(currentBlock->isBlockHeavy()) shift++;
 	while (shift < x) {
 		if (isValidMove( 0, -1)) {
 			currentBlock->down();
@@ -403,7 +402,7 @@ void Grid::down(int x) {
 		shift++;
 	}
 	
-	if(theLevel->isHeavy()) {
+	if(currentBlock->isBlockHeavy()) {
 		if (isValidMove( 0, -1)) {
 			currentBlock->down();
 		}
@@ -425,7 +424,7 @@ void Grid::rotateCW(int x) {
 	//}
 
 	updateCells(currentBlock);
-	if(theLevel->isHeavy()) down(1);
+	if(currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
 }
@@ -488,25 +487,17 @@ void Grid::restart() {
 	for (auto b : setBlocks) {
 		delete b;
 	}
+	setBlocks.clear();
 
     delete currentBlock;
     delete nextBlock;
     // note: level doesn't change
+	
+	theScore->setCurrentScore(0);  
+	td->clear();
+	ob->clear();
     initGrid(); 
-    currentBlock = theLevel->createBlock();
-	currentBlock->setGridPointer(this);
-	currentBlock->moveTo(14,0);
-	//updateCells(currentBlock, StateType::MOVING);
-
-
-
-   // playBlock(currentBlock);
-    nextBlock = theLevel->createBlock();
-    nextBlock->setGridPointer(this);
-
-
-
-    theScore->setCurrentScore(0);  
+	//(TODO) clear level(reset file and level 4 counter)
 
 }
 
@@ -519,7 +510,7 @@ void Grid::rotateCCW(int x) {
 	}
 	updateCells(currentBlock, StateType::MOVING);
 	//playBlock(currentBlock);
-	if(theLevel->isHeavy()) down(1);
+	if(currentBlock->isBlockHeavy()) down(1);
 }
 void Grid::levelUp(int x) {
 	for(int i=0; i<x; i++)
@@ -532,12 +523,13 @@ void Grid::levelDown(int x) {
 		theLevel = theLevel->levelDown();
 	if(ob) ob->update();
 }
+
 void Grid::random(bool flag) {
-	isRandom = flag;
+	theLevel->setRandom(flag);
 }
 
 void Grid::setRandomFile(std::string file) {
-	//TODO
+	theLevel->setFile(file);
 }
 
 int Grid::countHoles() {
@@ -793,8 +785,29 @@ int Grid::getLevel() {
 	return theLevel->getLevel();
 }
 
+void Grid::replaceBlock(char type) {
+
+	BlockType currentT = currentBlock->getBlockType();
+	int col = currentBlock->getBottomLeftCol();
+	int row = currentBlock->getBottomLeftRow();
+	deleteCurrentBlock();
+	currentBlock = theLevel->getBlock(type);
+	currentBlock->setGridPointer(this);
+	if(isValidMove(col, row)) {
+		currentBlock->moveTo(row, col);
+		updateCells(currentBlock);
+	}
+	else {
+		currentBlock = theLevel->getBlock(currentT);	
+		currentBlock->setGridPointer(this);
+		currentBlock->moveTo(row, col);
+		updateCells(currentBlock);
+	}
+	//(TODO) replace current block (move to location)
+}
+
 // void Grid::heavyMove() {
-// 	if(theLevel->isHeavy()) down(1);
+// 	if(currentBlock->isBlockHeavy()) down(1);
 // }
 
 
@@ -802,5 +815,7 @@ std::ostream &operator<<(std::ostream &out, Grid &grid) {
 	out << *(grid.td);
 	return out;
 }
+
+
 
 

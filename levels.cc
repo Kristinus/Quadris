@@ -10,20 +10,8 @@ Level0::Level0(int seed, std::string file): Level(seed, file, false) {
 Block *Level0::createBlock() {
     char b;
     seq >> b;
-    if (b=='I')
-        return new IBlock(0);
-    else if (b=='J')
-        return new JBlock(0);
-    else if (b=='L')
-        return new LBlock(0);
-    else if (b=='O')
-        return new OBlock(0);
-    else if (b=='S')
-        return new SBlock(0);
-    else if (b=='T')
-        return new TBlock(0);
-    else if (b=='Z')
-        return new ZBlock(0);
+    Block *block = getBlock(b);
+    if(block) return block;
     //Loops through file again
     seq.close();
     seq.open(sourceFile);
@@ -96,7 +84,9 @@ Level3::Level3(int seed, std::string file): Level(seed, file, true) {
 }
 
 Block *Level3::createBlock() {
-    return selector[std::rand()%9](3,true);
+    if(random)
+        return selector[std::rand()%9](3,true);
+    return generateFromFile(true);
 }
 Level* Level3::levelUp() {
     return new Level4(seed, sourceFile);
@@ -117,7 +107,9 @@ Level4::Level4(int seed, std::string file): Level(seed, file, true) {
 }
 
 Block *Level4::createBlock() {
-    return selector[std::rand()%9](4, true);
+    if(random)
+        return selector[std::rand()%9](4,true);
+    return generateFromFile(true);
 }
 
 Level* Level4::levelUp() {

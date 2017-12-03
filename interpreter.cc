@@ -30,13 +30,13 @@ void Interpreter::initCommandMap() {
     commandMap["drop"] = new DropCommand(grid);
     commandMap["restart"] = new RestartCommand(grid);
     commandMap["hint"] = new HintCommand(grid);
-    // commandMap["I"] = new ICommand(grid);
-    // commandMap["J"] = new JCommand(grid);
-    // commandMap["L"] = new LCommand(grid);
-    // commandMap["O"] = new OCommand(grid);
-    // commandMap["T"] = new TCommand(grid);
-    // commandMap["Z"] = new ZCommand(grid);
-    // commandMap["S"] = new SCommand(grid);
+    commandMap["I"] = new ReplaceCommand(grid, 'I');
+    commandMap["J"] = new ReplaceCommand(grid, 'J');
+    commandMap["L"] = new ReplaceCommand(grid, 'L');
+    commandMap["O"] = new ReplaceCommand(grid, 'O');
+    commandMap["T"] = new ReplaceCommand(grid, 'S');
+    commandMap["Z"] = new ReplaceCommand(grid, 'T');
+    commandMap["S"] = new ReplaceCommand(grid, 'Z');
 }
 
 Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLevel) {
@@ -110,7 +110,7 @@ ProcessedInput Interpreter::parseCommand(string command) {
     }
 
 
-    if(typedCommand == "random" || typedCommand == "sequence") {
+    if(typedCommand == "norandom" || typedCommand == "sequence") {
         *in >> file;
     }
 
@@ -175,6 +175,7 @@ void Interpreter::run(std::istream &in) {
             (i->second)->execute(mult, processedCommand.file);
             if (grid->isOver()) {
                 cout << "GAME OVER YOU LOSER" << endl;           
+                break;
             }
             cout << *grid;
         }

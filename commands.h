@@ -85,11 +85,12 @@ public:
 	void execute(int m, std::string) override;
 };
 
-// class ICommand: public Command {
-// public:
-// 	ICommand(Grid *);
-// 	void execute(int m, std::string) override;
-// };
+class ReplaceCommand: public Command {
+	char type;
+public:
+	ReplaceCommand(Grid *, char);
+	void execute(int m, std::string) override;
+};
 
 // class JCommand: public Command {
 // public:

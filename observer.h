@@ -11,6 +11,7 @@ template <typename InfoType> class Observer {
   virtual void notify(Subject<InfoType> &whoFrom) = 0; // pass the Subject that called the notify method
   virtual void clearNext()=0;
   virtual void update()=0;
+  virtual void clear()=0;
   virtual ~Observer() = default;
 };
 #endif
