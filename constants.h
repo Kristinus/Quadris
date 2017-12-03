@@ -13,6 +13,10 @@ namespace constants {
 	const std::vector<char> BLOCKS = {
 		'I','J','L','O','S','T','Z'
 	};
+	const std::string NO_INPUT = "Invalid Input: Please provide a command.";
+
 }
+
+
 
 #endif
