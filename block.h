@@ -17,7 +17,7 @@ protected:
     Grid *grid = nullptr;
     char type;
     BlockType blockType;
-
+    bool isValidRotation(Block *b, std::vector<int> rotatedRow, std::vector<int> rotatedCol);
 	bool isValidCoordinate(int row , int col);
 public:
     Block(BlockType, int level, bool isHeavy=false);

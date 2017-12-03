@@ -105,14 +105,13 @@ void Block::down(int x){
 	// }
 }
 
-bool Block::isValidCoordinate(int row , int col) {
-	if (grid == nullptr) {cout << "ITS NULL";}
-
-
-	if ((col < 0) || (col >= 11) || (row < 0) || (row > 18)
-		|| grid->getGridCells()[17 - row][col].getInfo().state == StateType::STATIC) {
-		return false;
-	} else return true;
+bool Block::isValidCoordinate(int row, int col) {
+//	if (grid == nullptr) {cout << "ITS NULL";}
+	if ((col < 0) || (col >= 11) || (row < 0) || (row > 18) || 
+		grid->getGridCells()[17 - row][col].getInfo().state == StateType::STATIC) {	
+				return false;
+	}
+	else return true;
 }
 
 void Block::setBottomLeftCoords(int row, int col) {
@@ -178,25 +177,34 @@ void Block::rotate(int dir) {
 
 	}
 	//(TODO) SHOULD BE IS VALID ROTATION
+	if (!isValidRotation(this, rotatedRow, rotatedCol)) {
+		return;
+	} else {
+		for (int i = 0; i < cells.size(); i++) {
+			cells[i].setCoords(rotatedRow[i], rotatedCol[i]);
 
-	//if (grid == nullptr) cout << "its null" << endl;
-	for (int i = 0; i < cells.size(); i++) {
-		if (cells[i].getInfo().block != BlockType::HINT && !isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
-			//return;
-			// or we can throw an exception!!!!!!!!!!1
 		}
-		cells[i].setCoords(rotatedRow[i], rotatedCol[i]);
+		// update the bottom left coordinates
+		row = oldBottomLeftRow;
+		col = oldBottomLeftCol;
 
 	}
 
-	//updat
-
-
-	// update the new bottomleft coordinates
-	row = oldBottomLeftRow;
-	col = oldBottomLeftCol;
-
 }
+
+bool Block::isValidRotation(Block *b, std::vector<int> rotatedRow, std::vector<int> rotatedCol) {
+		// check that EACH rotated cell is valid
+	for (int i = 0; i < b->cells.size(); i++) {
+		// should be able to rotate onto hint blocks
+		if (b->cells[i].getInfo().block != BlockType::HINT &&
+		 !isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
+			return false;
+			// or we can throw an exception!!!!!!!!!!1
+		}
+	}
+	return true;
+}
+
 
 
 //(TODO) make this prettier.. TWO OPTIONAL APRAMES?/?

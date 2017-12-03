@@ -473,14 +473,10 @@ void Grid::down(int x) {
 void Grid::rotateCW(int x) {
 		deleteCurrentBlock();
 
-	//while (x > 0) {
-		currentBlock->clockwise(x);
-	//	x--;
-	//}
+	currentBlock->clockwise(x);
 
 	updateCells(currentBlock);
 	if(currentBlock->isBlockHeavy()) down(1);
-	//playBlock(currentBlock);
 
 }
 
