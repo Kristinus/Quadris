@@ -4,7 +4,7 @@
 
 
 enum class StateType { NONE, MOVING, STATIC, NEXT };
-enum class BlockType { NONE, I, J, L, O, S, T, Z, HINT };
+enum class BlockType { NONE, I, J, L, O, S, T, Z, HINT, DOT };
 
 struct Info {
   size_t row, col;

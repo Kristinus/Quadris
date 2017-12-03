@@ -101,4 +101,21 @@ public:
     // void counterclockwise(int x=1) override;
 };
 
+
+class DotBlock: public Block {
+
+public:
+    DotBlock(int level, bool isHeavy = false);
+    DotBlock* clone() const;
+
+	// DotBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells);
+    // DotBlock(int level, bool isHeavy, int level, std::vector<Cell> cells);
+    ~DotBlock();
+    BlockType getBlockType();
+    // void clockwise(int x=1) override;
+    // void counterclockwise(int x=1) override;
+};
+
+
+
 #endif

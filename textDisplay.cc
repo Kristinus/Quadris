@@ -14,6 +14,7 @@ void TextDisplay::createDict() {
   dict[BlockType::Z] = 'Z';
   dict[BlockType::NONE] = ' ';
   dict[BlockType::HINT] = '?';
+  dict[BlockType::DOT] = '*';
 }
 
 TextDisplay::TextDisplay(Grid *grid): 

@@ -11,12 +11,12 @@ class Grid;
 
 class Level {
 protected:
+    Grid *grid = nullptr;
     int seed;
     std::ifstream seq;
     std::string sourceFile;
     std::string randFile;
     std::vector<std::function<Block *(int, bool)>> selector;
-    Grid *grid;
     bool heavy = false;
     bool random = true;
     Block *generateFromFile(bool);
@@ -34,6 +34,7 @@ public:
     virtual ~Level();
     virtual Level *levelUp() = 0;
     virtual Level *levelDown() = 0;
+    virtual void restart();
 
 };
 

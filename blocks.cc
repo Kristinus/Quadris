@@ -238,3 +238,28 @@ BlockType ZBlock::getBlockType() {
 	return BlockType::Z;
 }
 
+/*****************************************************************************/
+
+DotBlock::DotBlock(int level, bool isHeavy): Block(level, isHeavy) {
+    type = '*'; 
+    Info i;
+    i.row = 0;
+    i.col = 0;
+    i.state = StateType::STATIC;
+    i.block = BlockType::DOT;
+    cells.emplace_back(Cell(i));
+}
+DotBlock* DotBlock::clone() const {
+	DotBlock *cpy = new DotBlock(level, isHeavy);
+	return cpy;
+}
+// DotBlock::DotBlock(int col, int row, bool isHeavy, int level, std::vector<Cell> cells): Block{col, row, isHeavy, level, cells} {}
+
+// DotBlock::DotBlock(int level, bool isHeavy, int level, std::vector<Cell> cells): Block{isHeavy, level, cells} {}
+
+DotBlock::~DotBlock() {}
+
+BlockType DotBlock::getBlockType() {
+	return BlockType::DOT;
+}
+

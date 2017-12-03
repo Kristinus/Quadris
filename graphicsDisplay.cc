@@ -46,7 +46,9 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
     colour = Xwindow::Red;
   else if(info.block == BlockType::HINT)
     colour = Xwindow::Black;
-  
+  else if(info.block == BlockType::DOT)
+    colour = Xwindow::Brown;
+
   //If nextBlock
   if(info.state == StateType::NEXT) {
     xw.fillRectangle((13+info.col) * cellSize, (1-info.row) * cellSize, cellSize, cellSize, colour);

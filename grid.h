@@ -19,8 +19,8 @@ class Grid {
   TextDisplay *td;
   Observer<Info> *ob;
   bool isRandom;
- 
-  bool isValidMove(int, int);
+  bool isValidMove(Block *, int, int);
+   bool isValidMove(int, int);
   void attachGridToBlock(Block *);
   int countCompleteLines();
   bool isFilled(std::vector<Cell>);
@@ -67,6 +67,7 @@ public:
   void random(bool);
   void hint();
   void replaceBlock(char);
+  void dropBlock(Block *, int);
   void heavyMove();
   void setRandomFile(std::string);
   void playBlock(Block *);

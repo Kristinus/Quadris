@@ -62,7 +62,7 @@ struct invalidInputException {
 	invalidInputException(string message):message{message} {}
 };
  
-ProcessedInput Interpreter::parseCommand(string command) {
+ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 	if (command == "") throw invalidInputException("Empty command");
 	string bd = "";
 	string typedCommand;
@@ -111,7 +111,7 @@ ProcessedInput Interpreter::parseCommand(string command) {
 
 
     if(typedCommand == "norandom" || typedCommand == "sequence") {
-        *in >> file;
+        input >> file;
     }
 
     if (bd != "") {
@@ -159,7 +159,7 @@ void Interpreter::run(std::istream &in) {
     while(in >> s) {
     	ProcessedInput processedCommand;
         try {
-        	 processedCommand = parseCommand(s);
+        	 processedCommand = parseCommand(in, s);
         } catch (invalidInputException e) {
         	//cout << e.message << endl;
         	continue;

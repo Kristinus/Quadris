@@ -317,8 +317,9 @@ cout << setBlocks.size() << endl; **/
 	}
 }
 
-bool Grid::isValidMove(int colshift, int rowshift) {
-	for (auto &cell: currentBlock->getBlockCells()) {
+//For other blocks
+bool Grid::isValidMove(Block *block, int colshift, int rowshift) {
+	for (auto &cell: block->getBlockCells()) {
 		int newrow = cell.getInfo().row + rowshift;
 	//	cout << cell.getInfo().row << "was old row and is now " << newrow << endl;
 		int newcol = cell.getInfo().col + colshift;
@@ -332,6 +333,11 @@ bool Grid::isValidMove(int colshift, int rowshift) {
 	
 	}
 	return true;	
+}
+
+//Default for currentBlock
+bool Grid::isValidMove(int colshift, int rowshift) {
+	isValidMove(currentBlock, colshift, rowshift);
 }
 
 void Grid::deleteCurrentBlock() {
@@ -476,7 +482,7 @@ void Grid::drop(int x) {
 		x--;
 
 	}
-	ob->update();
+	if(ob) ob->update();
 
 	
 
@@ -494,7 +500,7 @@ void Grid::restart() {
     
 	//Go back to level 0
 	while(getLevel()>0) {
-		theLevel->levelDown();
+		theLevel = theLevel->levelDown();
 	}
 	
 	theScore->setCurrentScore(0);  
@@ -856,6 +862,21 @@ void Grid::replaceBlock(char type) {
 	}
 	//(TODO) replace current block (move to location)
 }
+
+void Grid::dropBlock(Block *block, int col) {
+	block->setGridPointer(this);
+	block->moveTo(17,col);
+	while (isValidMove(block, 0, -1)) {
+		block->down();
+	}
+
+	updateCells(block, StateType::STATIC, true);
+	setBlocks.emplace_back(block);
+
+	deleteRow();
+	if(ob) ob->update();
+}
+
 
 // void Grid::heavyMove() {
 // 	if(currentBlock->isBlockHeavy()) down(1);

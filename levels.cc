@@ -2,6 +2,7 @@
 #include "constants.h"
 #include <algorithm>
 #include "blocks.h"
+#include "grid.h"
 
 Level0::Level0(Grid * grid, int seed, std::string file): Level(grid, seed, file, false) {
     seq.open(sourceFile);
@@ -31,6 +32,11 @@ Level* Level0::levelDown() {
 
 int Level0::getLevel() {
     return 0;
+}
+
+void Level::restart() {
+    seq.close();
+    seq.open(sourceFile);
 }
 
 
@@ -107,6 +113,11 @@ Level4::Level4(Grid * grid, int seed, std::string file): Level(grid, seed, file,
 }
 
 Block *Level4::createBlock() {
+    counter++;
+    if(counter==5) {
+        counter = 0;
+        grid->dropBlock(new DotBlock(getLevel(), heavy), 5);
+    }
     if(random)
         return selector[std::rand()%9](4,true);
     return generateFromFile(true);

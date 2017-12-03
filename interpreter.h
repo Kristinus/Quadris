@@ -22,7 +22,7 @@ class Interpreter {
     bool gameOver = false;
 
     void initCommandMap();
-    ProcessedInput parseCommand(std::string);
+    ProcessedInput parseCommand(std::istream &, std::string);
 public:
     Interpreter(int, bool, std::string, int);
     ~Interpreter();
