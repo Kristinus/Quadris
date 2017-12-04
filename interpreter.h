@@ -1,5 +1,6 @@
 #ifndef __INTERPRETER_H__
 #define __INTERPRETER_H__
+
 #include <string>
 #include <iostream>
 #include <map>
@@ -15,12 +16,12 @@ struct ProcessedInput;
 class Interpreter {
     std::map<std::string, std::shared_ptr<Command>> commandMap;
     std::map<std::string, std::string> keyMap;
-    // GraphicsDisplay *gd = nullptr;
     Grid *grid = nullptr;
     bool gameOver = false;
     void initCommandMap();
     void initKeyMap();
     ProcessedInput parseCommand(std::istream &, std::string);
+
 public:
     Interpreter();
     Interpreter(int, Observer<Info> *ob, std::string, int);

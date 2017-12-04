@@ -11,6 +11,7 @@
 #include "constants.h"
 #include "interpreter.h"
 #include "invalidinputexception.h"
+
 using namespace std;
 
 struct ProcessedInput {
@@ -18,6 +19,7 @@ struct ProcessedInput {
 	int multiplier;
 	string file;
 };
+
 
 void Interpreter::initCommandMap() {
     commandMap["left"] = std::make_unique<LeftCommand>(grid);
@@ -42,6 +44,7 @@ void Interpreter::initCommandMap() {
     commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid, 'Z'); 
 }
 
+
 void Interpreter::initKeyMap() {
     keyMap["Q"] = "left";
     keyMap["S"] = "right";
@@ -54,32 +57,37 @@ void Interpreter::initKeyMap() {
     keyMap["h"] = "hint";
 }
 
+
 Interpreter::Interpreter(int seed, Observer<Info> *ob, string scriptFile, int startLevel) {
 	grid = new Grid(startLevel, seed, ob, scriptFile);
 
 	initCommandMap();
-    initKeyMap();
+   initKeyMap();
 }
+
 
 Interpreter::~Interpreter() {
     delete grid;
 }
 
+
+// Checks if character is a valid integer digit
 bool isDigit(char c) {
 	if ((c >= '0') && (c <= '9')) return true;
 	else return false;
 }
 
 
-
 ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 	if (command == "") throw InvalidInputException("Invalid Input: No Input Provided.");
-	string digits = "";
+	
+   string digits = "";
 	string typedCommand;
 	string file;
 	int res;
 	unsigned int i;
-	for (i = 0; i < command.length(); i++) {
+	
+   for (i = 0; i < command.length(); i++) {
 		if (isDigit(command[i])) {
 			digits += command[i];
 		} else {
@@ -92,29 +100,29 @@ ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 	int pos = command.find(' ');
 	typedCommand = command.substr(i, pos-i);
 
-   	// filter list of possible Commands by comparing the 
+   	// Filter list of possible Commands by comparing the 
    	// prefixes with typed command
 	for (int i = possibleCommands.size() - 1; i >= 0; i--) {
 		string possibleCommand = possibleCommands[i];
 		int partialCommandLen = typedCommand.length();
-		if (typedCommand != possibleCommand.substr(0, partialCommandLen)) {
+		
+      if (typedCommand != possibleCommand.substr(0, partialCommandLen)) {
 			possibleCommands.erase(possibleCommands.begin() + i);
 		}
 	}
 
-    // case if no commands share the prefix as the typed command
+   // Case if no commands share the prefix as the typed command
 	if (possibleCommands.size() == 0) {
-
 		throw InvalidInputException("Invalid Input: Not a Possible Command.");
 	}
 
-    // case if more than one command matches the typed prefix
+   // Case if more than one command matches the typed prefix
 	else if (possibleCommands.size() > 1) {
 		throw InvalidInputException("Invalid Input: Input is Ambiguous.");
 	}
 
-    // only one command matches the typed prefix. This is the command
-    // that we execute
+   // Only one command matches the typed prefix. This is the command
+   // that we execute
 	else {
 		typedCommand = possibleCommands[0];
 	}
@@ -123,14 +131,13 @@ ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 		input >> file;
 	}
 
-    // if a number was
+   // If a number was
 	if (digits != "") {
 		istringstream iss{digits};
 		iss >> res; 
 		return ProcessedInput{possibleCommands[0], res, file};
 	}
 	else return ProcessedInput{possibleCommands[0], 1, file};
-
 }
 
 
@@ -139,26 +146,31 @@ void Interpreter::run() {
 	run(cin);
 }
 
+
 std::istream &Interpreter::run(std::istream &in) {
 	string s;
+
 	while(in >> s) {
 		ProcessedInput processedInput;
+
 		try {
-			// parse command for digits and string command
+			// Parse command for digits and string command
 			processedInput = parseCommand(in, s);
 		} catch (InvalidInputException e) {
-        	//cout << e.message << endl;
 			continue;
 		}
+
 		string cmd = processedInput.command;
 		int mult = processedInput.multiplier;
-		if (cmd == "quit") {
+		
+      if (cmd == "quit") {
 			break;
 		}
 
 		if (commandMap.count(cmd) > 0) {
 			commandMap.find(cmd)->second->execute(mult, processedInput.file);
-			if (grid->isOver()) {
+			
+         if (grid->isOver()) {
 				cout << "GAME OVER YOU LOSER" << endl;           
 				gameOver = true;
 			}
@@ -171,23 +183,24 @@ std::istream &Interpreter::run(std::istream &in) {
 			in >> s;
 
 			if (s == "yes" || s == "Y" || s == "y") {
-
-				// get the restart Command object and execute it
+				// Get the restart Command object and execute it
 				(commandMap.find("restart")->second)->execute(1,"");
 				gameOver = false;
 				cout << *grid;
 			}
 			else break;
-		}
+	   }
 	}
-    return in;
+   return in;
 }
 
-// bonus feature - key presses
+
+// BONUS FEATURE - Key Presses
 bool Interpreter::run(std::string key) {
     if (key == "q") {
         return false;
     }
+
     if (keyMap.count(key) > 0) {
         auto cmd = (keyMap.find(key))->second;
         commandMap.find(cmd)->second->execute(1, "");
@@ -202,10 +215,10 @@ bool Interpreter::run(std::string key) {
 }
 
 
+// Restarts Game
 bool Interpreter::reset(std::string key) {
     if (key == "y") {
-
-        // get the restart Command object and execute it
+        // Get the restart Command object and execute it
         (commandMap.find("restart")->second)->execute(1,"");
         cout << *grid;
         return true;
@@ -217,11 +230,4 @@ bool Interpreter::reset(std::string key) {
 void Interpreter::operator()() {
     run();
 }
-
-
-
-
-
-
-
 
