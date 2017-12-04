@@ -4,12 +4,12 @@
 class Score {
     int currentScore = 0;
     int highScore = 0;
-// should we track the level in score or board?? TBD!!!!!!!!!!!!! probably where blocks are generated too
+
 public:
 	Score();
-	int getCurrentScore();
+	int getCurrentScore() const;
 
-	int getHighScore();
+	int getHighScore() const;
 
 	void setHighScore(int);
 

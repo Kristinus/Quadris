@@ -685,8 +685,8 @@ void Grid::hint() {
 
 	// set the appropriate blocks to
 	for (auto &c: hintBlock->getBlockCells()) {
-		theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::HINT);
-		theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
+		theGrid[constants::GRID_HEIGHT - 1 -c.getInfo().row][c.getInfo().col].setBlock(BlockType::HINT);
+		theGrid[constants::GRID_HEIGHT - 1 -c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
 }

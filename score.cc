@@ -2,11 +2,11 @@
 
 Score::Score() {}
 
-int Score::getCurrentScore() {
+int Score::getCurrentScore() const {
 	return currentScore;
 }
 
-int Score::getHighScore() {
+int Score::getHighScore() const {
 	return highScore;
 }
 
