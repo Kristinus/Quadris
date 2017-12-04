@@ -1,6 +1,7 @@
 #include "textDisplay.h"
 #include "constants.h"
 #include "grid.h"
+#include <memory>
 #include <iostream>
 using namespace std;
 

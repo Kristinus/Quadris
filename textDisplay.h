@@ -7,18 +7,18 @@
 #include "score.h"
 #include "info.h"
 #include "subject.h"
+#include <memory>
 class Grid;
 
 class TextDisplay: public Observer<Info> {
   std::vector<std::vector<char>> theDisplay;
   std::map<BlockType, char> dict;
   Grid *grid;
-  Score *score;
+  Score * score;
 
   void createDict();
  public:
   TextDisplay(Grid *);
-
   void notify(Subject<Info> &whoNotified) override;
   void clear() override;
   friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
