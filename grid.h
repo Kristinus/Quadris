@@ -15,13 +15,14 @@ class Grid {
 	std::vector<std::vector<Cell>> theGrid;
 	int startLevel;
 	Level * theLevel;
-	Score * theScore;
+	std::unique_ptr<Score> theScore;
   //std::unique_ptr<Score> theScore;
 	std::vector<Block *> setBlocks;
 	Block *currentBlock = nullptr;
 	Block * hintBlock;
 	Block *nextBlock = nullptr;
-	TextDisplay * td = nullptr;
+	TextDisplay *td = nullptr;
+	// std::unique_ptr<TextDisplay> td;
   //std::shared_ptr<TextDisplay> td;
 	Observer<Info> *ob;
 
@@ -54,7 +55,6 @@ public:
 	Grid(int startLevel, int seed, Observer<Info> *, std::string);
 	std::vector<std::vector<Cell>> getGridCells();
 	Block *getNextBlock();
-	Score * getScore();
 
 	~Grid();
   //std::unique_ptr<Score> getScore();

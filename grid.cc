@@ -16,28 +16,29 @@ using namespace std;
 
 
 Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile): startLevel{startLevel}, ob{ob} {
-// NEED TO FIGURE THIS SHIT OUT
 	theLevel = new Level0(this, seed, scriptFile);
 	while(theLevel->getLevel()<startLevel) {
 		theLevel = theLevel->levelUp();
 		theLevel->setCounter(-2);
 	}
-	theScore = new Score();
+	// theScore = new Score();
+	theScore = std::make_unique<Score>();
 	td = new TextDisplay();
+	// td = std::make_unique<TextDisplay>();
 	initGrid();
 }
 
 
 Grid::~Grid() {
 	// delete theLevel;
-	delete theScore;
-	for(auto b:setBlocks) {
-		delete b;
-	}
+	// delete theScore;
+	// for(auto b:setBlocks) {
+	// 	delete b;
+	// }
 	// delete currentBlock;
 	// delete nextBlock;
-	delete td;
-	delete ob;
+	// delete td;
+	// delete ob;
 }
 
 std::vector<std::vector<Cell>> Grid::getGridCells() {
@@ -688,11 +689,6 @@ void Grid::hint() {
 
 Block * Grid::getNextBlock() {
 	return nextBlock;
-}
-
-
-Score * Grid::getScore() {
-	return theScore;
 }
 
 

@@ -157,8 +157,7 @@ std::istream &Interpreter::run(std::istream &in) {
 		}
 
 		if (commandMap.count(cmd) > 0) {
-			auto i = commandMap.find(cmd);
-			(i->second)->execute(mult, processedInput.file);
+			commandMap.find(cmd)->second->execute(mult, processedInput.file);
 			if (grid->isOver()) {
 				cout << "GAME OVER YOU LOSER" << endl;           
 				gameOver = true;
@@ -191,9 +190,7 @@ bool Interpreter::run(std::string key) {
     }
     if (keyMap.count(key) > 0) {
         auto cmd = (keyMap.find(key))->second;
-        auto i = commandMap.find(cmd);
-        
-        (i->second)->execute(1,"");
+        commandMap.find(cmd)->second->execute(1, "");
         
         if (grid->isOver()) {
             cout << "GAME OVER YOU LOSER" << endl;
