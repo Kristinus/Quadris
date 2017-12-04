@@ -5,6 +5,7 @@
 #include "info.h"
 #include "observer.h"
 #include "window.h"
+#include "interpreter.h"
 class Grid;
 class Score;
 
@@ -16,11 +17,13 @@ class GraphicsDisplay: public Observer<Info> {
 
  public:
   GraphicsDisplay();
-  void setGrid(Grid *);
+  void setGrid(Grid *) override;
 
   void notify(Subject<Info> &whoNotified) override;
   void clearNext() override;
   void update() override;
   void clear() override;
+
+  void run();
 };
 #endif

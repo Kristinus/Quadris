@@ -20,8 +20,6 @@ class TextDisplay: public Observer<Info> {
   TextDisplay(Grid *);
 
   void notify(Subject<Info> &whoNotified) override;
-  void clearNext() override;
-  void update() override;
   void clear() override;
   friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };

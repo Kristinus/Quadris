@@ -546,6 +546,7 @@ void Grid::restart() {
 		theLevel = theLevel->levelUp();
 	}
 	theLevel->restart();
+	theLevel->setCounter(-2);
 	
 	theScore->setCurrentScore(0);  
 	td->clear();

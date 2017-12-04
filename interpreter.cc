@@ -8,7 +8,7 @@
 #include "block.h"
 #include "grid.h"
 #include "commands.h"
-#include "graphicsDisplay.h"
+#include "observer.h"
 #include "constants.h"
 #include "interpreter.h"
 #include "invalidinputexception.h"
@@ -42,12 +42,9 @@ void Interpreter::initCommandMap() {
     commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid, 'Z'); 
 }
 
-Interpreter::Interpreter(int seed, bool textOnly, string scriptFile, int startLevel) {
-	if (textOnly == false) {
-		gd = new GraphicsDisplay();
-	}
-	grid = new Grid(startLevel, seed, gd, scriptFile);
-	if(gd) gd->setGrid(grid);
+Interpreter::Interpreter(int seed, Observer<Info> *ob, string scriptFile, int startLevel) {
+	grid = new Grid(startLevel, seed, ob, scriptFile);
+	if(ob) ob->setGrid(grid);
 
 	initCommandMap();
 }
@@ -173,6 +170,9 @@ void Interpreter::run(std::istream &in) {
 	}
 }
 
+void Interpreter::operator()() {
+    run();
+}
 
 Interpreter::~Interpreter() {}
 

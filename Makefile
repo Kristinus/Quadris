@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++14 -Wall -Werror=vla -MMD -g
+CXXFLAGS = -std=c++14 -Wall -pthread -Werror=vla -MMD -g
 EXEC = quadris
 OBJECTS = main.o level.o levels.o textDisplay.o invalidinputexception.o graphicsDisplay.o window.o interpreter.o commands.o command.o block.o blocks.o grid.o cell.o score.o
 DEPENDS = ${OBJECTS:.o=.d}

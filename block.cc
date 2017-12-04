@@ -51,23 +51,6 @@ void Block::updateSetCells(std::vector<int> rowsToDelete) {
 	}
 }
 
-// void Block::updateSetCells(unsigned int rowsToDelete) {
-// 	for (int i = cells.size() - 1; i >= 0; i--) {
-// 	 		// if the row goes out of bounds, then erase the cell
-// 	 		if (cells[i].getInfo().row  < rowsToDelete) {
-// 	 			cells.erase(cells.begin() + i);
-
-// 	 		} else {
-// 	 			// decrement each setBlock's
-// 	 			//cout << "cell was at row: " << cells[i].getInfo().row << endl;
-// 	 			cells[i].moveDown(rowsToDelete);	
-// 	 			//cout << "cell now at row: " << cells[i].getInfo().row << endl;
-
-// 	 			// block->cells.block->cells.getInfo().row - rowsToDelete;
-// 	 		}
-// 	 	}
-// }
-
 std::vector<Cell> Block::getBlockCells() {
 	return cells;
 }
