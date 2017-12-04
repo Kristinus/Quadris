@@ -15,16 +15,21 @@ struct ProcessedInput;
 class Interpreter {
 	std::istream *in = &std::cin;
     std::map<std::string, std::shared_ptr<Command>> commandMap;
+    std::map<std::string, std::string> keyMap;
     // GraphicsDisplay *gd = nullptr;
     Grid *grid = nullptr;
     bool gameOver = false;
     void initCommandMap();
+    void initKeyMap();
     ProcessedInput parseCommand(std::istream &, std::string);
 public:
+    Interpreter();
     Interpreter(int, Observer<Info> *ob, std::string, int);
     ~Interpreter();
     void run();
     void run(std::istream &);
+    bool run(std::string);
+    bool reset(std::string);
 
     void operator()();
 };

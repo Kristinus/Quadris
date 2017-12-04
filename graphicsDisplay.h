@@ -24,6 +24,6 @@ class GraphicsDisplay: public Observer<Info> {
   void update() override;
   void clear() override;
 
-  void run();
+  void run(Interpreter *i);
 };
 #endif
