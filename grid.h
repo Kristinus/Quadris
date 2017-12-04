@@ -12,13 +12,15 @@ template <typename InfoType> class Observer;
 class Grid {
   std::vector<std::vector<Cell>> theGrid;
   int startLevel;
-  std::unique_ptr<Level> theLevel;
-  std::unique_ptr<Score> theScore;
+  Level * theLevel;
+  Score * theScore;
+  //std::unique_ptr<Score> theScore;
   std::vector<Block *> setBlocks;
   Block *currentBlock = nullptr;
   Block * hintBlock;
   Block *nextBlock = nullptr;
-  std::shared_ptr<TextDisplay> td;
+  TextDisplay * td;
+  //std::shared_ptr<TextDisplay> td;
   Observer<Info> *ob;
 
   bool isRandom;
@@ -52,7 +54,8 @@ public:
   Grid(int startLevel, int seed, Observer<Info> *, std::string);
   std::vector<std::vector<Cell>> getGridCells();
   Block *getNextBlock();
-  std::unique_ptr<Score> getScore();
+  Score * getScore();
+  //std::unique_ptr<Score> getScore();
   int getLevel();
   void initGrid();
   bool isOver();

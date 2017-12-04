@@ -19,8 +19,8 @@ Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile)
 		theLevel = theLevel->levelUp();
 		theLevel->setCounter(-2);
 	}
-	theScore = make_unique<Score>();
-	td = make_shared<TextDisplay>(this);
+	theScore = new Score();
+	td = new TextDisplay(this);
 	//  std::vector<Block *> setBlocks;
 	//   ob = new GraphicsDisplay(this);
 	initGrid();	
@@ -746,7 +746,7 @@ Block * Grid::getNextBlock() {
 	return nextBlock;
 }
 
-std::unique_ptr<Score> Grid::getScore() {
+Score * Grid::getScore() {
 	return theScore;
 }
 

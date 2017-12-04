@@ -9,24 +9,13 @@ Block::Block(BlockType blockType, int level, bool isHeavy/**, Grid * grid**/): i
 col{0}, row{0}, blockType{blockType}/**, grid {grid ? grid : nullptr} **/{
 }
 
-// Block::Block(int col, int row, bool isHeavy, int level, vector<Cell> cells, Grid *theGrid): cells{cells}, isHeavy{isHeavy}, level{level}, col{col}, row{row}, grid{theGrid} {}
 
 Block::Block(const Block &b):
 cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, row{b.row},col{b.col}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
 
 
-// Block* Block::clone() const {
-// 	return new Block(blockType, level, isHeavy);
-// }
-
-/**
-Block::Block(bool isHeavy, int level, vector<Cell> cells): cells{cells}, isHeavy{isHeavy}, level{level} {
-   col = 0;
-   row = 0;
-}
- **/
 Block::~Block(){
-   cells.clear();
+	cells.clear();
 }
 
 void Block::updateSetCells(std::vector<int> rowsToDelete) {
@@ -56,15 +45,14 @@ std::vector<Cell> Block::getBlockCells() {
 }
 
 bool Block::isBlockHeavy(){
-   return isHeavy;
+	return isHeavy;
 }
 
 int Block::getLevel(){
-   return level;
+	return level;
 }
 
-
-// going down is ADD
+// 
 void Block::move(int colshift, int rowshift) {
 	for (auto &c : cells) {
 		unsigned int oldcol = c.getInfo().col;
@@ -73,19 +61,18 @@ void Block::move(int colshift, int rowshift) {
 		unsigned int newrow = oldrow + rowshift;
 		c.setCoords(newrow, newcol);
 	}
-			for (auto &c: getBlockCells()) {
-		// cout << "MOVE(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
+	for (auto &c: getBlockCells()) {
 	}
 }
 
 void Block::left(int x){
-   col--;
-   move(-1, 0);
+	col--;
+	move(-1, 0);
 }
 
 void Block::right(int x) {
-   col++;
-   move(1,0);
+	col++;
+	move(1,0);
 }
 
 void Block::setGridPointer(Grid *theGrid) {
@@ -102,7 +89,7 @@ void Block::displayNext(Observer<Info> *ob) {
 void Block::down(int x){
 
 	row--;
-   	move(0,-1);
+	move(0,-1);
 
    			// for (auto c: getBlockCells()) {
 		// cout << "DOWN(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
@@ -113,16 +100,13 @@ bool Block::isValidCoordinate(int row, int col) {
 //	if (grid == nullptr) {cout << "ITS NULL";}
 	if ((col < 0) || (col >= 11) || (row < 0) || (row > 18) || 
 		grid->getGridCells()[17 - row][col].getInfo().state == StateType::STATIC) {	
-				return false;
-	}
-	else return true;
+		return false;
+}
+else return true;
 }
 
-void Block::setBottomLeftCoords(int row, int col) {
-	row = row;
-	col = col;
-}
 
+// moves the block to a specific coordinate based on bottom left coordinates
 void Block::moveTo(int bottomLeftRow, int bottomLeftCol) {
 	int oldBottomLeftRow = row;
 	int oldBottomLeftCol = col;
@@ -201,12 +185,12 @@ bool Block::isValidRotation(Block *b, std::vector<int> rotatedRow, std::vector<i
 	for (int i = 0; i < b->cells.size(); i++) {
 		// should be able to rotate onto hint blocks
 		if (b->cells[i].getInfo().block != BlockType::HINT &&
-		 !isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
+			!isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
 			return false;
 			// or we can throw an exception!!!!!!!!!!1
-		}
 	}
-	return true;
+}
+return true;
 }
 
 

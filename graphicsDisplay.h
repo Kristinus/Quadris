@@ -14,7 +14,7 @@ class GraphicsDisplay: public Observer<Info> {
   Grid *grid;
   const int gridSize, winSize, cellSize;
   Xwindow xw;
-  std::unique_ptr<Score> score;
+  Score * score;
 
  public:
   GraphicsDisplay();

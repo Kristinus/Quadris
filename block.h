@@ -38,17 +38,13 @@ public:
     int getBottomLeftCol();
     int getBottomLeftRow();
     void playBlock();
-    void setBottomLeftCoords(int row, int col);
     void moveTo(int row, int col);
     void left(int x=1);
     void right(int x=1);
     void down(int x=1);
     void clockwise(int x=1);
     void counterclockwise(int x =1);
-    // void updateSetCells(unsigned int);
     void updateSetCells(std::vector<int>);
-    //virtual Block* clone() const;
-
     virtual BlockType getBlockType();
 
 friend std::ostream &operator<<(std::ostream &out, Block *);
