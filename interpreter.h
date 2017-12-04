@@ -26,7 +26,7 @@ public:
     Interpreter(int, Observer<Info> *ob, std::string, int);
     ~Interpreter();
     void run();
-    void run(std::istream &);
+    std::istream &run(std::istream &);
     bool run(std::string);
     bool reset(std::string);
 

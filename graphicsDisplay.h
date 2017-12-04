@@ -6,23 +6,17 @@
 #include <memory>
 #include "observer.h"
 #include "window.h"
-#include "interpreter.h"
-class Grid;
-class Score;
+class Interpreter;
 
 class GraphicsDisplay: public Observer<Info> {
-  Grid *grid;
   const int gridSize, winSize, cellSize;
   Xwindow xw;
-  Score * score;
 
  public:
   GraphicsDisplay();
-  void setGrid(Grid *) override;
-
   void notify(Subject<Info> &whoNotified) override;
   void clearNext() override;
-  void update() override;
+  void update(int, int, int) override;
   void clear() override;
 
   void run(Interpreter *i);

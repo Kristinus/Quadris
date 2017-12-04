@@ -90,15 +90,6 @@ void Block::setGridPointer(Grid *theGrid) {
 }
 
 
-// Displays next block in graphics display
-void Block::displayNext(Observer<Info> *ob) {
-	for(auto c:cells) {
-		c.attach(ob);
-		c.notifyObservers();
-	}
-}
-
-
 // checks if coordinate is on grid and is unoccupied
 bool Block::isValidCoordinate(int row, int col) const {
 	if ((col < 0) || (col >= constants::GRID_WIDTH) || (row < 0) || (row > constants::GRID_HEIGHT) || 

@@ -5,7 +5,6 @@
 #include <fstream>
 #include "level.h"
 #include <memory>
-#include "block.h"
 #include "grid.h"
 #include "commands.h"
 #include "observer.h"
@@ -57,10 +56,13 @@ void Interpreter::initKeyMap() {
 
 Interpreter::Interpreter(int seed, Observer<Info> *ob, string scriptFile, int startLevel) {
 	grid = new Grid(startLevel, seed, ob, scriptFile);
-	if(ob) ob->setGrid(grid);
 
 	initCommandMap();
     initKeyMap();
+}
+
+Interpreter::~Interpreter() {
+    delete grid;
 }
 
 bool isDigit(char c) {
@@ -137,7 +139,7 @@ void Interpreter::run() {
 	run(cin);
 }
 
-void Interpreter::run(std::istream &in) {
+std::istream &Interpreter::run(std::istream &in) {
 	string s;
 	while(in >> s) {
 		ProcessedInput processedInput;
@@ -179,6 +181,7 @@ void Interpreter::run(std::istream &in) {
 			else break;
 		}
 	}
+    return in;
 }
 
 // bonus feature - key presses
@@ -218,7 +221,6 @@ void Interpreter::operator()() {
     run();
 }
 
-Interpreter::~Interpreter() {}
 
 
 

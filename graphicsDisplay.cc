@@ -1,8 +1,7 @@
 #include <iostream>
 #include "graphicsDisplay.h"
 #include "subject.h"
-#include "grid.h"
-#include "score.h"
+#include "interpreter.h"
 #include <memory>
 #include <unistd.h>
 using namespace std;
@@ -15,14 +14,6 @@ GraphicsDisplay::GraphicsDisplay():
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
   xw.drawString(11*cellSize+10,10,"Next:"); 
-}
-
-void GraphicsDisplay::setGrid(Grid *grid) {
-  this->grid = grid;
-  score = grid->getScore();
-  xw.drawString(100,10,std::to_string(grid->getLevel()));
-  xw.drawString(100,20,std::to_string(score->getCurrentScore()));
-  xw.drawString(100,30,std::to_string(score->getHighScore()));
 }
 
 
@@ -58,16 +49,11 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
     xw.fillRectangle(info.col * cellSize, 50 + (17 - info.row) * cellSize, cellSize, cellSize, colour);
 }
 
+
 void GraphicsDisplay::clearNext() {
   xw.fillRectangle(13 * cellSize, 0, cellSize*4, cellSize*2, Xwindow::White);
 }
 
-void GraphicsDisplay::update() {
-  xw.fillRectangle(100, 0, 100, 50, Xwindow::White);
-  xw.drawString(100,10,std::to_string(grid->getLevel()));
-  xw.drawString(100,20,std::to_string(score->getCurrentScore()));
-  xw.drawString(100,30,std::to_string(score->getHighScore()));
-}
 
 void GraphicsDisplay::clear() {
   xw.fillRectangle(0, 0, 650, 650, Xwindow::White);
@@ -75,8 +61,15 @@ void GraphicsDisplay::clear() {
   xw.drawString(10,10,"Level:");
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
-  xw.drawString(11*cellSize+10,10,"Next:"); 
-  update();
+  xw.drawString(11*cellSize+10,10,"Next:");
+}
+
+
+void GraphicsDisplay::update(int level, int score, int hiScore) {
+  xw.fillRectangle(100, 0, 100, 50, Xwindow::White);
+  xw.drawString(100,10,std::to_string(level));
+  xw.drawString(100,20,std::to_string(score));
+  xw.drawString(100,30,std::to_string(hiScore));
 }
 
 

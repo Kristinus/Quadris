@@ -7,9 +7,12 @@
 #include "info.h"
 #include "constants.h"
 #include "levels.h"
+#include "score.h"
+#include "level.h"
 #include <iostream>
 #include <algorithm>
 using namespace std;
+
 
 
 Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile): startLevel{startLevel}, ob{ob} {
@@ -20,12 +23,22 @@ Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile)
 		theLevel->setCounter(-2);
 	}
 	theScore = new Score();
-	td = new TextDisplay(this);
-	//  std::vector<Block *> setBlocks;
-	//   ob = new GraphicsDisplay(this);
-	initGrid();	
+	td = new TextDisplay();
+	initGrid();
 }
 
+
+Grid::~Grid() {
+	// delete theLevel;
+	delete theScore;
+	for(auto b:setBlocks) {
+		delete b;
+	}
+	// delete currentBlock;
+	// delete nextBlock;
+	delete td;
+	delete ob;
+}
 
 std::vector<std::vector<Cell>> Grid::getGridCells() {
 	return theGrid;
@@ -59,8 +72,23 @@ void Grid::initGrid() {
 	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 	nextBlock = theLevel->createBlock();
 	nextBlock->setGridPointer(this);
-	if(ob) nextBlock->displayNext(ob);
+	
+	updateDisplays();
+}
 
+
+void Grid::updateDisplays() {
+	td->update(theLevel->getLevel(), theScore->getCurrentScore(), theScore->getHighScore());
+	if(ob) {
+		ob->clearNext();
+		ob->update(theLevel->getLevel(), theScore->getCurrentScore(), theScore->getHighScore());
+		for (auto &c : nextBlock->getBlockCells()) {
+			c.setState(StateType::NEXT);
+			c.attach(ob);
+			c.notifyObservers();
+		}
+	}
+	
 }
 
 // the game is over if the block to be played overlaps a piece that's set
@@ -181,7 +209,6 @@ void Grid::updateCells(Block *b, BlockType blocktype, StateType s, bool shouldNo
 		theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].setState(s);
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(blocktype);
 		if (shouldNotify) theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
-		
 	}
 
 }
@@ -440,7 +467,7 @@ void Grid::drop(int x) {
 		currentBlock = nextBlock;
 		currentBlock->setGridPointer(this);
 		currentBlock->moveTo(14,0);
-			updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 
 
 
@@ -448,18 +475,11 @@ void Grid::drop(int x) {
 		//Makes next block
 		nextBlock = theLevel->createBlock();
 		nextBlock->setGridPointer(this);
-		if(ob) {
-			ob->clearNext();
-			nextBlock->displayNext(ob);
-		}
+
+		updateDisplays();
 		x--;
 
 	}
-	if(ob) ob->update();
-
-	
-
-
 }
 
 void Grid::restart() {
@@ -485,7 +505,7 @@ void Grid::restart() {
 	td->clear();
 	if(ob) ob->clear();
 	initGrid(); 
-	//(TODO) clear level(reset file and level 4 counter)
+	updateDisplays();
 
 }
 
@@ -503,13 +523,13 @@ void Grid::rotateCCW(int x) {
 void Grid::levelUp(int x) {
 	for(int i=0; i<x; i++)
 		theLevel = theLevel->levelUp();
-	if (ob) ob->update();
+	updateDisplays();
 }
 
 void Grid::levelDown(int x) {
 	for(int i=0; i<x; i++)
 		theLevel = theLevel->levelDown();
-	if(ob) ob->update();
+	updateDisplays();
 }
 
 void Grid::random(bool flag) {
@@ -582,7 +602,6 @@ double Grid::calculatePriority() {
 
 
 void Grid::hint() {
-	bool shouldNotify = false;
 
 	vector<Cell> hintCells;
 	// store the original position of the block when hint
@@ -716,12 +735,13 @@ void Grid::dropBlock(Block *block, int col) {
 	setBlocks.emplace_back(block);
 
 	deleteRow();
-	if(ob) ob->update();
+	updateDisplays();
 }
 
 
 std::ostream &operator<<(std::ostream &out, Grid &grid) {
 	out << *(grid.td);
+	out << grid.getNextBlock();
 	return out;
 }
 

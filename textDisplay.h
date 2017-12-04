@@ -4,7 +4,6 @@
 #include <vector>
 #include <map>
 #include "observer.h"
-#include "score.h"
 #include "info.h"
 #include "subject.h"
 #include <memory>
@@ -13,14 +12,15 @@ class Grid;
 class TextDisplay: public Observer<Info> {
   std::vector<std::vector<char>> theDisplay;
   std::map<BlockType, char> dict;
-  Grid *grid;
-  Score * score;
+  int level, score, hiScore;
 
   void createDict();
  public:
-  TextDisplay(Grid *);
+  TextDisplay();
   void notify(Subject<Info> &whoNotified) override;
   void clear() override;
+  void update(int,int,int) override;
+
   friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 #endif

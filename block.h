@@ -28,7 +28,6 @@ public:
     virtual Block* clone() const = 0;
     virtual ~Block() = 0;
     void setGridPointer(Grid *);
-    void displayNext(Observer<Info> *ob);
     void move();
     void rotate(int);
     std::vector<Cell> getBlockCells() const;

@@ -1,6 +1,5 @@
 #include "textDisplay.h"
 #include "constants.h"
-#include "grid.h"
 #include <memory>
 #include <iostream>
 using namespace std;
@@ -18,20 +17,16 @@ void TextDisplay::createDict() {
   dict[BlockType::DOT] = '*';
 }
 
-TextDisplay::TextDisplay(Grid *grid): 
-  theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, ' '))}, grid{grid} {
+TextDisplay::TextDisplay(): 
+  theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, ' '))} {
       createDict();
-      score = grid->getScore();
 }
 
 void TextDisplay::notify(Subject<Info> &whoNotified) {
-  // cout <<"notified" << endl;
   Info i = whoNotified.getInfo();
-  // if (i.block == BlockType::NONE) {cout << "none" << endl;}
   char c = ' ';
   if(dict.count(i.block) > 0) {
     c = dict[i.block];
-    // cout << "hi" << endl;
   } 
   theDisplay[i.row][i.col] = c;
 }
@@ -42,11 +37,19 @@ void TextDisplay::clear() {
   theDisplay = std::vector<std::vector<char>>(18, std::vector<char>(11, ' '));
 }
 
+
+void TextDisplay::update(int level, int score, int hiScore) {
+  this->level = level;
+  this->score = score;
+  this->hiScore = hiScore;
+}
+
+
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   //Outputs the scoreboard
-  out << "Level:\t\t" << td.grid->getLevel() << std::endl;
-  out << "Score:\t\t" << td.score->getCurrentScore() << std::endl;
-  out << "Hi Score\t" << td.score->getHighScore() << std::endl;
+  out << "Level:\t\t" << td.level << std::endl;
+  out << "Score:\t\t" << td.score << std::endl;
+  out << "Hi Score\t" << td.hiScore << std::endl;
   out << "-----------" << std::endl;
 
   //Outputs the Grid
@@ -57,10 +60,8 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
     out << std::endl;
   }
 
-  //Outputs Next Block
+  //Outputs Next
   out << "-----------" << std::endl;
   out << "Next:" << std::endl;
-  out << td.grid->getNextBlock() << std::endl;
-
   return out;
 }

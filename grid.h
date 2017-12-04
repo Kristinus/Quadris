@@ -5,7 +5,9 @@
 #include <memory>
 #include "textDisplay.h"
 #include "cell.h"
-#include "level.h"
+class Level;
+class Score;
+
 struct HintInfo;
 template <typename InfoType> class Observer;
 
@@ -24,6 +26,7 @@ class Grid {
 	Observer<Info> *ob;
 
 	bool isRandom;
+	void updateDisplays();
 	bool isValidMove(Block *, int, int);
 	bool isValidMove(int, int);
 	void attachGridToBlock(Block *);
@@ -52,6 +55,8 @@ public:
 	std::vector<std::vector<Cell>> getGridCells();
 	Block *getNextBlock();
 	Score * getScore();
+
+	~Grid();
   //std::unique_ptr<Score> getScore();
 	int getLevel();
 	void initGrid();

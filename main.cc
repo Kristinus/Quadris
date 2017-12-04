@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
   string scriptFile = constants::DEFAULT_SCRIPT_FILE;
   int startLevel = 0;
 
-  bool threading = false;
+  bool keyInput = false;
 
   for (int i = 1; i < argc; ++i) {
     string cmd = argv[i];
@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
       }
     }
     else if (cmd == "-keys") {
-        threading = true;
+        keyInput = true;
     }
 
   }
@@ -87,14 +87,10 @@ int main(int argc, char *argv[]) {
   }
   // GraphicsDisplay *ob = nullptr;
   Interpreter in = Interpreter(seed, gd, scriptFile, startLevel);
-  if (!threading) in.run();
-  else {
-    // thread t1(in);
-    gd->run(&in);
-    // thread t2(&GraphicsDisplay::run, gd, &in);
-    // t1.join();
-    // t2.join();
-  }
-
-   //catch (ios::failure &) {}  // Any I/O failure quits
+  try {
+    if (!keyInput) in.run();
+    else {
+      gd->run(&in);
+    }
+  } catch (ios::failure &) {}  // Any I/O failure quits
 }
