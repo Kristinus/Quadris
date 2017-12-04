@@ -1,16 +1,17 @@
 #include "block.h"
 #include "grid.h"
 #include "info.h"
-#include <utility>
 
 using namespace std;
 
 
-Block::Block(BlockType blockType, int level, bool isHeavy): isHeavy{isHeavy}, level{level}, col{0}, row{0}, blockType{blockType} {}
+Block::Block(BlockType blockType, int level, bool isHeavy): isHeavy{isHeavy}, 
+level{level}, col{0}, row{0}, blockType{blockType} {}
 
 
 Block::Block(const Block &b):
-cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, col{b.col}, row{b.row}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
+cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, col{b.col}, 
+row{b.row}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
 
 
 Block::~Block(){
@@ -18,6 +19,8 @@ Block::~Block(){
 }
 
 
+// takes a vector of indices that should be deleted and
+// updates the cells of each block that is already set
 void Block::updateSetCells(std::vector<size_t> rowsToDelete) {
 	bool deleted;
 	int drop;
@@ -33,7 +36,7 @@ void Block::updateSetCells(std::vector<size_t> rowsToDelete) {
 			else if(cells[i].getInfo().row > rowsToDelete[r])
 				drop++;
 		}
-		if(deleted)
+		if (deleted)
 			cells.erase(cells.begin() + i);
 		else
 			cells[i].moveDown(drop);	
@@ -80,6 +83,12 @@ void Block::right(int x) {
 }
 
 
+void Block::down(int x){
+	row--;
+	move(0,-1);
+}
+
+
 void Block::setGridPointer(Grid *theGrid) {
 	grid = theGrid;
 }
@@ -94,13 +103,7 @@ void Block::displayNext(Observer<Info> *ob) {
 }
 
 
-void Block::down(int x){
-	row--;
-	move(0,-1);
-}
-
-
-// Chekcs if coordinate is on grid and is unoccupied
+// checks if coordinate is on grid and is unoccupied
 bool Block::isValidCoordinate(int row, int col) {
 	if ((col < 0) || (col >= 11) || (row < 0) || (row > 18) || 
 		grid->getGridCells()[17 - row][col].getInfo().state == StateType::STATIC) {	
@@ -126,6 +129,8 @@ void Block::moveTo(int bottomLeftRow, int bottomLeftCol) {
 }
 
 
+// rotates the block 90 degrees in a specified direction
+// +1 for clockwise, -1 for counterclockwise
 void Block::rotate(int dir) {
 	std::vector<int> rotatedCol;
 	std::vector<int> rotatedRow;
@@ -141,7 +146,8 @@ void Block::rotate(int dir) {
 		rotatedCol.emplace_back(cells[i].getInfo().row * dir);
 		rotatedRow.emplace_back(cells[i].getInfo().col * -dir);
 
-		// Get the min bottom of left by getting the leftmost bottom coord
+		// calculate the bottom left by taking the min of
+		// all the row coordinates and col coordinates
 		if (rotatedCol[i] < newBottomLeftCol) {
 			newBottomLeftCol = rotatedCol[i];
 		}
@@ -151,7 +157,8 @@ void Block::rotate(int dir) {
 		}
 	}
 
-	// Get the delta from the old bottom left
+	// find the amount of moves that need to be done
+	// to get the rotated block back to its bottom left corner
 	int deltax = oldBottomLeftCol - newBottomLeftCol;
 	int deltay = oldBottomLeftRow - newBottomLeftRow;
 
@@ -162,7 +169,8 @@ void Block::rotate(int dir) {
 
 	}
 
-	//(TODO) SHOULD BE IS VALID ROTATION
+	// ensure that the rotation is valid, otherwise
+	// do nothing
 	if (!isValidRotation(this, rotatedRow, rotatedCol)) {
 		return;
 	} else {
@@ -178,12 +186,14 @@ void Block::rotate(int dir) {
 
 
 bool Block::isValidRotation(Block *b, std::vector<int> rotatedRow, std::vector<int> rotatedCol) {
+
 	// Check that EACH rotated cell is valid
 	for (size_t i = 0; i < b->cells.size(); i++) {
+
       // Should be able to rotate onto hint blocks
-      if (b->cells[i].getInfo().block != BlockType::HINT && !isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
+      if (b->cells[i].getInfo().block != BlockType::HINT && 
+      	!isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
 			return false;
-			//(TODO) or we can throw an exception?!
 	   }
    }
    return true;
@@ -198,15 +208,10 @@ void Block::setBlockCellStates(StateType s) {
 }
 
 
-void Block::setBlockCellTypes(BlockType b) {
-	for (auto &c : cells) {
-		c.setBlock(b);
-	}
-}
 
 
 void Block::clockwise(int x) {
-	x = x%4;
+	x = x % 4;
 
 	while (x > 0) {
 		rotate(1);
@@ -216,7 +221,7 @@ void Block::clockwise(int x) {
 
 
 void Block::counterclockwise(int x) {
-	x = x%4;
+	x = x % 4;
 
 	while (x > 0) {
 		rotate(-1);
@@ -235,7 +240,6 @@ int Block::getBottomLeftRow() {
 }
 
 
-//(TODO) figure out pure virtual for this!!!!!!
 BlockType Block::getBlockType() {
 	return blockType;
 }
