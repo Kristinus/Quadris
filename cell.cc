@@ -2,8 +2,6 @@
 #include "info.h"
 
 
-// recall info holds row, col, state, and blcoktype
-
 Cell::Cell(Info &info): info{info} {}
 
 void Cell::setBlock(BlockType block) {

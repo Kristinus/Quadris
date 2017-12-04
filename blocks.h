@@ -6,7 +6,7 @@
 class IBlock: public Block {
 public:
     IBlock(int level, bool isHeavy = false);
-    IBlock* clone() const;
+    IBlock* clone() const override;
     ~IBlock();
 };
 
@@ -14,7 +14,7 @@ public:
 class JBlock: public Block {
 public:
     JBlock(int level, bool isHeavy = false);
-    JBlock* clone() const;
+    JBlock* clone() const override;
     ~JBlock();
 };
 
@@ -22,7 +22,7 @@ public:
 class LBlock: public Block {
 public:
     LBlock(int level, bool isHeavy = false);
-    LBlock* clone() const;
+    LBlock* clone() const override;
     ~LBlock();
 };
 
@@ -30,7 +30,7 @@ public:
 class OBlock: public Block {
 public:
     OBlock(int level, bool isHeavy = false);
-    OBlock* clone() const;
+    OBlock* clone() const override;
     ~OBlock();
 };
 
@@ -38,7 +38,7 @@ public:
 class SBlock: public Block {
 public:
 	SBlock(int level, bool isHeavy = false);
-	SBlock* clone() const;
+	SBlock* clone() const override;
    ~SBlock();
 };
 
@@ -46,7 +46,7 @@ public:
 class TBlock: public Block {
 public:
     TBlock(int level, bool isHeavy = false);
-    TBlock* clone() const;
+    TBlock* clone() const override;
     ~TBlock();
 };
 
@@ -54,7 +54,7 @@ public:
 class ZBlock: public Block {	
 public:
     ZBlock(int level, bool isHeavy = false);
-    ZBlock* clone() const;
+    ZBlock* clone() const override;
     ~ZBlock();
 };
 
@@ -62,7 +62,7 @@ public:
 class DotBlock: public Block {
 public:
     DotBlock(int level, bool isHeavy = false);
-    DotBlock* clone() const;
+    DotBlock* clone() const override;
     ~DotBlock();
 };
 

@@ -1,6 +1,7 @@
 #include "block.h"
 #include "grid.h"
 #include "info.h"
+#include "constants.h"
 
 using namespace std;
 
@@ -9,18 +10,10 @@ Block::Block(BlockType blockType, int level, bool isHeavy): isHeavy{isHeavy},
 level{level}, col{0}, row{0}, blockType{blockType} {}
 
 
-// Block::Block(const Block &b):
-// cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, col{b.col}, 
-// row{b.row}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
-
-
 Block::~Block(){
 	cells.clear();
 }
 
-// Block* Block::clone() const {
-// 	return new Block(blockType, level, isHeavy);
-// }
 
 // takes a vector of indices that should be deleted and
 // updates the cells of each block that is already set
@@ -47,17 +40,17 @@ void Block::updateSetCells(std::vector<size_t> rowsToDelete) {
 }
 
 
-std::vector<Cell> Block::getBlockCells() {
+std::vector<Cell> Block::getBlockCells() const {
 	return cells;
 }
 
 
-bool Block::isBlockHeavy(){
+bool Block::isBlockHeavy() const {
 	return isHeavy;
 }
 
 
-int Block::getLevel(){
+int Block::getLevel() const {
 	return level;
 }
 
@@ -107,9 +100,9 @@ void Block::displayNext(Observer<Info> *ob) {
 
 
 // checks if coordinate is on grid and is unoccupied
-bool Block::isValidCoordinate(int row, int col) {
-	if ((col < 0) || (col >= 11) || (row < 0) || (row > 18) || 
-		grid->getGridCells()[17 - row][col].getInfo().state == StateType::STATIC) {	
+bool Block::isValidCoordinate(int row, int col) const {
+	if ((col < 0) || (col >= constants::GRID_WIDTH) || (row < 0) || (row > constants::GRID_HEIGHT) || 
+		grid->getGridCells()[constants::GRID_HEIGHT - 1 - row][col].getInfo().state == StateType::STATIC) {	
 		return false;
    }
    else return true;
@@ -224,17 +217,17 @@ void Block::counterclockwise(int x) {
 }
 
 
-int Block::getBottomLeftCol() {
+int Block::getBottomLeftCol() const {
 	return col;
 }
 
 
-int Block::getBottomLeftRow() {
+int Block::getBottomLeftRow() const {
 	return row;
 }
 
 
-BlockType Block::getBlockType() {
+BlockType Block::getBlockType() const {
 	return blockType;
 }
 
@@ -249,7 +242,7 @@ std::ostream &operator<<(std::ostream &out, Block *b) {
 			if(b->cells[i].getInfo().row == row-r && b->cells[i].getInfo().col == c) {
 				out << b->type;
 				i++;
-				if(i==4) break;
+				if(i == 4) break;
 			}
 			else out << ' ';
 		}
