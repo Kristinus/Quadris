@@ -4,6 +4,7 @@
 #include "grid.h"
 #include "score.h"
 #include <memory>
+#include <unistd.h>
 using namespace std;
 
 GraphicsDisplay::GraphicsDisplay():
@@ -14,7 +15,6 @@ GraphicsDisplay::GraphicsDisplay():
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
   xw.drawString(11*cellSize+10,10,"Next:"); 
-  
 }
 
 void GraphicsDisplay::setGrid(Grid *grid) {
@@ -77,4 +77,12 @@ void GraphicsDisplay::clear() {
   xw.drawString(10,30,"Hi Score:"); 
   xw.drawString(11*cellSize+10,10,"Next:"); 
   update();
+}
+
+
+void GraphicsDisplay::run() {
+  while(1) {
+    std::cout <<xw.readInput() << std::endl;
+    usleep(500);
+  }
 }

@@ -3,7 +3,9 @@
 #include <sstream>
 #include "interpreter.h"
 #include "constants.h"
+#include "graphicsDisplay.h"
 #include <ctime>
+#include <thread>
 
 using namespace std;
 
@@ -12,7 +14,6 @@ using namespace std;
 // -scriptfile xxx, use xxx instead of sequence as a source of blocks for level 0
 // -startlevel [0-4], starts the game in level n... otherwise default is zero
 
-
 int main(int argc, char *argv[]) {
 
   cin.exceptions(ios::eofbit|ios::failbit);
@@ -20,6 +21,8 @@ int main(int argc, char *argv[]) {
   int seed = time(NULL);
   string scriptFile = constants::DEFAULT_SCRIPT_FILE;
   int startLevel = 0;
+
+  bool threading = false;
 
   for (int i = 1; i < argc; ++i) {
     string cmd = argv[i];
@@ -58,7 +61,7 @@ int main(int argc, char *argv[]) {
     } 
     else if (cmd == "-startlevel") {
       if (i + 1 == argc) {
-        // no start
+      // no start
       }
       else {
         istringstream iss {argv[i + 1]};
@@ -67,17 +70,30 @@ int main(int argc, char *argv[]) {
         if (!(iss >> startLevel) && 
           (startLevel > constants::MAX_LEVEL || startLevel < constants::MIN_LEVEL )) {
           cerr << "Invalid Input: Use -startlevel [integer between 0 - 4 ]" << endl;
-        return 1;
-      } 
-      i++;
+          return 1;
+        } 
+        i++;
+      }
     }
+    else if (cmd == "-keys") {
+        threading = true;
+    }
+
   }
 
-}
-
-Interpreter in = Interpreter(seed, textOnly, scriptFile, startLevel);
-in.run();
-
+  GraphicsDisplay *gd = nullptr;
+  if(!textOnly) {
+    gd = new GraphicsDisplay();
+  }
+  // GraphicsDisplay *ob = nullptr;
+  Interpreter in = Interpreter(seed, gd, scriptFile, startLevel);
+  if (!threading) in.run();
+  else {
+    thread t1(in);
+    thread t2(&GraphicsDisplay::run, gd);
+    t1.join();
+    t2.join();
+  }
 
    //catch (ios::failure &) {}  // Any I/O failure quits
 }

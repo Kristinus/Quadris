@@ -36,8 +36,6 @@ void TextDisplay::notify(Subject<Info> &whoNotified) {
   theDisplay[i.row][i.col] = c;
 }
 
-void TextDisplay::clearNext() {}
-void TextDisplay::update() {}
 
 void TextDisplay::clear() {
   theDisplay.clear();

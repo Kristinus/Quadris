@@ -30,34 +30,26 @@ Block::~Block(){
 }
 
 void Block::updateSetCells(std::vector<int> rowsToDelete) {
-	for(int r=0; r< rowsToDelete.size(); r++) {
-		for (int i=cells.size()-1; i>=0; i--) {
+	bool deleted;
+	int drop;
+	for (int i=cells.size()-1; i>=0; i--) {
+		deleted = false;
+		drop = 0;
+		for(int r=0; r< rowsToDelete.size(); r++) {
 			// if the row goes out of bounds, then erase the cell
-			if (cells[i].getInfo().row < rowsToDelete[r]) {
-				cells.erase(cells.begin() + i);
-			} else {
-				cells[i].moveDown(r);	
+			if (cells[i].getInfo().row == rowsToDelete[r]) {
+				deleted = true;
+				break;
 			}
+			else if(cells[i].getInfo().row > rowsToDelete[r])
+				drop++;
 		}
+		if(deleted)
+			cells.erase(cells.begin() + i);
+		else
+			cells[i].moveDown(drop);	
 	}
 }
-
-// void Block::updateSetCells(unsigned int rowsToDelete) {
-// 	for (int i = cells.size() - 1; i >= 0; i--) {
-// 	 		// if the row goes out of bounds, then erase the cell
-// 	 		if (cells[i].getInfo().row  < rowsToDelete) {
-// 	 			cells.erase(cells.begin() + i);
-
-// 	 		} else {
-// 	 			// decrement each setBlock's
-// 	 			//cout << "cell was at row: " << cells[i].getInfo().row << endl;
-// 	 			cells[i].moveDown(rowsToDelete);	
-// 	 			//cout << "cell now at row: " << cells[i].getInfo().row << endl;
-
-// 	 			// block->cells.block->cells.getInfo().row - rowsToDelete;
-// 	 		}
-// 	 	}
-// }
 
 std::vector<Cell> Block::getBlockCells() {
 	return cells;

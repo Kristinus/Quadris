@@ -60,6 +60,7 @@ Xwindow::Xwindow(int width, int height): width(width), height(height) {
   usleep(1000);
 }
 
+
 Xwindow::~Xwindow() {
   XFreeGC(d, gc);
   XCloseDisplay(d);
@@ -109,7 +110,7 @@ void Xwindow::showAvailableFonts() {
   for (int i = 0; i < count; ++i) cout << fnts[i] << endl;
 }
 
-void Xwindow::readInput() {
+std::string Xwindow::readInput() {
   char szKey[32];
   char szKeyOld[32] = {0};
 
@@ -138,9 +139,9 @@ void Xwindow::readInput() {
 
             szKeysym = XKeycodeToKeysym( d, iKeyCode, 0 );
             szKeyString = XKeysymToString( szKeysym );
-
+            return std::string(szKeyString);
             // XGetInputFocus( d, &focusWin, &iReverToReturn );
-            printf( "Key: %s\n", szKeyString );
+            // printf( "Key: %s\n", szKeyString );
           }
         iCheck = iCheck << 1 ;
         }
