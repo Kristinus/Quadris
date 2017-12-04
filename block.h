@@ -1,9 +1,11 @@
 #ifndef __BLOCK_H__
 #define __BLOCK_H__
+
 #include "info.h"
 #include "cell.h"
 #include <vector>
 #include <iostream>
+
 class Grid;
 template <typename InfoType> class Observer;
 

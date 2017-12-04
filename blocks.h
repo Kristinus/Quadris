@@ -1,5 +1,6 @@
 #ifndef __BLOCKS_H__
 #define __BLOCKS_H__
+
 #include "block.h"
 #include "info.h"
 
