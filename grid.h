@@ -1,13 +1,13 @@
-
 #ifndef GRID_H
 #define GRID_H
+
 #include <vector>
 #include <memory>
 #include "textDisplay.h"
 #include "cell.h"
+
 class Level;
 class Score;
-
 struct HintInfo;
 template <typename InfoType> class Observer;
 
@@ -16,14 +16,11 @@ class Grid {
 	int startLevel;
 	Level * theLevel;
 	std::unique_ptr<Score> theScore;
-  //std::unique_ptr<Score> theScore;
 	std::vector<Block *> setBlocks;
 	Block *currentBlock = nullptr;
 	Block * hintBlock;
 	Block *nextBlock = nullptr;
 	TextDisplay *td = nullptr;
-	// std::unique_ptr<TextDisplay> td;
-  //std::shared_ptr<TextDisplay> td;
 	Observer<Info> *ob;
 
 	bool isRandom;
@@ -48,16 +45,12 @@ class Grid {
 	int countNumCellsOnGround();
 	std::vector<Cell> getHintCells(Block *b, HintInfo i);
 
-
-
-
 public:
 	Grid(int startLevel, int seed, Observer<Info> *, std::string);
 	std::vector<std::vector<Cell>> getGridCells();
 	Block *getNextBlock();
 
 	~Grid();
-  //std::unique_ptr<Score> getScore();
 	int getLevel();
 	void initGrid();
 	bool isOver();
@@ -82,8 +75,6 @@ public:
 
 	friend std::ostream &operator<<(std::ostream &out, Grid &grid);
 };
-
-
 
 #endif
 
