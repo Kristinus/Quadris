@@ -55,7 +55,7 @@ void Grid::initGrid() {
 
 	currentBlock = theLevel->createBlock();
 	currentBlock->setGridPointer(this);
-	currentBlock->moveTo(14, 0);
+	currentBlock->moveTo(constants::MAX_ROW, constants::MIN_COL);
 	updateCells(currentBlock, StateType::MOVING);
 	nextBlock = theLevel->createBlock();
 	nextBlock->setGridPointer(this);
@@ -66,7 +66,7 @@ void Grid::initGrid() {
 // the game is over if the block to be played overlaps a piece that's set
 bool Grid::isOver() {
 	for (auto &c : currentBlock->getBlockCells()) {
-		if (theGrid[17 - c.getInfo().row][c.getInfo().col].getInfo().state 
+		if (theGrid[constants::GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].getInfo().state 
 			== StateType::STATIC) return true;
 	}
 return false;
@@ -107,8 +107,8 @@ double Grid::calculateDensity() {
 
 
 double Grid::getAverageHeights(std::vector<int> v) {      
-	double sum=0;
-	for(size_t i=0;i<v.size();i++) {
+	double sum = 0;
+	for(size_t i = 0;i<v.size();i++) {
 		sum+=v[i];
 
 	}
@@ -137,11 +137,10 @@ std::vector<int> Grid::getHeights() {
 	std::vector<int> heights(11, 0);
 	//cout << "hi1" << endl;
 	//cout << theGrid[0][6].getInfo().row;
-	for (int row = 17; row >= 0; row--) {
-		for ( int col = 0; col < 11; col++) {
+	for (int row = constants::MAX_ROW; row >= constants::MIN_ROW; row--) {
+		for ( int col = constants::MIN_COL; col < constants::MAX_COL; col++) {
 				// record the index of the highest static block...if no block is there... height is 0
-			if (theGrid[17 - row][col].getInfo().state == StateType::STATIC) {
-					//cout << row << "|" << col << endl;
+			if (theGrid[constants::GRID_HEIGHT - 1 - row][col].getInfo().state == StateType::STATIC) {
 				if (row + 1 > heights[col]) {
 					heights[col] = row + 1;
 				}
@@ -173,28 +172,39 @@ void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
 
 		// (TODO) refactor code
 		for (auto &c: hintBlock->getBlockCells()) {
-			theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
-			theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
+			theGrid[constants::GRID_HEIGHT - 1 -c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
+			theGrid[constants::GRID_HEIGHT - 1 -c.getInfo().row][c.getInfo().col].notifyObservers();
 
 		}
 		delete hintBlock;
 		hintBlock = nullptr;
 	}
 	for (auto &c : b->getBlockCells()) {
-		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
-		theGrid[17 - c.getInfo().row][c.getInfo().col].setState(s);
+		theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
+		theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].setState(s);
 
 		//(TODO) REFACTOR THIS PART
 		if (s == StateType::NONE) {
-			theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
+			theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
 		}
-		if (shouldNotify) theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
+		if (shouldNotify) theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
 }
 
 void Grid::updateCells(Block *b, BlockType blocktype, bool shouldNotify) {
 	for (auto &c : b->getBlockCells()) {
+		if (hintBlock != nullptr) {
+
+		// (TODO) refactor code
+		for (auto &c: hintBlock->getBlockCells()) {
+			theGrid[constants::GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
+			theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].notifyObservers();
+
+		}
+		delete hintBlock;
+		hintBlock = nullptr;
+	}
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(blocktype);
 		if (shouldNotify) theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
@@ -525,13 +535,12 @@ void Grid::rotateCCW(int x) {
 
 	}
 	updateCells(currentBlock, StateType::MOVING);
-	//playBlock(currentBlock);
 	if(currentBlock->isBlockHeavy()) down(1);
 }
 void Grid::levelUp(int x) {
 	for(int i=0; i<x; i++)
 		theLevel = theLevel->levelUp();
-	if(ob) ob->update();
+	if (ob) ob->update();
 }
 
 void Grid::levelDown(int x) {
