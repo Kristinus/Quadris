@@ -18,12 +18,10 @@ protected:
     char type;
     BlockType blockType;
     bool isValidRotation(Block *b, std::vector<int> rotatedRow, std::vector<int> rotatedCol);
-	bool isValidCoordinate(int row , int col);
+	 bool isValidCoordinate(int row , int col);
 public:
     Block(BlockType, int level, bool isHeavy=false);
     Block(const Block&);
-    // Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
-    // Block(bool isHeavy, int level, std::vector<Cell> cells);
     virtual ~Block();
     void setGridPointer(Grid *);
     void displayNext(Observer<Info> *ob);
@@ -33,11 +31,10 @@ public:
     bool isBlockHeavy();
     int getLevel();
     void move(int, int);
-	void setBlockCellStates(StateType s);
-	void setBlockCellTypes(BlockType);
+	 void setBlockCellStates(StateType s);
+	 void setBlockCellTypes(BlockType);
     int getBottomLeftCol();
     int getBottomLeftRow();
-    void playBlock();
     void moveTo(int row, int col);
     void left(int x=1);
     void right(int x=1);
@@ -47,7 +44,7 @@ public:
     void updateSetCells(std::vector<size_t>);
     virtual BlockType getBlockType();
 
-friend std::ostream &operator<<(std::ostream &out, Block *);
+    friend std::ostream &operator<<(std::ostream &out, Block *);
 };
 
 #endif

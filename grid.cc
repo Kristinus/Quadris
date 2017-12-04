@@ -247,7 +247,7 @@ void Grid::deleteRow() {
 		for (int i = theGrid.size() - 1; i >= 0; i--) {
 			for (auto &c: theGrid[i]) {
 				if(c.getInfo().row < deletedRows[deletedRows.size()-1]) continue;
-				for(int r:deletedRows) {
+				for(size_t r:deletedRows) {
 					if(c.getInfo().row >= r)
 						c.setCoords(c.getInfo().row - 1, c.getInfo().col);
 				}
@@ -346,7 +346,7 @@ bool Grid::isValidMove(int colshift, int rowshift) {
 
 void Grid::deleteCurrentBlock() {
 	// (TODO) refector into currentblock code
-	for (int i = 0; i < currentBlock->getBlockCells().size(); i++) {
+	for (size_t i = 0; i < currentBlock->getBlockCells().size(); i++) {
 		int row = currentBlock->getBlockCells()[i].getInfo().row;
 		int col = currentBlock->getBlockCells()[i].getInfo().col;
 		theGrid[17 - row][col].setBlock(BlockType::NONE);
@@ -552,7 +552,7 @@ int Grid::countHoles() {
 	int numHoles = 0; 
 	// for all the cells below the highest cell
 	
-	for (int i = 0; i < heights.size(); i++) {
+	for (size_t i = 0; i < heights.size(); i++) {
 		for (int row = 0; row < heights[i] - 1; row++) {
 			if (theGrid[17 - row][i].getInfo().state == StateType::NONE) {
 				numHoles++;
