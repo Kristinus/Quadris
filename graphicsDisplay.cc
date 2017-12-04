@@ -80,9 +80,14 @@ void GraphicsDisplay::clear() {
 }
 
 
-void GraphicsDisplay::run() {
-  while(1) {
-    std::cout <<xw.readInput() << std::endl;
-    usleep(500);
+void GraphicsDisplay::run(Interpreter *i) {
+  bool running = true;
+  while(running) {
+    running = i->run(xw.readInput());
+    usleep(100000);
+    if (!running) {
+			cout << "Wanna play again? [yes/no]" << endl;
+			running = i->reset(xw.readInput());
+		}
   }
 }

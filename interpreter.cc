@@ -27,6 +27,7 @@ void Interpreter::initCommandMap() {
     commandMap["levelup"] = std::make_unique<LevelUpCommand>(grid);
     commandMap["leveldown"] = std::make_unique<LevelDownCommand>(grid);
     commandMap["norandom"] = std::make_unique<NoRandomCommand>(grid);
+    commandMap["random"] = std::make_unique<RandomCommand>(grid);
     commandMap["sequence"] = std::make_unique<SequenceCommand>(grid, this);
     commandMap["clockwise"] = std::make_unique<ClockwiseCommand>(grid);
     commandMap["counterclockwise"] = std::make_unique<CounterClockwiseCommand>(grid);
@@ -42,11 +43,24 @@ void Interpreter::initCommandMap() {
     commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid, 'Z'); 
 }
 
+void Interpreter::initKeyMap() {
+    keyMap["Q"] = "left";
+    keyMap["S"] = "right";
+    keyMap["T"] = "down";
+    keyMap["u"] = "levelup";
+    keyMap["i"] = "leveldown";
+    keyMap["R"] = "clockwise";
+    keyMap["space"] = "drop";
+    keyMap["r"] = "restart";
+    keyMap["h"] = "hint";
+}
+
 Interpreter::Interpreter(int seed, Observer<Info> *ob, string scriptFile, int startLevel) {
 	grid = new Grid(startLevel, seed, ob, scriptFile);
 	if(ob) ob->setGrid(grid);
 
 	initCommandMap();
+    initKeyMap();
 }
 
 bool isDigit(char c) {
@@ -168,6 +182,36 @@ void Interpreter::run(std::istream &in) {
 			else break;
 		}
 	}
+}
+
+bool Interpreter::run(std::string key) {
+    if (key == "q") {
+        return false;
+    }
+    if (keyMap.count(key) > 0) {
+        auto cmd = (keyMap.find(key))->second;
+        auto i = commandMap.find(cmd);
+        
+        (i->second)->execute(1,"");
+        
+        if (grid->isOver()) {
+            cout << "GAME OVER YOU LOSER" << endl;
+            return false;
+        }
+        cout << *grid;
+    }
+    return true;
+}
+
+bool Interpreter::reset(std::string key) {
+    if (key == "y") {
+
+        // get the restart Command object and execute it
+        (commandMap.find("restart")->second)->execute(1,"");
+        cout << *grid;
+        return true;
+    }
+    return false;
 }
 
 void Interpreter::operator()() {

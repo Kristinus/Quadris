@@ -89,10 +89,11 @@ int main(int argc, char *argv[]) {
   Interpreter in = Interpreter(seed, gd, scriptFile, startLevel);
   if (!threading) in.run();
   else {
-    thread t1(in);
-    thread t2(&GraphicsDisplay::run, gd);
-    t1.join();
-    t2.join();
+    // thread t1(in);
+    gd->run(&in);
+    // thread t2(&GraphicsDisplay::run, gd, &in);
+    // t1.join();
+    // t2.join();
   }
 
    //catch (ios::failure &) {}  // Any I/O failure quits

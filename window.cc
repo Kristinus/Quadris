@@ -139,7 +139,8 @@ std::string Xwindow::readInput() {
 
             szKeysym = XKeycodeToKeysym( d, iKeyCode, 0 );
             szKeyString = XKeysymToString( szKeysym );
-            return std::string(szKeyString);
+            if(szKeyString != NULL)
+              return std::string(szKeyString);
             // XGetInputFocus( d, &focusWin, &iReverToReturn );
             // printf( "Key: %s\n", szKeyString );
           }
