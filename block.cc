@@ -9,15 +9,18 @@ Block::Block(BlockType blockType, int level, bool isHeavy): isHeavy{isHeavy},
 level{level}, col{0}, row{0}, blockType{blockType} {}
 
 
-Block::Block(const Block &b):
-cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, col{b.col}, 
-row{b.row}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
+// Block::Block(const Block &b):
+// cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, col{b.col}, 
+// row{b.row}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
 
 
 Block::~Block(){
 	cells.clear();
 }
 
+// Block* Block::clone() const {
+// 	return new Block(blockType, level, isHeavy);
+// }
 
 // takes a vector of indices that should be deleted and
 // updates the cells of each block that is already set

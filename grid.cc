@@ -674,7 +674,7 @@ void Grid::hint() {
 	updateCells(currentBlock, StateType::NONE, shouldNotify);
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 	updateCells(currentBlock, StateType::MOVING);
-	hintBlock = new Block(*currentBlock);
+	hintBlock = currentBlock->clone();
 
 	hintBlock->setGridPointer(this);
 	int numRotations = best.numRotations;
@@ -710,7 +710,7 @@ int Grid::getLevel() {
 // replaces the current block at play
 void Grid::replaceBlock(char type) {
 
-	Block *temp = new Block(*currentBlock);
+	Block *temp = currentBlock->clone();
 	int col = currentBlock->getBottomLeftCol();
 	int row = currentBlock->getBottomLeftRow();
 	deleteCurrentBlock();

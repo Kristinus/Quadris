@@ -16,6 +16,17 @@ IBlock::IBlock(int level, bool isHeavy): Block(BlockType::I, level, isHeavy) {
     }
 }
 
+IBlock* IBlock::clone() const {
+	IBlock* cpy = new IBlock(level, isHeavy);
+	cpy->type = type;
+	cpy->blockType = blockType;
+	cpy->grid = grid;
+	cpy->row = row;
+	cpy->col = col;
+	cpy->cells = cells;
+	return cpy;
+}
+
 
 IBlock::~IBlock() {}
 
@@ -41,6 +52,18 @@ JBlock::JBlock(int level, bool isHeavy): Block(BlockType::J, level, isHeavy) {
     }
 }
 
+JBlock* JBlock::clone() const {
+	JBlock* cpy = new JBlock(level, isHeavy);
+	cpy->type = type;
+	cpy->blockType = blockType;
+	cpy->grid = grid;
+	cpy->row = row;
+	cpy->col = col;
+	cpy->cells = cells;
+
+	return cpy;
+}
+
 
 JBlock::~JBlock() {}
 
@@ -64,6 +87,16 @@ LBlock::LBlock(int level, bool isHeavy): Block(BlockType::L, level, isHeavy) {
     }
 }
 
+LBlock* LBlock::clone() const {
+	LBlock* cpy = new LBlock(level, isHeavy);
+	cpy->type = type;
+	cpy->blockType = blockType;
+	cpy->grid = grid;
+	cpy->row = row;
+	cpy->col = col;
+	cpy->cells = cells;
+	return cpy;
+}
 
 LBlock::~LBlock() {}
 
@@ -86,6 +119,18 @@ OBlock::OBlock(int level, bool isHeavy): Block(BlockType::O, level, isHeavy) {
     }
 }
 
+
+OBlock* OBlock::clone() const {
+	OBlock* cpy = new OBlock(level, isHeavy);
+	cpy->type = type;
+	cpy->blockType = blockType;
+	cpy->grid = grid;
+	cpy->row = row;
+	cpy->col = col;
+	cpy->cells = cells;
+
+	return cpy;
+}
 
 OBlock::~OBlock() {}
 
@@ -113,6 +158,19 @@ SBlock::SBlock(int level, bool isHeavy): Block(BlockType::S, level, isHeavy) {
     cells.emplace_back(Cell(i));
 }
 
+SBlock* SBlock::clone() const {
+	SBlock* cpy = new SBlock(level, isHeavy);
+	cpy->type = type;
+	cpy->blockType = blockType;
+	cpy->grid = grid;
+	cpy->row = row;
+	cpy->col = col;
+	cpy->cells = cells;
+
+	return cpy;
+}
+
+
 
 SBlock::~SBlock() {}
 
@@ -137,6 +195,18 @@ TBlock::TBlock(int level, bool isHeavy): Block(BlockType::T, level, isHeavy) {
 }
 
 
+TBlock* TBlock::clone() const {
+	TBlock* cpy = new TBlock(level, isHeavy);
+	cpy->type = type;
+	cpy->blockType = blockType;
+	cpy->grid = grid;
+	cpy->row = row;
+	cpy->col = col;
+	cpy->cells = cells;
+
+	return cpy;
+}
+
 TBlock::~TBlock() {}
 
 /*****************************************************************************/
@@ -160,12 +230,24 @@ ZBlock::ZBlock(int level, bool isHeavy): Block(BlockType::Z, level, isHeavy) {
     }
 }
 
+ZBlock* ZBlock::clone() const {
+	ZBlock* cpy = new ZBlock(level, isHeavy);
+	cpy->type = type;
+	cpy->blockType = blockType;
+	cpy->grid = grid;
+	cpy->row = row;
+	cpy->col = col;
+	cpy->cells = cells;
+
+	return cpy;
+}
 
 ZBlock::~ZBlock() {}
 
 /*****************************************************************************/
 
-DotBlock::DotBlock(int level, bool isHeavy): Block(BlockType::DOT, level, isHeavy) {
+DotBlock::DotBlock(int level, bool isHeavy): 
+Block(BlockType::DOT, level, isHeavy) {
     type = '*'; 
     Info i;
 
@@ -177,6 +259,17 @@ DotBlock::DotBlock(int level, bool isHeavy): Block(BlockType::DOT, level, isHeav
     cells.emplace_back(Cell(i));
 }
 
+DotBlock* DotBlock::clone() const {
+	DotBlock* cpy = new DotBlock(level, isHeavy);
+	cpy->type = type;
+	cpy->blockType = blockType;
+	cpy->grid = grid;
+	cpy->row = row;
+	cpy->col = col;
+	cpy->cells = cells;
+
+	return cpy;
+}
 
 DotBlock::~DotBlock() {}
 
