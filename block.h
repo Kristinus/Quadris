@@ -20,6 +20,8 @@ protected:
     bool isValidRotation(Block *b, std::vector<int> rotatedRow, 
     	std::vector<int> rotatedCol);
 	bool isValidCoordinate(int row , int col);
+	void move(int, int);
+
 public:
     Block(BlockType, int level, bool isHeavy=false);
     //Block(const Block&);
@@ -32,7 +34,6 @@ public:
     std::vector<Cell> getBlockCells();
     bool isBlockHeavy();
     int getLevel();
-    void move(int, int);
     int getBottomLeftCol();
     int getBottomLeftRow();
     void moveTo(int row, int col);
