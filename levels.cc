@@ -10,7 +10,7 @@ Level0::Level0(Grid * grid, int seed, std::string file): Level(grid, seed, file,
 Block *Level0::createBlock() {
     char b;
     seq >> b;
-    Block *block = getBlock(b);
+    Block *block = getBlock(b, getLevel(), heavy);
     if(block) return block;
     //Loops through file again
     seq.close();

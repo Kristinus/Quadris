@@ -11,20 +11,20 @@ col{0}, row{0}, blockType{blockType} {
 
 
 Block::Block(const Block &b):
-cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, row{b.row},col{b.col}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
+cells{b.cells}, isHeavy{b.isHeavy}, level{b.level}, col{b.col}, row{b.row}, grid{b.grid}, type{b.type}, blockType{b.blockType} {}
 
 
 Block::~Block(){
 	cells.clear();
 }
 
-void Block::updateSetCells(std::vector<int> rowsToDelete) {
+void Block::updateSetCells(std::vector<size_t> rowsToDelete) {
 	bool deleted;
 	int drop;
 	for (int i=cells.size()-1; i>=0; i--) {
 		deleted = false;
 		drop = 0;
-		for(int r=0; r< rowsToDelete.size(); r++) {
+		for(size_t r=0; r< rowsToDelete.size(); r++) {
 			// if the row goes out of bounds, then erase the cell
 			if (cells[i].getInfo().row == rowsToDelete[r]) {
 				deleted = true;
@@ -61,8 +61,6 @@ void Block::move(int colshift, int rowshift) {
 		unsigned int newrow = oldrow + rowshift;
 		c.setCoords(newrow, newcol);
 	}
-	for (auto &c: getBlockCells()) {
-	}
 }
 
 void Block::left(int x){
@@ -90,10 +88,6 @@ void Block::down(int x){
 
 	row--;
 	move(0,-1);
-
-   			// for (auto c: getBlockCells()) {
-		// cout << "DOWN(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	// }
 }
 
 bool Block::isValidCoordinate(int row, int col) {
@@ -140,7 +134,7 @@ void Block::rotate(int dir) {
 	rotatedCol.emplace_back(newBottomLeftCol);
 	rotatedRow.emplace_back(newBottomLeftRow);
 
-	for (int i = 1; i < cells.size(); i++) {
+	for (size_t i = 1; i < cells.size(); i++) {
 		rotatedCol.emplace_back(cells[i].getInfo().row * dir);
 		rotatedRow.emplace_back(cells[i].getInfo().col * -dir);
 
@@ -159,7 +153,7 @@ void Block::rotate(int dir) {
 	int deltay = oldBottomLeftRow - newBottomLeftRow;
 
 	// update all cells
-	for (int i = 0; i < cells.size(); i++) {
+	for (size_t i = 0; i < cells.size(); i++) {
 		rotatedCol[i] += deltax;
 		rotatedRow[i] += deltay;
 
@@ -168,7 +162,7 @@ void Block::rotate(int dir) {
 	if (!isValidRotation(this, rotatedRow, rotatedCol)) {
 		return;
 	} else {
-		for (int i = 0; i < cells.size(); i++) {
+		for (size_t i = 0; i < cells.size(); i++) {
 			cells[i].setCoords(rotatedRow[i], rotatedCol[i]);
 
 		}
@@ -182,7 +176,7 @@ void Block::rotate(int dir) {
 
 bool Block::isValidRotation(Block *b, std::vector<int> rotatedRow, std::vector<int> rotatedCol) {
 		// check that EACH rotated cell is valid
-	for (int i = 0; i < b->cells.size(); i++) {
+	for (size_t i = 0; i < b->cells.size(); i++) {
 		// should be able to rotate onto hint blocks
 		if (b->cells[i].getInfo().block != BlockType::HINT &&
 			!isValidCoordinate(rotatedRow[i], rotatedCol[i])) {

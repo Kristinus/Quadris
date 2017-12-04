@@ -142,26 +142,23 @@ double Grid::calculateDensity() {
 
 
 double Grid::getAverageHeights(std::vector<int> v) {      
-		double sum=0;
-       for(int i=0;i<v.size();i++) {
-			sum+=v[i];
+	double sum=0;
+	for(size_t i=0;i<v.size();i++) {
+		sum+=v[i];
 
-       }
-
-
+	}
 	return sum/v.size();
 }
 //DEVIATION
 double Grid::getStandardDeviationHeights(std::vector<int> v) {
-		double ave = getAverageHeights(v);
-       double E=0;
-       for( int i=0;i<v.size();i++) {
+	double ave = getAverageHeights(v);
+	double E=0;
+	for(size_t i=0;i<v.size();i++) {
       // 	cout << static_cast<double>(v[i]) << endl;
-       	E += (static_cast<double>(v[i]) - ave) * (static_cast<double>(v[i]) - ave);
-}
-       return 1/(E + 1);
-       // the higher your scre the mo
-       //return sqrt(1/v.size()*E);
+		E += (static_cast<double>(v[i]) - ave) * (static_cast<double>(v[i]) - ave);
+	}
+	return 1/(E + 1);
+	// the higher your scre the mo
 }
 
 int Grid::getBumpiness() {
@@ -263,7 +260,7 @@ void notifyRow(std::vector<Cell> & row) {
 
 
 void Grid::deleteRow() {
-	vector<int> deletedRows;
+	vector<size_t> deletedRows;
 
 	for (int i = theGrid.size() - 1; i >= 0; i--) {
 		if (isFilled(theGrid[i])) {
@@ -381,7 +378,7 @@ bool Grid::isValidMove(Block *block, int colshift, int rowshift) {
 
 //Default for currentBlock
 bool Grid::isValidMove(int colshift, int rowshift) {
-	isValidMove(currentBlock, colshift, rowshift);
+	return isValidMove(currentBlock, colshift, rowshift);
 }
 
 void Grid::deleteCurrentBlock() {
@@ -589,22 +586,16 @@ void Grid::setRandomFile(std::string file) {
 
 int Grid::countHoles() {
 	std::vector<int> heights = getHeights();
-	for (auto i : heights) {
-		//cout << "the height is " << i << endl;
-	}
 	int numHoles = 0; 
 	// for all the cells below the highest cell
 	
-		for (int i = 0; i < heights.size(); i++) {
-			for (int row = 0; row < heights[i] - 1; row++) {
-				if (theGrid[17 - row][i].getInfo().state == StateType::NONE) {
+	for (int i = 0; i < heights.size(); i++) {
+		for (int row = 0; row < heights[i] - 1; row++) {
+			if (theGrid[17 - row][i].getInfo().state == StateType::NONE) {
 				numHoles++;
 			}
 		}
 	}
-
-	
-
 
 	return numHoles;
 
@@ -646,11 +637,6 @@ int Grid::countNumCellsOnWall(){
 
 double Grid::calculatePriority() {
 	std::vector<int> heights = getHeights();
-
-	for (auto &h : heights) {
-	//	cout << "height " << h << " " << endl;
-	}
-	//cout << "SMOOTHENESS" << calculateSmoothness() << " " << countCompleteLines() << "COMPLETELINES " << calculateDensity() << " DenSITY" << endl;
 
 	return -sqrt((getBumpiness())) - (2.5 * countHoles()) + (countCompleteLines() * 3.5) +  countNumCellsOnGround() + 0.5 * countNumCellsOnWall();
 }
@@ -760,7 +746,7 @@ void Grid::replaceBlock(char type) {
 	int col = currentBlock->getBottomLeftCol();
 	int row = currentBlock->getBottomLeftRow();
 	deleteCurrentBlock();
-	currentBlock = theLevel->getBlock(type);
+	currentBlock = theLevel->getBlock(type, currentBlock->getLevel(), currentBlock->isBlockHeavy());
 	currentBlock->setGridPointer(this);
 	if(isValidMove(col, row)) {
 		currentBlock->moveTo(row, col);

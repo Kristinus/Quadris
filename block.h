@@ -44,7 +44,7 @@ public:
     void down(int x=1);
     void clockwise(int x=1);
     void counterclockwise(int x =1);
-    void updateSetCells(std::vector<int>);
+    void updateSetCells(std::vector<size_t>);
     virtual BlockType getBlockType();
 
 friend std::ostream &operator<<(std::ostream &out, Block *);
