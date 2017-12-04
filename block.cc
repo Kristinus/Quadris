@@ -91,12 +91,11 @@ void Block::down(int x){
 }
 
 bool Block::isValidCoordinate(int row, int col) {
-//	if (grid == nullptr) {cout << "ITS NULL";}
 	if ((col < 0) || (col >= 11) || (row < 0) || (row > 18) || 
 		grid->getGridCells()[17 - row][col].getInfo().state == StateType::STATIC) {	
 		return false;
 }
-else return true;
+	else return true;
 }
 
 

@@ -19,7 +19,7 @@ class Grid {
   Block *currentBlock = nullptr;
   Block * hintBlock;
   Block *nextBlock = nullptr;
-  TextDisplay * td;
+  TextDisplay * td = nullptr;
   //std::shared_ptr<TextDisplay> td;
   Observer<Info> *ob;
 
@@ -30,7 +30,7 @@ class Grid {
   int countCompleteLines();
   bool isFilled(std::vector<Cell>);
   void unsetBlock(Block *);
-  void updateCells(Block *, StateType, bool shouldNotify = true);
+  void updateCells(Block *, StateType,  bool shouldNotify = true);
     void updateCells(Block *);
 
   double calculateSmoothness();
@@ -39,7 +39,6 @@ class Grid {
   std::vector<int> getHeights();
   int countHoles();
   void moveTo(int, int, Block*);
-  bool isCurrentBlockOverlap();
   double calculateDensity();
     double calculatePriority();
 int getBumpiness();
