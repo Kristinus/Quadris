@@ -20,7 +20,7 @@ Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile)
 		theLevel->setCounter(-2);
 	}
 	theScore = new Score();
-	td = new TextDisplay(this);
+	td = TextDisplay(this);
 	//  std::vector<Block *> setBlocks;
 	//   ob = new GraphicsDisplay(this);
 	initGrid();	
@@ -49,16 +49,14 @@ void Grid::initGrid() {
 			row.emplace_back(c);
 		}
 		// adds each row to the beginning so the bottom left is the ORIGIN (0,0)
+		// that is, the first row created is the last row of the vector of rows
 		theGrid.insert(theGrid.begin(), row);
 	}
 	// theGrid = res; (TODO)
 
 	currentBlock = theLevel->createBlock();
 	currentBlock->setGridPointer(this);
-	// for (auto c: currentBlock->getBlockCells()) {
-	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	// }
-	currentBlock->moveTo(14,0);
+	currentBlock->moveTo(constants::START_BOTTOM_LEFT_ROW, constants::START_BOTTOM_LEFT_COL);
 	// for (auto c: currentBlock->getBlockCells()) {
 	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
 	// }
@@ -70,51 +68,23 @@ void Grid::initGrid() {
 
 }
 
-bool Grid::isCurrentBlockOverlap() {
-	for (auto &c : currentBlock->getBlockCells()) {
-		if (theGrid[17 - c.getInfo().row][c.getInfo().col].getInfo().state == StateType::STATIC) return true;
-	}
-	return false;
-}
-
+// the game is over if the block to be played overlaps a piece that's set
 bool Grid::isOver() {
-	return isCurrentBlockOverlap();
-
-	// if the piece in play cannot be played
-
-	// if (theScore->getCurrentScore > theScore->getHighScore) {
-	// 	theScore->setHighScore(theScore->getCurrentScore);
-	// }
+	for (auto &c : currentBlock->getBlockCells()) {
+		if (theGrid[GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].getInfo().state 
+			== StateType::STATIC) return true;
+	}
+return false;
 
 }
 
-//Checks if the row is filled
+// Checks if the row is filled
 bool Grid::isFilled(std::vector<Cell> row) {
 	for (auto &c : row) {
 		if (c.getInfo().state != StateType::STATIC) return false;
 	}
 	return true;
 }
-
-/**
-bool Grid::updateMovingBlock(std::vector<Cell> cells) {
-
-	// (TODO) if we do cell pointers change this shitty run time
-
-	for (int i = 0; i < theGrid.size(); i++) {
-		for (int j = 0; j < theGrid[i].size(); j++) {
-			for (auto c : cells) {
-				if (c.getInfo().row == i && c.getInfo().col == j) {
-					c.setBlock(currentBlock->getBlockType());
-					c.setState(StateType::MOVING);
-				} 
-			}
-		}
-	}
-	for (auto c : cells) {
-		theGrid[c.getInfo().row][c.getInfo().col].setBlock(BlockType::MOVING);
-	}
-} **/
 
 
 int Grid::countCompleteLines() {
@@ -142,26 +112,23 @@ double Grid::calculateDensity() {
 
 
 double Grid::getAverageHeights(std::vector<int> v) {      
-		double sum=0;
-       for(int i=0;i<v.size();i++) {
-			sum+=v[i];
+	double sum=0;
+	for(int i=0;i<v.size();i++) {
+		sum+=v[i];
 
-       }
+	}
 
 
 	return sum/v.size();
 }
-//DEVIATION
+
 double Grid::getStandardDeviationHeights(std::vector<int> v) {
-		double ave = getAverageHeights(v);
-       double E=0;
-       for( int i=0;i<v.size();i++) {
-      // 	cout << static_cast<double>(v[i]) << endl;
-       	E += (static_cast<double>(v[i]) - ave) * (static_cast<double>(v[i]) - ave);
-}
-       return 1/(E + 1);
-       // the higher your scre the mo
-       //return sqrt(1/v.size()*E);
+	double ave = getAverageHeights(v);
+	double E=0;
+	for( int i=0;i<v.size();i++) {
+		E += (static_cast<double>(v[i]) - ave) * (static_cast<double>(v[i]) - ave);
+	}
+	return 1/(E + 1);
 }
 
 int Grid::getBumpiness() {
@@ -178,14 +145,14 @@ std::vector<int> Grid::getHeights() {
 	//cout << "hi1" << endl;
 	//cout << theGrid[0][6].getInfo().row;
 	for (int row = 17; row >= 0; row--) {
-			for ( int col = 0; col < 11; col++) {
+		for ( int col = 0; col < 11; col++) {
 				// record the index of the highest static block...if no block is there... height is 0
-				if (theGrid[17 - row][col].getInfo().state == StateType::STATIC) {
+			if (theGrid[17 - row][col].getInfo().state == StateType::STATIC) {
 					//cout << row << "|" << col << endl;
-					if (row + 1 > heights[col]) {
-						heights[col] = row + 1;
-					}
+				if (row + 1 > heights[col]) {
+					heights[col] = row + 1;
 				}
+			}
 		}
 	}
 
@@ -321,19 +288,19 @@ cout << setBlocks.size() << endl; **/
 
 
 	 // iterate through each block pointer
-	 for (int j = setBlocks.size() - 1 ; j >= 0; j--) {
+		for (int j = setBlocks.size() - 1 ; j >= 0; j--) {
 	 	// iterate through each block's cells
 	 	// removes cells that are out of bounds, or sets them to the new location
 
-	 	setBlocks[j]->updateSetCells(deletedRows);
+			setBlocks[j]->updateSetCells(deletedRows);
 
-	 	if (setBlocks[j]->getBlockCells().size() == 0) {
-	 		theScore->addToCurrentScore(pow((setBlocks[j]->getLevel() + 1), 2));
-	 		delete setBlocks[j];
-	 		setBlocks.erase(setBlocks.begin() + j);
-	 	}
-	
-	 }
+			if (setBlocks[j]->getBlockCells().size() == 0) {
+				theScore->addToCurrentScore(pow((setBlocks[j]->getLevel() + 1), 2));
+				delete setBlocks[j];
+				setBlocks.erase(setBlocks.begin() + j);
+			}
+
+		}
 
 		theScore->addToCurrentScore(pow(theLevel->getLevel() + deletedRows.size(), 2));
 	}
@@ -372,11 +339,11 @@ bool Grid::isValidMove(Block *block, int colshift, int rowshift) {
 		if ((!(newcol >= 0 && newcol < 11 && newrow >= 0)) || 
 			(theGrid[17 - newrow][newcol].getInfo().state == StateType::STATIC)) {
 			cout << "INVALID MOVE!" << endl;
-			return false;
-		}
-	
+		return false;
 	}
-	return true;	
+	
+}
+return true;	
 }
 
 //Default for currentBlock
@@ -400,7 +367,7 @@ void Grid::deleteCurrentBlock() {
 
 
 void Grid::left(int x) {
-		deleteCurrentBlock();
+	deleteCurrentBlock();
 	// check if valid move
 	// update the current block's cells
 	int shift = 0;
@@ -420,7 +387,7 @@ void Grid::left(int x) {
 }
 
 void Grid::right(int x) {
-		deleteCurrentBlock();
+	deleteCurrentBlock();
 	int shift = 0;
 	while (shift < x) {
 		if (isValidMove(1, 0)) {
@@ -463,7 +430,7 @@ void Grid::down(int x) {
 }
 
 void Grid::rotateCW(int x) {
-		deleteCurrentBlock();
+	deleteCurrentBlock();
 
 	currentBlock->clockwise(x);
 
@@ -503,7 +470,7 @@ void Grid::drop(int x) {
 			cout << "HELP ME" << c.getInfo().row << endl;
 		}
 	} **/
-	
+
 		deleteRow();
 
 		currentBlock = nextBlock;
@@ -535,9 +502,9 @@ void Grid::restart() {
 	}
 	setBlocks.clear();
 
-    delete currentBlock;
-    delete nextBlock;
-    
+	delete currentBlock;
+	delete nextBlock;
+
 	//Go back to level startLevel
 	while(getLevel()>startLevel) {
 		theLevel = theLevel->levelDown();
@@ -551,7 +518,7 @@ void Grid::restart() {
 	theScore->setCurrentScore(0);  
 	td->clear();
 	if(ob) ob->clear();
-    initGrid(); 
+	initGrid(); 
 	//(TODO) clear level(reset file and level 4 counter)
 
 }
@@ -595,9 +562,9 @@ int Grid::countHoles() {
 	int numHoles = 0; 
 	// for all the cells below the highest cell
 	
-		for (int i = 0; i < heights.size(); i++) {
-			for (int row = 0; row < heights[i] - 1; row++) {
-				if (theGrid[17 - row][i].getInfo().state == StateType::NONE) {
+	for (int i = 0; i < heights.size(); i++) {
+		for (int row = 0; row < heights[i] - 1; row++) {
+			if (theGrid[17 - row][i].getInfo().state == StateType::NONE) {
 				numHoles++;
 			}
 		}
@@ -644,18 +611,13 @@ int Grid::countNumCellsOnWall(){
 	return numCells;
 }
 
+// the higher the priority, the better the move
+// algorithm arbitrarily constructed and can be adjusted
 double Grid::calculatePriority() {
 	std::vector<int> heights = getHeights();
-
-	for (auto &h : heights) {
-	//	cout << "height " << h << " " << endl;
-	}
-	//cout << "SMOOTHENESS" << calculateSmoothness() << " " << countCompleteLines() << "COMPLETELINES " << calculateDensity() << " DenSITY" << endl;
-
-	return -sqrt((getBumpiness())) - (2.5 * countHoles()) + (countCompleteLines() * 3.5) +  countNumCellsOnGround() + 0.5 * countNumCellsOnWall();
+	return -sqrt((getBumpiness())) - (2.5 * countHoles()) + (countCompleteLines() * 3.5) 
+	+  countNumCellsOnGround() + 0.5 * countNumCellsOnWall();
 }
-
-
 
 
 
@@ -663,64 +625,66 @@ void Grid::hint() {
 	bool shouldNotify = false;
 
 	vector<Cell> hintCells;
+	// store the original position of the block when hint
+	// was called so that the block in play can be moved back
 	int oldBottomLeftRow = currentBlock->getBottomLeftRow();
 	int oldBottomLeftCol = currentBlock->getBottomLeftCol();
-
-	//(TODO) SCREW REPEATED CODE
 	HintInfo best{0,0,0,INT_MIN};
+
+	// for eah dir 1 & -1 (each deemed a trial), to determine all possible moves
+	// to the right and to the left 
 	int dir = 1;
 	bool hasLeft = false;
-	for (int turn = 0; turn < 2; turn ++) {
+
+	// for each direction
+	for (int trial = 0; trial < 2; trial++) {
+
+		// for each rotation
 		for (int i = 0; i < 4; i++) {
-		int horizontal = 0;
+			int horizontal = 0;
+			while (isValidMove(dir * horizontal, 0)) {
+				// play every possible horizontal move
+				for (int i = 0; i < horizontal; i++) {
+					// depending on the hasLeft flag, move right/left
+					if (hasLeft == false) currentBlock->right(1);
+					else currentBlock->left(1);
+				}
+				// for every horizontal move, move all the way down
+				while (isValidMove(0, -1)) {
+					currentBlock->down(1);
+				}
 
-		while (isValidMove(dir * horizontal, 0)) {
-			for (int i = 0; i < horizontal; i++) {
-				if (hasLeft == false) currentBlock->right(1);
-				else currentBlock->left(1);
+				// temporarily set the block and calculate the priority score
+				updateCells(currentBlock, StateType::STATIC, shouldNotify);
+				double tempPriority = calculatePriority();
+
+				if (tempPriority > best.priority) {
+					best.priority = tempPriority;
+					best.numRotations = i;
+					best.bottomLeftCol = currentBlock->getBottomLeftCol();
+					best.bottomLeftRow = currentBlock->getBottomLeftRow();
+				}
+
+				// unset the block and move to original position for the next
+				// simulation of moves
+				updateCells(currentBlock, StateType::NONE, shouldNotify);
+				currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
+				horizontal++;
 
 			}
-			while (isValidMove(0, -1)) {
-				currentBlock->down(1);
-			}
-			//cout << "BL AFTER DOWN" << currentBlock->getBottomLeftRow() << "," << currentBlock->getBottomLeftCol() << endl;
-
-			updateCells(currentBlock, StateType::STATIC, shouldNotify);
-			double tempPriority = calculatePriority();
-			/**for (auto h : getHeights()) {
-				cout << h << " ";
-			}
-			cout << endl;
-			cout << "PRIORITY : " << tempPriority << " at rotation " << i << " and B L " 
-			<< currentBlock->getBottomLeftRow() << "|" << currentBlock->getBottomLeftCol() << endl; 
-**/
-			if (tempPriority > best.priority) {
-				best.priority = tempPriority;
-				best.numRotations = i;
-				best.bottomLeftCol = currentBlock->getBottomLeftCol();
-				best.bottomLeftRow = currentBlock->getBottomLeftRow();
-			}
-
-			updateCells(currentBlock, StateType::NONE, shouldNotify);
-			currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
-			horizontal++;
+			currentBlock->clockwise(1);
 
 		}
 
-
-		currentBlock->clockwise(1);
-
-	}
-
+		// update the flag 
 		if (hasLeft == false) {
 			dir = -1;
 			hasLeft = true;
 		}
 	}
-	//cout << "the recommendation is to rotate " << best.numRotations << " and B L" << best.bottomLeftRow << "|" << best.bottomLeftCol << endl;
 
-	
-
+	// one all the possible sequence of moves have been played,
+	// move the block to the original 
 	updateCells(currentBlock, StateType::NONE, shouldNotify);
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 	updateCells(currentBlock, StateType::MOVING);
@@ -734,7 +698,7 @@ void Grid::hint() {
 	hintBlock->moveTo(newBottomLeftRow, newBottomLeftCol);
 
 	//combine these two for loops (TODO)
-	hintBlock->setBlockCellTypes(BlockType::HINT);
+	//	hintBlock->setBlockCellTypes(BlockType::HINT);
 	for (auto &c: hintBlock->getBlockCells()) {
 		theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::HINT);
 		theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
@@ -742,18 +706,23 @@ void Grid::hint() {
 
 }
 
+
 Block * Grid::getNextBlock() {
 	return nextBlock;
 }
+
 
 Score * Grid::getScore() {
 	return theScore;
 }
 
+
 int Grid::getLevel() {
 	return theLevel->getLevel();
 }
 
+
+// replaces the current block at play
 void Grid::replaceBlock(char type) {
 
 	Block *temp = new Block(*currentBlock);
@@ -770,9 +739,10 @@ void Grid::replaceBlock(char type) {
 		currentBlock = temp;
 		updateCells(currentBlock);
 	}
-	//(TODO) replace current block (move to location)
 }
 
+// drops a block all the way down to the lowest valid coordinate
+// used for Dot Block
 void Grid::dropBlock(Block *block, int col) {
 	block->setGridPointer(this);
 	block->moveTo(17,col);
@@ -786,11 +756,6 @@ void Grid::dropBlock(Block *block, int col) {
 	deleteRow();
 	if(ob) ob->update();
 }
-
-
-// void Grid::heavyMove() {
-// 	if(currentBlock->isBlockHeavy()) down(1);
-// }
 
 
 std::ostream &operator<<(std::ostream &out, Grid &grid) {
