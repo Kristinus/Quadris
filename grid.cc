@@ -1,14 +1,10 @@
 #include "grid.h"
 #include <cmath>
-#include "cell.h"
-#include "blocks.h"
 #include <vector>
 #include <climits>
 #include "info.h"
 #include "constants.h"
 #include "levels.h"
-#include "score.h"
-#include "level.h"
 #include <iostream>
 #include <algorithm>
 using namespace std;
@@ -16,29 +12,16 @@ using namespace std;
 
 
 Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile): startLevel{startLevel}, ob{ob} {
+	// theLevel = std::make_unique<Level0>(this, seed, scriptFile);
 	theLevel = new Level0(this, seed, scriptFile);
 	while(theLevel->getLevel()<startLevel) {
+		// theLevel = std::make_shared(theLevel->levelUp());
 		theLevel = theLevel->levelUp();
-		theLevel->setCounter(-2);
 	}
-	// theScore = new Score();
+	theLevel->setCounter(-2);
 	theScore = std::make_unique<Score>();
-	td = new TextDisplay();
-	// td = std::make_unique<TextDisplay>();
+	td = std::make_unique<TextDisplay>();
 	initGrid();
-}
-
-
-Grid::~Grid() {
-	// delete theLevel;
-	// delete theScore;
-	// for(auto b:setBlocks) {
-	// 	delete b;
-	// }
-	// delete currentBlock;
-	// delete nextBlock;
-	// delete td;
-	// delete ob;
 }
 
 std::vector<std::vector<Cell>> Grid::getGridCells() {
@@ -57,7 +40,7 @@ void Grid::initGrid() {
 			info.block = BlockType::NONE;
 			info.state = StateType::NONE;
 			Cell c = Cell(info);
-			c.attach(td);
+			c.attach(td.get());
 			if(ob) c.attach(ob);
 			row.emplace_back(c);
 		}
@@ -66,12 +49,14 @@ void Grid::initGrid() {
 		theGrid.insert(theGrid.begin(), row);
 	}
 	// theGrid = res; (TODO)
-
-	currentBlock = theLevel->createBlock();
+	std::shared_ptr<Block> temp = theLevel->createBlock();
+	std::swap(currentBlock, temp);
 	currentBlock->setGridPointer(this);
 	currentBlock->moveTo(constants::MAX_ROW, constants::MIN_COL);
 	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
-	nextBlock = theLevel->createBlock();
+	
+	temp = theLevel->createBlock();
+	std::swap(nextBlock, temp);
 	nextBlock->setGridPointer(this);
 	
 	updateDisplays();
@@ -180,7 +165,7 @@ std::vector<int> Grid::getHeights() {
 	return heights;
 }
 
-void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
+void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, std::shared_ptr<Block> &b) {
 	int oldBottomLeftRow = b->getBottomLeftRow();
 	int oldBottomLeftCol = b->getBottomLeftCol();
 	int deltaRow = bottomLeftRow - oldBottomLeftRow;
@@ -194,15 +179,14 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 }
 
 
-void Grid::updateCells(Block *b, BlockType blocktype, StateType s, bool shouldNotify) {
+void Grid::updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType s, bool shouldNotify) {
 
 	// cannot be upudating the hint block
-	if (hintBlock != nullptr && blocktype != BlockType::HINT) {
+	if (hintBlock.get() != nullptr && blocktype != BlockType::HINT) {
 		for (auto &c: hintBlock->getBlockCells()) {
 			theGrid[constants::GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
 			theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].notifyObservers();
 		}
-		delete hintBlock;
 		hintBlock = nullptr;
 
 	}
@@ -266,7 +250,7 @@ void Grid::deleteRow() {
 				info.state = StateType::NONE;
 				info.block = BlockType::NONE;
 				Cell c = Cell{info};
-				c.attach(td);
+				c.attach(td.get());
 				if(ob) c.attach(ob);
 				c.notifyObservers();
 				row.emplace_back(c);
@@ -291,7 +275,7 @@ cout << setBlocks.size() << endl; **/
 
 			if (setBlocks[j]->getBlockCells().size() == 0) {
 				theScore->addToCurrentScore(pow((setBlocks[j]->getLevel() + 1), 2));
-				delete setBlocks[j];
+				// delete setBlocks[j];
 				setBlocks.erase(setBlocks.begin() + j);
 			}
 
@@ -303,7 +287,7 @@ cout << setBlocks.size() << endl; **/
 /**
 bool Grid::isValidMove(void (*f)(int), int mult) {
 
-	Block * cpy = currentBlock->clone();
+	std::unique_ptr<Block>  cpy = currentBlock->clone();
 	cpy.setGridPointer(this);
 	while (mult > 0) {
 		f(1);
@@ -324,7 +308,7 @@ bool Grid::isValidMove(void (*f)(int), int mult) {
 } **/
 
 //For other blocks
-bool Grid::isValidMove(Block *block, int colshift, int rowshift) {
+bool Grid::isValidMove(std::shared_ptr<Block> &block, int colshift, int rowshift) {
 	for (auto &cell: block->getBlockCells()) {
 		int newrow = cell.getInfo().row + rowshift;
 	//	cout << cell.getInfo().row << "was old row and is now " << newrow << endl;
@@ -377,7 +361,7 @@ void Grid::left(int x) {
 	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 
 	if (currentBlock->isBlockHeavy()) down(1);
-	//playBlock(currentBlock);
+	//playBlock(currentBlock;
 
 
 }
@@ -396,7 +380,7 @@ void Grid::right(int x) {
 updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 
 	if(currentBlock->isBlockHeavy()) down(1);
-	//playBlock(currentBlock);
+	//playBlock(currentBlock;
 
 }
 void Grid::down(int x) {
@@ -464,8 +448,7 @@ void Grid::drop(int x) {
 	} **/
 
 		deleteRow();
-
-		currentBlock = nextBlock;
+		currentBlock = std::move(nextBlock);
 		currentBlock->setGridPointer(this);
 		currentBlock->moveTo(14,0);
 		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
@@ -474,7 +457,8 @@ void Grid::drop(int x) {
 
 
 		//Makes next block
-		nextBlock = theLevel->createBlock();
+		std::shared_ptr<Block> temp = theLevel->createBlock();
+		std::swap(nextBlock, temp);
 		nextBlock->setGridPointer(this);
 
 		updateDisplays();
@@ -484,13 +468,7 @@ void Grid::drop(int x) {
 }
 
 void Grid::restart() {
-	for (auto b : setBlocks) {
-		delete b;
-	}
 	setBlocks.clear();
-
-	delete currentBlock;
-	delete nextBlock;
 
 	//Go back to level startLevel
 	while(getLevel()>startLevel) {
@@ -687,7 +665,7 @@ void Grid::hint() {
 }
 
 
-Block * Grid::getNextBlock() {
+std::shared_ptr<Block>  Grid::getNextBlock() {
 	return nextBlock;
 }
 
@@ -700,10 +678,12 @@ int Grid::getLevel() {
 // replaces the current block at play
 void Grid::replaceBlock(char type) {
 
-	Block *temp = currentBlock->clone();
+	std::shared_ptr<Block> temp = currentBlock->clone();
 	int col = currentBlock->getBottomLeftCol();
 	int row = currentBlock->getBottomLeftRow();
 	deleteCurrentBlock();
+	
+	
 	currentBlock = theLevel->getBlock(type, currentBlock->getLevel(), currentBlock->isBlockHeavy());
 	currentBlock->setGridPointer(this);
 	if(isValidMove(col, row)) {
@@ -712,7 +692,7 @@ void Grid::replaceBlock(char type) {
 
 	}
 	else {
-		currentBlock = temp;
+		std::swap(currentBlock, temp);
 		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING,  true);
 
 	}
@@ -720,7 +700,7 @@ void Grid::replaceBlock(char type) {
 
 // drops a block all the way down to the lowest valid coordinate
 // used for Dot Block
-void Grid::dropBlock(Block *block, int col) {
+void Grid::dropBlock(std::shared_ptr<Block> block, int col) {
 	block->setGridPointer(this);
 	block->moveTo(17,col);
 	while (isValidMove(block, 0, -1)) {
@@ -728,7 +708,7 @@ void Grid::dropBlock(Block *block, int col) {
 	}
 
 	updateCells(block, block->getBlockType(), StateType::STATIC, true);
-	setBlocks.emplace_back(block);
+	setBlocks.emplace_back(std::move(block));
 
 	deleteRow();
 	updateDisplays();
@@ -736,8 +716,8 @@ void Grid::dropBlock(Block *block, int col) {
 
 
 std::ostream &operator<<(std::ostream &out, Grid &grid) {
-	out << *(grid.td);
-	out << grid.getNextBlock();
+	out << *(grid.td.get());
+	out << grid.getNextBlock().get();
 	return out;
 }
 

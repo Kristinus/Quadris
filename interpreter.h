@@ -5,8 +5,8 @@
 #include <map>
 #include <memory>
 #include "invalidinputexception.h"
+#include "grid.h"
 
-class Grid;
 template <typename InfoType> class Observer;
 class Info;
 class Command;
@@ -15,8 +15,7 @@ struct ProcessedInput;
 class Interpreter {
     std::map<std::string, std::shared_ptr<Command>> commandMap;
     std::map<std::string, std::string> keyMap;
-    // GraphicsDisplay *gd = nullptr;
-    Grid *grid = nullptr;
+    std::unique_ptr<Grid> grid;
     bool gameOver = false;
     void initCommandMap();
     void initKeyMap();
@@ -24,7 +23,6 @@ class Interpreter {
 public:
     Interpreter();
     Interpreter(int, Observer<Info> *ob, std::string, int);
-    ~Interpreter();
     void run();
     std::istream &run(std::istream &);
     bool run(std::string);

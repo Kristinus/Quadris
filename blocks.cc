@@ -16,8 +16,8 @@ IBlock::IBlock(int level, bool isHeavy): Block(BlockType::I, level, isHeavy) {
     }
 }
 
-IBlock* IBlock::clone() const {
-	IBlock* cpy = new IBlock(level, isHeavy);
+std::unique_ptr<Block> IBlock::clone() const {
+	std::unique_ptr<IBlock> cpy (new IBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
 	cpy->grid = grid;
@@ -52,8 +52,8 @@ JBlock::JBlock(int level, bool isHeavy): Block(BlockType::J, level, isHeavy) {
     }
 }
 
-JBlock* JBlock::clone() const {
-	JBlock* cpy = new JBlock(level, isHeavy);
+std::unique_ptr<Block> JBlock::clone() const {
+	std::unique_ptr<JBlock> cpy (new JBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
 	cpy->grid = grid;
@@ -87,8 +87,8 @@ LBlock::LBlock(int level, bool isHeavy): Block(BlockType::L, level, isHeavy) {
     }
 }
 
-LBlock* LBlock::clone() const {
-	LBlock* cpy = new LBlock(level, isHeavy);
+std::unique_ptr<Block> LBlock::clone() const {
+	std::unique_ptr<LBlock> cpy (new LBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
 	cpy->grid = grid;
@@ -120,8 +120,8 @@ OBlock::OBlock(int level, bool isHeavy): Block(BlockType::O, level, isHeavy) {
 }
 
 
-OBlock* OBlock::clone() const {
-	OBlock* cpy = new OBlock(level, isHeavy);
+std::unique_ptr<Block> OBlock::clone() const {
+	std::unique_ptr<OBlock> cpy (new OBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
 	cpy->grid = grid;
@@ -158,8 +158,8 @@ SBlock::SBlock(int level, bool isHeavy): Block(BlockType::S, level, isHeavy) {
     cells.emplace_back(Cell(i));
 }
 
-SBlock* SBlock::clone() const {
-	SBlock* cpy = new SBlock(level, isHeavy);
+std::unique_ptr<Block> SBlock::clone() const {
+	std::unique_ptr<SBlock> cpy (new SBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
 	cpy->grid = grid;
@@ -195,8 +195,8 @@ TBlock::TBlock(int level, bool isHeavy): Block(BlockType::T, level, isHeavy) {
 }
 
 
-TBlock* TBlock::clone() const {
-	TBlock* cpy = new TBlock(level, isHeavy);
+std::unique_ptr<Block> TBlock::clone() const {
+	std::unique_ptr<TBlock> cpy (new TBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
 	cpy->grid = grid;
@@ -230,8 +230,8 @@ ZBlock::ZBlock(int level, bool isHeavy): Block(BlockType::Z, level, isHeavy) {
     }
 }
 
-ZBlock* ZBlock::clone() const {
-	ZBlock* cpy = new ZBlock(level, isHeavy);
+std::unique_ptr<Block> ZBlock::clone() const {
+	std::unique_ptr<ZBlock> cpy (new ZBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
 	cpy->grid = grid;
@@ -259,8 +259,8 @@ Block(BlockType::DOT, level, isHeavy) {
     cells.emplace_back(Cell(i));
 }
 
-DotBlock* DotBlock::clone() const {
-	DotBlock* cpy = new DotBlock(level, isHeavy);
+std::unique_ptr<Block> DotBlock::clone() const {
+	std::unique_ptr<DotBlock> cpy(new DotBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
 	cpy->grid = grid;

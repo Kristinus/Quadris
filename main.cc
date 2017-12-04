@@ -81,15 +81,32 @@ int main(int argc, char *argv[]) {
 
   }
 
-  GraphicsDisplay *gd = nullptr;
-  if(!textOnly) {
-    gd = new GraphicsDisplay();
+  // GraphicsDisplay *gd = nullptr;
+  std::unique_ptr<GraphicsDisplay> gd;
+  if(!textOnly || keyInput) {
+    // gd = new GraphicsDisplay();
+    gd = std::make_unique<GraphicsDisplay>();
   }
   // GraphicsDisplay *ob = nullptr;
-  Interpreter in = Interpreter(seed, gd, scriptFile, startLevel);
+  Interpreter in = Interpreter(seed, gd.get(), scriptFile, startLevel);
   try {
     if (!keyInput) in.run();
     else {
+      cout << "select the window" << endl;
+      cout << "CONTROLS:" << endl;
+      cout << "UP_KEY: clockwise" << endl;
+      cout << "RIGHT_KEY: right" << endl;
+      cout << "DOWN_KEY: down" << endl;
+      cout << "LEFT_KEY: left" << endl;
+      cout << "SPACE_KEY: drop" << endl;
+      cout << "u_KEY: levelup" << endl;
+      cout << "i_KEY: leveldown" << endl;
+      cout << "q_KEY: quit" << endl;
+      cout << "_KEY: leveldown" << endl;
+      cout << "i_KEY: leveldown" << endl;
+      cout << "r_KEY: restart" << endl;
+      cout << "h_KEY: hint" << endl;
+      
       gd->run(&in);
     }
   } catch (ios::failure &) {}  // Any I/O failure quits

@@ -6,6 +6,7 @@
 #include <functional>
 #include <fstream>
 #include <string>
+#include <memory>
 
 class Grid;
 
@@ -16,23 +17,23 @@ protected:
     std::ifstream seq;
     std::string sourceFile;
     std::string randFile;
-    std::vector<std::function<Block *(int, bool)>> selector;
+    std::vector<std::function<std::unique_ptr<Block>(int, bool)>> selector;
     bool heavy = false;
     bool random = true;
-    Block *generateFromFile(bool);
+    std::unique_ptr<Block> generateFromFile(bool);
 
 public:
     Level(Grid *,int, std::string, bool);
+    virtual ~Level();
     void setSelector(int, int, int, int, int, int, int);
     void setSeed(int);
     void setRandom(bool);
     void setFile(std::string);
     bool isHeavy();
-    Block *getBlock(char, int, bool);
-    Block *getBlock(BlockType, int, bool);
+    std::unique_ptr<Block> getBlock(char, int, bool);
+    std::unique_ptr<Block> getBlock(BlockType, int, bool);
     virtual int getLevel() = 0;
-    virtual Block *createBlock() = 0;
-    virtual ~Level();
+    virtual std::unique_ptr<Block> createBlock() = 0;
     virtual Level *levelUp() = 0;
     virtual Level *levelDown() = 0;
     virtual void restart();

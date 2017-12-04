@@ -5,8 +5,9 @@
 #include <memory>
 #include "textDisplay.h"
 #include "cell.h"
-class Level;
-class Score;
+#include "level.h"
+#include "score.h"
+#include "block.h"
 
 struct HintInfo;
 template <typename InfoType> class Observer;
@@ -16,37 +17,35 @@ class Grid {
 	int startLevel;
 	Level * theLevel;
 	std::unique_ptr<Score> theScore;
-  //std::unique_ptr<Score> theScore;
-	std::vector<Block *> setBlocks;
-	Block *currentBlock = nullptr;
-	Block * hintBlock;
-	Block *nextBlock = nullptr;
-	TextDisplay *td = nullptr;
-	// std::unique_ptr<TextDisplay> td;
-  //std::shared_ptr<TextDisplay> td;
+	// std::vector<std::unique_ptr<Block>> setBlocks;
+	std::vector<std::shared_ptr<Block>> setBlocks;
+	std::shared_ptr<Block> currentBlock;
+	std::shared_ptr<Block> nextBlock;
+	std::shared_ptr<Block> hintBlock;
+	std::shared_ptr<TextDisplay> td;
 	Observer<Info> *ob;
 
 	bool isRandom;
 	void updateDisplays();
-	bool isValidMove(Block *, int, int);
+	bool isValidMove(std::shared_ptr<Block>& , int, int);
 	bool isValidMove(int, int);
-	void attachGridToBlock(Block *);
+	void attachGridToBlock(std::shared_ptr<Block> &);
 	int countCompleteLines();
 	bool isFilled(std::vector<Cell>);
-	void updateCells(Block *b, BlockType blocktype, StateType state, bool shouldNotify);
+	void updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType state, bool shouldNotify);
 
 	double calculateSmoothness();
 	double getAverageHeights(std::vector<int> v);
 	double getStandardDeviationHeights(std::vector<int> v);
 	std::vector<int> getHeights();
 	int countHoles();
-	void moveTo(int, int, Block*);
+	void moveTo(int, int, std::shared_ptr<Block> &);
 	double calculateDensity();
 	double calculatePriority();
 	int getBumpiness();
 	int countNumCellsOnWall();
 	int countNumCellsOnGround();
-	std::vector<Cell> getHintCells(Block *b, HintInfo i);
+	std::vector<Cell> getHintCells(std::shared_ptr<Block> &b, HintInfo i);
 
 
 
@@ -54,9 +53,9 @@ class Grid {
 public:
 	Grid(int startLevel, int seed, Observer<Info> *, std::string);
 	std::vector<std::vector<Cell>> getGridCells();
-	Block *getNextBlock();
+	std::shared_ptr<Block> getNextBlock();
 
-	~Grid();
+	// ~Grid();
   //std::unique_ptr<Score> getScore();
 	int getLevel();
 	void initGrid();
@@ -75,10 +74,10 @@ public:
 	void random(bool);
 	void hint();
 	void replaceBlock(char);
-	void dropBlock(Block *, int);
+	void dropBlock(std::shared_ptr<Block>, int);
 	void heavyMove();
 	void setRandomFile(std::string);
-	void playBlock(Block *);
+	void playBlock(std::shared_ptr<Block> &);
 
 	friend std::ostream &operator<<(std::ostream &out, Grid &grid);
 };

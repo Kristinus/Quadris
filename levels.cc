@@ -9,10 +9,10 @@ Level0::Level0(Grid * grid, int seed, std::string file): Level(grid, seed, file,
 
 
 // Generates block from file
-Block *Level0::createBlock() {
+std::unique_ptr<Block>Level0::createBlock() {
     char b;
     seq >> b;
-    Block *block = getBlock(b, getLevel(), heavy);
+    std::unique_ptr<Block>block = getBlock(b, getLevel(), heavy);
     if(block) return block;
 
     //Loops through file again
@@ -24,6 +24,7 @@ Block *Level0::createBlock() {
 
 Level0::~Level0() {
     seq.close();
+    delete grid;
 }
 
 
@@ -56,7 +57,7 @@ Level1::Level1(Grid * grid, int seed, std::string file): Level(grid, seed, file,
 }
 
 
-Block *Level1::createBlock() {
+std::unique_ptr<Block>Level1::createBlock() {
     return selector[std::rand()%12](1,false);
 }
 
@@ -82,7 +83,7 @@ Level2::Level2(Grid * grid, int seed, std::string file): Level(grid, seed, file,
 }
 
 
-Block *Level2::createBlock() {
+std::unique_ptr<Block>Level2::createBlock() {
     return selector[std::rand()%7](2,false);
 }
 
@@ -108,7 +109,7 @@ Level3::Level3(Grid * grid, int seed, std::string file): Level(grid, seed, file,
 }
 
 
-Block *Level3::createBlock() {
+std::unique_ptr<Block>Level3::createBlock() {
     if(random)
         return selector[std::rand()%9](3,true);
 
@@ -137,12 +138,12 @@ Level4::Level4(Grid * grid, int seed, std::string file): Level(grid, seed, file,
 }
 
 
-Block *Level4::createBlock() {
+std::unique_ptr<Block>Level4::createBlock() {
     counter++;
 
     if(counter==5) {
         counter = 0;
-        grid->dropBlock(new DotBlock(getLevel(), heavy), 5);
+        grid->dropBlock(std::make_shared<DotBlock>(getLevel(), heavy), 5);
     }
 
     if(random)

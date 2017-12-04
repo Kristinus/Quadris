@@ -5,7 +5,6 @@
 #include <fstream>
 #include "level.h"
 #include <memory>
-#include "grid.h"
 #include "commands.h"
 #include "observer.h"
 #include "constants.h"
@@ -20,26 +19,26 @@ struct ProcessedInput {
 };
 
 void Interpreter::initCommandMap() {
-    commandMap["left"] = std::make_unique<LeftCommand>(grid);
-    commandMap["right"] = std::make_unique<RightCommand>(grid);
-    commandMap["down"] = std::make_unique<DownCommand>(grid);
-    commandMap["levelup"] = std::make_unique<LevelUpCommand>(grid);
-    commandMap["leveldown"] = std::make_unique<LevelDownCommand>(grid);
-    commandMap["norandom"] = std::make_unique<NoRandomCommand>(grid);
-    commandMap["random"] = std::make_unique<RandomCommand>(grid);
-    commandMap["sequence"] = std::make_unique<SequenceCommand>(grid, this);
-    commandMap["clockwise"] = std::make_unique<ClockwiseCommand>(grid);
-    commandMap["counterclockwise"] = std::make_unique<CounterClockwiseCommand>(grid);
-    commandMap["drop"] =  std::make_unique<DropCommand>(grid);
-    commandMap["restart"] =  std::make_unique<RestartCommand>(grid);
-    commandMap["hint"] =  std::make_unique<HintCommand>(grid);
-    commandMap["I"] =  std::make_unique<ReplaceCommand>(grid, 'I');
-    commandMap["J"] =  std::make_unique<ReplaceCommand>(grid, 'J');
-    commandMap["L"] =  std::make_unique<ReplaceCommand>(grid, 'L');
-    commandMap["O"] =  std::make_unique<ReplaceCommand>(grid, 'O');
-    commandMap["S"] =  std::make_unique<ReplaceCommand>(grid, 'S');
-    commandMap["T"] =  std::make_unique<ReplaceCommand>(grid, 'T');
-    commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid, 'Z'); 
+    commandMap["left"] = std::make_unique<LeftCommand>(grid.get());
+    commandMap["right"] = std::make_unique<RightCommand>(grid.get());
+    commandMap["down"] = std::make_unique<DownCommand>(grid.get());
+    commandMap["levelup"] = std::make_unique<LevelUpCommand>(grid.get());
+    commandMap["leveldown"] = std::make_unique<LevelDownCommand>(grid.get());
+    commandMap["norandom"] = std::make_unique<NoRandomCommand>(grid.get());
+    commandMap["random"] = std::make_unique<RandomCommand>(grid.get());
+    commandMap["sequence"] = std::make_unique<SequenceCommand>(grid.get(), this);
+    commandMap["clockwise"] = std::make_unique<ClockwiseCommand>(grid.get());
+    commandMap["counterclockwise"] = std::make_unique<CounterClockwiseCommand>(grid.get());
+    commandMap["drop"] =  std::make_unique<DropCommand>(grid.get());
+    commandMap["restart"] =  std::make_unique<RestartCommand>(grid.get());
+    commandMap["hint"] =  std::make_unique<HintCommand>(grid.get());
+    commandMap["I"] =  std::make_unique<ReplaceCommand>(grid.get(), 'I');
+    commandMap["J"] =  std::make_unique<ReplaceCommand>(grid.get(), 'J');
+    commandMap["L"] =  std::make_unique<ReplaceCommand>(grid.get(), 'L');
+    commandMap["O"] =  std::make_unique<ReplaceCommand>(grid.get(), 'O');
+    commandMap["S"] =  std::make_unique<ReplaceCommand>(grid.get(), 'S');
+    commandMap["T"] =  std::make_unique<ReplaceCommand>(grid.get(), 'T');
+    commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid.get(), 'Z'); 
 }
 
 void Interpreter::initKeyMap() {
@@ -55,15 +54,13 @@ void Interpreter::initKeyMap() {
 }
 
 Interpreter::Interpreter(int seed, Observer<Info> *ob, string scriptFile, int startLevel) {
-	grid = new Grid(startLevel, seed, ob, scriptFile);
+	grid = std::make_unique<Grid>(startLevel, seed, ob, scriptFile);
 
 	initCommandMap();
     initKeyMap();
 }
 
-Interpreter::~Interpreter() {
-    delete grid;
-}
+// Interpreter::~Interpreter() {}
 
 bool isDigit(char c) {
 	if ((c >= '0') && (c <= '9')) return true;
@@ -194,9 +191,9 @@ bool Interpreter::run(std::string key) {
         
         if (grid->isOver()) {
             cout << "GAME OVER YOU LOSER" << endl;
+            cout << "Press [y] to restart" << endl;
             return false;
         }
-        cout << *grid;
     }
     return true;
 }
@@ -204,7 +201,6 @@ bool Interpreter::run(std::string key) {
 
 bool Interpreter::reset(std::string key) {
     if (key == "y") {
-
         // get the restart Command object and execute it
         (commandMap.find("restart")->second)->execute(1,"");
         cout << *grid;

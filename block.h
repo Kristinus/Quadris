@@ -4,6 +4,8 @@
 #include "cell.h"
 #include <vector>
 #include <iostream>
+#include <memory>
+
 class Grid;
 template <typename InfoType> class Observer;
 
@@ -25,12 +27,12 @@ protected:
 public:
     Block(BlockType, int level, bool isHeavy=false);
     //Block(const Block&);
-    virtual Block* clone() const = 0;
+    virtual std::unique_ptr<Block> clone() const = 0;
     virtual ~Block() = 0;
     void setGridPointer(Grid *);
     void move();
     void rotate(int);
-    std::vector<Cell> getBlockCells() const;
+    std::vector<Cell> getBlockCells();
     bool isBlockHeavy() const;
     int getLevel() const;
     int getBottomLeftCol() const;

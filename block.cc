@@ -40,7 +40,7 @@ void Block::updateSetCells(std::vector<size_t> rowsToDelete) {
 }
 
 
-std::vector<Cell> Block::getBlockCells() const {
+std::vector<Cell> Block::getBlockCells() {
 	return cells;
 }
 
