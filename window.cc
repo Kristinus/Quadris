@@ -17,15 +17,15 @@ Xwindow::Xwindow(int width, int height): width(width), height(height) {
     cerr << "Cannot open display" << endl;
     exit(1);
   }
+
   s = DefaultScreen(d);
   w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, width, height, 1,
                           BlackPixel(d, s), WhitePixel(d, s));
   XSelectInput(d, w, ExposureMask | KeyPressMask);
   XMapRaised(d, w);
 
-  Pixmap pix = XCreatePixmap(d,w,width,
-        height,DefaultDepth(d,DefaultScreen(d)));
-  gc = XCreateGC(d, pix, 0,(XGCValues *)0);
+  Pixmap pix = XCreatePixmap(d, w, width, height, DefaultDepth(d,DefaultScreen(d)));
+  gc = XCreateGC(d, pix, 0, (XGCValues *)0);
 
   XFlush(d);
   XFlush(d);
@@ -66,11 +66,13 @@ Xwindow::~Xwindow() {
   XCloseDisplay(d);
 }
 
+
 void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
   XSetForeground(d, gc, colours[colour]);
   XFillRectangle(d, w, gc, x, y, width, height);
   XSetForeground(d, gc, colours[Black]);
 }
+
 
 void Xwindow::drawString(int x, int y, string msg, int colour) {
   XSetForeground(d, gc, colours[colour]);
@@ -103,12 +105,14 @@ void Xwindow::drawBigString(int x, int y, string msg, int colour) {
   XFlush(d);
 }
 
+
 void Xwindow::showAvailableFonts() {
   int count;
   char** fnts = XListFonts(d, "*", 10000, &count);
 
   for (int i = 0; i < count; ++i) cout << fnts[i] << endl;
 }
+
 
 std::string Xwindow::readInput() {
   char szKey[32];
@@ -144,6 +148,7 @@ std::string Xwindow::readInput() {
             // XGetInputFocus( d, &focusWin, &iReverToReturn );
             // printf( "Key: %s\n", szKeyString );
           }
+
         iCheck = iCheck << 1 ;
         }
       }
@@ -151,3 +156,4 @@ std::string Xwindow::readInput() {
     memcpy( szKeyOld, szKey, 32 );
   }
 }
+
