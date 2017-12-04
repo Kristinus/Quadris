@@ -4,6 +4,7 @@
 #include "interpreter.h"
 #include "constants.h"
 #include <ctime>
+#include <thread>
 
 using namespace std;
 
@@ -58,7 +59,7 @@ int main(int argc, char *argv[]) {
     } 
     else if (cmd == "-startlevel") {
       if (i + 1 == argc) {
-        // no start
+      // no start
       }
       else {
         istringstream iss {argv[i + 1]};
@@ -67,16 +68,18 @@ int main(int argc, char *argv[]) {
         if (!(iss >> startLevel) && 
           (startLevel > constants::MAX_LEVEL || startLevel < constants::MIN_LEVEL )) {
           cerr << "Invalid Input: Use -startlevel [integer between 0 - 4 ]" << endl;
-        return 1;
-      } 
-      i++;
+          return 1;
+        } 
+        i++;
+      }
     }
-  }
 
-}
+  } 
 
-Interpreter in = Interpreter(seed, textOnly, scriptFile, startLevel);
-in.run();
+  Interpreter in = Interpreter(seed, textOnly, scriptFile, startLevel);
+  in.run();
+// thread t1(in.run());
+// t1.join();
 
 
    //catch (ios::failure &) {}  // Any I/O failure quits
