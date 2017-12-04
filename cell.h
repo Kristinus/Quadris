@@ -1,7 +1,9 @@
 #ifndef CELL_H
 #define CELL_H
+
 #include "subject.h"
 #include "info.h"
+
 class Block;
 
 class Cell: public Subject<Info> {

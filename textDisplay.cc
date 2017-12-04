@@ -2,6 +2,7 @@
 #include "constants.h"
 #include <memory>
 #include <iostream>
+
 using namespace std;
 
 void TextDisplay::createDict() {
@@ -17,27 +18,33 @@ void TextDisplay::createDict() {
   dict[BlockType::DOT] = '*';
 }
 
-TextDisplay::TextDisplay(): 
-  theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, ' '))} {
+
+TextDisplay::TextDisplay(): theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, ' '))} {
       createDict();
 }
 
+
+// Updates based on notify call from cell
 void TextDisplay::notify(Subject<Info> &whoNotified) {
   Info i = whoNotified.getInfo();
   char c = ' ';
+
   if(dict.count(i.block) > 0) {
     c = dict[i.block];
-  } 
+  }
+
   theDisplay[i.row][i.col] = c;
 }
 
 
+// Clears entire display
 void TextDisplay::clear() {
   theDisplay.clear();
   theDisplay = std::vector<std::vector<char>>(18, std::vector<char>(11, ' '));
 }
 
 
+// Updates level/scores
 void TextDisplay::update(int level, int score, int hiScore) {
   this->level = level;
   this->score = score;
@@ -57,11 +64,14 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
     for(auto c:td.theDisplay[r]) {
       out << c;
     }
+
     out << std::endl;
   }
 
   //Outputs Next
   out << "-----------" << std::endl;
   out << "Next:" << std::endl;
+
   return out;
 }
+

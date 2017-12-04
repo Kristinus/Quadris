@@ -1,5 +1,6 @@
 #ifndef __INTERPRETER_H__
 #define __INTERPRETER_H__
+
 #include <string>
 #include <iostream>
 #include <map>
@@ -20,6 +21,7 @@ class Interpreter {
     void initCommandMap();
     void initKeyMap();
     ProcessedInput parseCommand(std::istream &, std::string);
+
 public:
     Interpreter();
     Interpreter(int, Observer<Info> *ob, std::string, int);

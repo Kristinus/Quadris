@@ -8,13 +8,9 @@ class Score {
 public:
 	Score();
 	int getCurrentScore() const;
-
 	int getHighScore() const;
-
 	void setHighScore(int);
-
 	void setCurrentScore(int);
-
 	void addToCurrentScore(int);
 };
 

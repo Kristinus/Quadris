@@ -1,5 +1,6 @@
 #ifndef TEXTDISPLAY_H
 #define TEXTDISPLAY_H
+
 #include <iostream>
 #include <vector>
 #include <map>
@@ -7,6 +8,7 @@
 #include "info.h"
 #include "subject.h"
 #include <memory>
+
 class Grid;
 
 class TextDisplay: public Observer<Info> {
@@ -15,7 +17,8 @@ class TextDisplay: public Observer<Info> {
   int level, score, hiScore;
 
   void createDict();
- public:
+
+public:
   TextDisplay();
   void notify(Subject<Info> &whoNotified) override;
   void clear() override;
@@ -23,4 +26,5 @@ class TextDisplay: public Observer<Info> {
 
   friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
+
 #endif

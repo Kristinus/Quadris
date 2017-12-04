@@ -1,6 +1,6 @@
-
 #ifndef GRID_H
 #define GRID_H
+
 #include <vector>
 #include <memory>
 #include "textDisplay.h"
@@ -17,7 +17,6 @@ class Grid {
 	int startLevel;
 	Level * theLevel;
 	std::unique_ptr<Score> theScore;
-	// std::vector<std::unique_ptr<Block>> setBlocks;
 	std::vector<std::shared_ptr<Block>> setBlocks;
 	std::shared_ptr<Block> currentBlock;
 	std::shared_ptr<Block> nextBlock;
@@ -47,16 +46,10 @@ class Grid {
 	int countNumCellsOnGround();
 	std::vector<Cell> getHintCells(std::shared_ptr<Block> &b, HintInfo i);
 
-
-
-
 public:
 	Grid(int startLevel, int seed, Observer<Info> *, std::string);
 	std::vector<std::vector<Cell>> getGridCells();
 	std::shared_ptr<Block> getNextBlock();
-
-	// ~Grid();
-  //std::unique_ptr<Score> getScore();
 	int getLevel();
 	void initGrid();
 	bool isOver();
@@ -81,8 +74,6 @@ public:
 
 	friend std::ostream &operator<<(std::ostream &out, Grid &grid);
 };
-
-
 
 #endif
 

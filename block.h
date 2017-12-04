@@ -1,5 +1,6 @@
 #ifndef __BLOCK_H__
 #define __BLOCK_H__
+
 #include "info.h"
 #include "cell.h"
 #include <vector>

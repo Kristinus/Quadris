@@ -1,5 +1,6 @@
 #ifndef __WINDOW_H__
 #define __WINDOW_H__
+
 #include <X11/Xlib.h>
 #include <iostream>
 #include <string>
@@ -12,7 +13,7 @@ class Xwindow {
   unsigned long colours[10];
   int width, height;
 
- public:
+public:
   Xwindow(int width=500, int height=500);  // Constructor; displays the window.
   ~Xwindow();                              // Destructor; destroys the window.
   Xwindow(const Xwindow&) = delete;
@@ -36,3 +37,4 @@ class Xwindow {
 };
 
 #endif
+

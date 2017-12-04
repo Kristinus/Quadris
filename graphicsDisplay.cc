@@ -4,10 +4,10 @@
 #include "interpreter.h"
 #include <memory>
 #include <unistd.h>
+
 using namespace std;
 
-GraphicsDisplay::GraphicsDisplay():
- gridSize{18}, winSize{600}, cellSize{winSize/gridSize}, xw{650, 650} {
+GraphicsDisplay::GraphicsDisplay(): gridSize{18}, winSize{600}, cellSize{winSize/gridSize}, xw{650, 650} {
   xw.fillRectangle(0, 0, winSize, winSize, Xwindow::White);
   xw.fillRectangle(11 * cellSize, 0, 1, 700, Xwindow::Black);
   xw.drawString(10,10,"Level:");
@@ -17,6 +17,7 @@ GraphicsDisplay::GraphicsDisplay():
 }
 
 
+// Updates graphics display based on notify call from cell
 void GraphicsDisplay::notify(Subject<Info> &whoNotified) {  
   auto info = whoNotified.getInfo();
   int colour = xw.White;
@@ -50,11 +51,13 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
 }
 
 
+// Clears next block
 void GraphicsDisplay::clearNext() {
   xw.fillRectangle(13 * cellSize, 0, cellSize*4, cellSize*2, Xwindow::White);
 }
 
 
+// Clears the board
 void GraphicsDisplay::clear() {
   xw.fillRectangle(0, 0, 650, 650, Xwindow::White);
   xw.fillRectangle(11 * cellSize, 0, 1, 700, Xwindow::Black);
@@ -65,6 +68,7 @@ void GraphicsDisplay::clear() {
 }
 
 
+// Updates the level/scores
 void GraphicsDisplay::update(int level, int score, int hiScore) {
   xw.fillRectangle(100, 0, 100, 50, Xwindow::White);
   xw.drawString(100,10,std::to_string(level));
@@ -75,12 +79,15 @@ void GraphicsDisplay::update(int level, int score, int hiScore) {
 
 void GraphicsDisplay::run(Interpreter *i) {
   bool running = true;
+
   while(running) {
     running = i->run(xw.readInput());
     usleep(100000);
+    
     if (!running) {
-			cout << "Wanna play again? [yes/no]" << endl;
-			running = i->reset(xw.readInput());
-		}
+		cout << "Wanna play again? [yes/no]" << endl;
+		running = i->reset(xw.readInput());
+	 } 
   }
 }
+

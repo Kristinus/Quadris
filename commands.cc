@@ -4,6 +4,7 @@
 
 LeftCommand::LeftCommand(Grid *g): Command(g) {}
 
+
 void LeftCommand::execute(int m, std::string file) {
     grid->left(m);
 }
@@ -11,6 +12,7 @@ void LeftCommand::execute(int m, std::string file) {
 /******************************************************************************/
 
 RightCommand::RightCommand(Grid *g): Command(g) {}
+
 
 void RightCommand::execute(int m, std::string file) {
     grid->right(m);
@@ -20,6 +22,7 @@ void RightCommand::execute(int m, std::string file) {
 
 DownCommand::DownCommand(Grid *g): Command(g) {}
 
+
 void DownCommand::execute(int m, std::string file) {
     grid->down(m);
 }
@@ -27,6 +30,7 @@ void DownCommand::execute(int m, std::string file) {
 /******************************************************************************/
 
 ClockwiseCommand::ClockwiseCommand(Grid *g): Command(g) {}
+
 
 void ClockwiseCommand::execute(int m, std::string file) {
     grid->rotateCW(m);
@@ -36,6 +40,7 @@ void ClockwiseCommand::execute(int m, std::string file) {
 
 CounterClockwiseCommand::CounterClockwiseCommand(Grid *g): Command(g) {}
 
+
 void CounterClockwiseCommand::execute(int m, std::string file) {
     grid->rotateCCW(m);
 }
@@ -43,6 +48,7 @@ void CounterClockwiseCommand::execute(int m, std::string file) {
 /******************************************************************************/
 
 DropCommand::DropCommand(Grid *g): Command(g) {}
+
 
 void DropCommand::execute(int m, std::string file) {
     grid->drop(m);
@@ -52,6 +58,7 @@ void DropCommand::execute(int m, std::string file) {
 
 LevelUpCommand::LevelUpCommand(Grid *g): Command(g) {}
 
+
 void LevelUpCommand::execute(int m, std::string file) {
     grid->levelUp(m);
 }
@@ -60,6 +67,7 @@ void LevelUpCommand::execute(int m, std::string file) {
 
 LevelDownCommand::LevelDownCommand(Grid *g): Command(g) {}
 
+
 void LevelDownCommand::execute(int m, std::string file) {
     grid->levelDown(m);
 }
@@ -67,6 +75,7 @@ void LevelDownCommand::execute(int m, std::string file) {
 /******************************************************************************/
 
 NoRandomCommand::NoRandomCommand(Grid *g): Command(g) {}
+
 
 void NoRandomCommand::execute(int m, std::string file) {
     grid->random(false);
@@ -77,6 +86,7 @@ void NoRandomCommand::execute(int m, std::string file) {
 
 RandomCommand::RandomCommand(Grid *g): Command(g) {}
 
+
 void RandomCommand::execute(int m, std::string file) {
     grid->random(true);
 }
@@ -84,6 +94,7 @@ void RandomCommand::execute(int m, std::string file) {
 /******************************************************************************/
 
 SequenceCommand::SequenceCommand(Grid *g, Interpreter *i): Command(g), i{i} {}
+
 
 void SequenceCommand::execute(int m, std::string file) {
     std::ifstream fs{file};
@@ -94,6 +105,7 @@ void SequenceCommand::execute(int m, std::string file) {
 
 RestartCommand::RestartCommand(Grid *g): Command(g) {}
 
+
 void RestartCommand::execute(int m, std::string file) {
     grid->restart();
 }
@@ -101,6 +113,7 @@ void RestartCommand::execute(int m, std::string file) {
 /******************************************************************************/
 
 HintCommand::HintCommand(Grid *g): Command(g) {}
+
 
 void HintCommand::execute(int m, std::string file) {
     grid->hint();
@@ -110,8 +123,10 @@ void HintCommand::execute(int m, std::string file) {
 
 ReplaceCommand::ReplaceCommand(Grid *g, char type): Command(g), type{type} {}
 
+
 void ReplaceCommand::execute(int m, std::string file) {
     grid->replaceBlock(type);
 }
 
 /******************************************************************************/
+
