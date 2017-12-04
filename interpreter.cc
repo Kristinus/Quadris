@@ -57,8 +57,8 @@ void Interpreter::initKeyMap() {
 }
 
 
-Interpreter::Interpreter(int seed, Observer<Info> *ob, string scriptFile, int startLevel) {
-	grid = std::make_unique<Grid>(startLevel, seed, ob, scriptFile);
+Interpreter::Interpreter(int seed, std::shared_ptr<Observer<Info>> ob, string scriptFile, int startLevel) {
+	grid = std::make_unique<Grid>(startLevel, seed, ob.get(), scriptFile);
 
 	initCommandMap();
    initKeyMap();

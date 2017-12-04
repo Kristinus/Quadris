@@ -11,10 +11,9 @@ Level0::Level0(Grid * grid, int seed, std::string file): Level(grid, seed, file,
 // Generates block from file
 std::unique_ptr<Block>Level0::createBlock() {
     char b;
-    seq >> b;
-    std::unique_ptr<Block>block = getBlock(b, getLevel(), heavy);
-    if(block) return block;
-
+    if(seq >> b) {
+        return getBlock(b, getLevel(), heavy);
+    }
     //Loops through file again
     seq.close();
     seq.open(sourceFile);

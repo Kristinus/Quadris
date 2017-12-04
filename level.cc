@@ -9,9 +9,9 @@ Level::Level(Grid *grid, int seed, std::string file, bool heavy): grid{grid}, se
 // Generates block from sequence file
 std::unique_ptr<Block> Level::generateFromFile(bool heavy) {
     char b;
-    seq >> b;
-    std::unique_ptr<Block> block = std::move(getBlock(b, getLevel(), heavy));
-    if(block) return block;
+    if(seq >> b) {
+        return std::move(getBlock(b, getLevel(), heavy));
+    }
 
     // Loops through file again
     seq.close();

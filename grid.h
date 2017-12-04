@@ -15,7 +15,7 @@ template <typename InfoType> class Observer;
 class Grid {
 	std::vector<std::vector<Cell>> theGrid;
 	int startLevel;
-	Level * theLevel;
+	std::unique_ptr<Level> theLevel;
 	std::unique_ptr<Score> theScore;
 	std::vector<std::shared_ptr<Block>> setBlocks;
 	std::shared_ptr<Block> currentBlock;

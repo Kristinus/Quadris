@@ -81,14 +81,14 @@ int main(int argc, char *argv[]) {
   }
 
   // GraphicsDisplay *gd = nullptr;
-  std::unique_ptr<GraphicsDisplay> gd;
+  std::shared_ptr<GraphicsDisplay> gd;
   if(!textOnly || keyInput) {
     // gd = new GraphicsDisplay();
-    gd = std::make_unique<GraphicsDisplay>();
+    gd = std::make_shared<GraphicsDisplay>();
   }
 
   // GraphicsDisplay *ob = nullptr;
-  Interpreter in = Interpreter(seed, gd.get(), scriptFile, startLevel);
+  Interpreter in = Interpreter(seed, gd, scriptFile, startLevel);
   try {
     if (!keyInput) in.run();
     else {

@@ -12,11 +12,12 @@ using namespace std;
 
 
 Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile): startLevel{startLevel}, ob{ob} {
-	// theLevel = std::make_unique<Level0>(this, seed, scriptFile);
-	theLevel = new Level0(this, seed, scriptFile);
-	while(theLevel->getLevel()<startLevel) {
-		// theLevel = std::make_shared(theLevel->levelUp());
-		theLevel = theLevel->levelUp();
+	theLevel = std::make_unique<Level0>(this, seed, scriptFile);
+	// theLevel = new Level0(this, seed, scriptFile);
+	while(theLevel->getLevel() < startLevel) {
+		std::unique_ptr<Level> temp(theLevel->levelUp());
+		std::swap (theLevel, temp);
+		// theLevel = theLevel->levelUp();
 	}
 	theLevel->setCounter(-2);
 	theScore = std::make_unique<Score>();
@@ -472,10 +473,12 @@ void Grid::restart() {
 
 	//Go back to level startLevel
 	while(getLevel()>startLevel) {
-		theLevel = theLevel->levelDown();
+		std::unique_ptr<Level> temp(theLevel->levelDown());
+		std::swap (theLevel, temp);
 	}
 	while(getLevel()<startLevel) {
-		theLevel = theLevel->levelUp();
+		std::unique_ptr<Level> temp(theLevel->levelUp());
+		std::swap (theLevel, temp);
 	}
 	theLevel->restart();
 	theLevel->setCounter(-2);
@@ -500,14 +503,18 @@ void Grid::rotateCCW(int x) {
 	if(currentBlock->isBlockHeavy()) down(1);
 }
 void Grid::levelUp(int x) {
-	for(int i=0; i<x; i++)
-		theLevel = theLevel->levelUp();
+	for(int i=0; i<x; i++) {
+		std::unique_ptr<Level> temp(theLevel->levelUp());
+		std::swap (theLevel, temp);
+	}
 	updateDisplays();
 }
 
 void Grid::levelDown(int x) {
-	for(int i=0; i<x; i++)
-		theLevel = theLevel->levelDown();
+	for(int i=0; i<x; i++) {
+		std::unique_ptr<Level> temp(theLevel->levelDown());
+		std::swap (theLevel, temp);
+	}
 	updateDisplays();
 }
 

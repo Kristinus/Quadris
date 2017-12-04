@@ -24,7 +24,7 @@ class Interpreter {
 
 public:
     Interpreter();
-    Interpreter(int, Observer<Info> *ob, std::string, int);
+    Interpreter(int, std::shared_ptr<Observer<Info>> ob, std::string, int);
     void run();
     std::istream &run(std::istream &);
     bool run(std::string);
