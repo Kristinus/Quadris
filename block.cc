@@ -185,7 +185,8 @@ void Block::rotate(int dir) {
 }
 
 
-bool Block::isValidRotation(Block *b, std::vector<int> rotatedRow, std::vector<int> rotatedCol) {
+bool Block::isValidRotation(Block *b, std::vector<int> rotatedRow, 
+	std::vector<int> rotatedCol) {
 
 	// Check that EACH rotated cell is valid
 	for (size_t i = 0; i < b->cells.size(); i++) {
@@ -198,16 +199,6 @@ bool Block::isValidRotation(Block *b, std::vector<int> rotatedRow, std::vector<i
    }
    return true;
 }
-
-
-//(TODO) make this prettier.. TWO OPTIONAL APRAMES?/?
-void Block::setBlockCellStates(StateType s) {
-	for (auto &c : cells) {
-		c.setState(s);
-	}
-}
-
-
 
 
 void Block::clockwise(int x) {

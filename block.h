@@ -31,7 +31,6 @@ public:
     bool isBlockHeavy();
     int getLevel();
     void move(int, int);
-	void setBlockCellStates(StateType s);
     int getBottomLeftCol();
     int getBottomLeftRow();
     void moveTo(int row, int col);

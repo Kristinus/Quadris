@@ -180,7 +180,6 @@ void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
 		delete hintBlock;
 		hintBlock = nullptr;
 	}
-	b->setBlockCellStates(s);
 	for (auto &c : b->getBlockCells()) {
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setState(s);
