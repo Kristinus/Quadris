@@ -29,10 +29,9 @@ class Grid {
   void attachGridToBlock(Block *);
   int countCompleteLines();
   bool isFilled(std::vector<Cell>);
-  void unsetBlock(Block *);
   void updateCells(Block *, StateType,  bool shouldNotify = true);
+  void updateCells(Block *b, BlockType blocktype, bool shouldNotify);
     void updateCells(Block *);
-
   double calculateSmoothness();
   double getAverageHeights(std::vector<int> v);
   double getStandardDeviationHeights(std::vector<int> v);

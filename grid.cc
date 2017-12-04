@@ -191,20 +191,26 @@ void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
 		if (shouldNotify) theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
 	}
 
+}
 
-
+void Grid::updateCells(Block *b, BlockType blocktype, bool shouldNotify) {
+	for (auto &c : b->getBlockCells()) {
+		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(blocktype);
+		if (shouldNotify) theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
+	}
 
 }
 
+
+
 void Grid::updateCells(Block *b) {
 	if (hintBlock != nullptr) {
-		for (auto &c: hintBlock->getBlockCells()) {
-			theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
-			theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
-		}
+		updateCells(hintBlock, BlockType::NONE, true);
 		delete hintBlock;
 		hintBlock = nullptr;
 	}
+
+
 	for (auto &c : b->getBlockCells()) {
 		c.setBlock(b->getBlockType()); // is this necessary
 		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
@@ -371,7 +377,7 @@ void Grid::left(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock);
+	updateCells(currentBlock, currentBlock->getBlockType(), true);
 	if (currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
@@ -389,7 +395,8 @@ void Grid::right(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock);
+	updateCells(currentBlock, currentBlock->getBlockType(), true);
+
 	if(currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
@@ -417,8 +424,8 @@ void Grid::down(int x) {
 		}
 	}	
 
-	updateCells(currentBlock);
-	//playBlock(currentBlock);
+	updateCells(currentBlock, currentBlock->getBlockType(), true);
+
 }
 
 void Grid::rotateCW(int x) {
@@ -426,20 +433,14 @@ void Grid::rotateCW(int x) {
 
 	currentBlock->clockwise(x);
 
-	updateCells(currentBlock);
+	updateCells(currentBlock, currentBlock->getBlockType(), true);
+
 	if(currentBlock->isBlockHeavy()) down(1);
 
 }
 
 
 
-void Grid::unsetBlock(Block *block) {
-	//(TODO)
-	// for (auto cell : block->getBlockCells()) {
-	// 	theGrid[cell.getInfo().row][cell.getInfo().col].setState(StateType::NONE);
-	// }
-	// setBlocks.pop_back();
-}
 
 void Grid::drop(int x) {
 
@@ -468,7 +469,8 @@ void Grid::drop(int x) {
 		currentBlock = nextBlock;
 		currentBlock->setGridPointer(this);
 		currentBlock->moveTo(14,0);
-		updateCells(currentBlock);
+		updateCells(currentBlock, currentBlock->getBlockType(), true);
+
 
 
 		//Makes next block
@@ -683,7 +685,7 @@ void Grid::hint() {
 	hintBlock->clockwise(numRotations);
 	hintBlock->moveTo(newBottomLeftRow, newBottomLeftCol);
 
-	// set the appropriate blocks to
+	// set the appropriate blocks 
 	for (auto &c: hintBlock->getBlockCells()) {
 		theGrid[constants::GRID_HEIGHT - 1 -c.getInfo().row][c.getInfo().col].setBlock(BlockType::HINT);
 		theGrid[constants::GRID_HEIGHT - 1 -c.getInfo().row][c.getInfo().col].notifyObservers();
@@ -718,11 +720,13 @@ void Grid::replaceBlock(char type) {
 	currentBlock->setGridPointer(this);
 	if(isValidMove(col, row)) {
 		currentBlock->moveTo(row, col);
-		updateCells(currentBlock);
+		updateCells(currentBlock, currentBlock->getBlockType(), true);
+
 	}
 	else {
 		currentBlock = temp;
-		updateCells(currentBlock);
+		updateCells(currentBlock, currentBlock->getBlockType(), true);
+
 	}
 }
 
