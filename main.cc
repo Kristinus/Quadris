@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
   }
   // GraphicsDisplay *ob = nullptr;
   Interpreter in = Interpreter(seed, gd, scriptFile, startLevel);
-  if (threading) in.run();
+  if (!threading) in.run();
   else {
     thread t1(in);
     thread t2(&GraphicsDisplay::run, gd);
