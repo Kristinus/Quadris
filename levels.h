@@ -16,6 +16,7 @@ public:
     void restart() override;
 };
 
+
 class Level1: public Level {
 public:
     Level1(Grid *, int, std::string);
@@ -23,8 +24,8 @@ public:
     Level *levelUp();
     Level *levelDown();
     int getLevel();
-
 };
+
 
 class Level2: public Level {
 public:
@@ -33,8 +34,8 @@ public:
     Level *levelUp();
     Level *levelDown();
     int getLevel();
-
 };
+
 
 class Level3: public Level {
 public:
@@ -43,8 +44,8 @@ public:
     Level *levelUp();
     Level *levelDown();
     int getLevel();
-
 };
+
 
 class Level4: public Level {
     int counter;
@@ -57,4 +58,5 @@ public:
     void restart() override;
     void setCounter(int) override;
 };
+
 #endif

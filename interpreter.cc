@@ -85,13 +85,10 @@ ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 		}
 	}
 
-	vector<string> possibleCommands {"left", "right", "down", "levelup", "leveldown", 
-	"norandom", "random", "sequence", "clockwise", "counterclockwise", "drop", "restart", 
-	"hint", "I", "J", "L", "O", "S", "Z", "T", "quit",};
+	vector<string> possibleCommands = constants::possibleCommands;
 
 	int pos = command.find(' ');
 	typedCommand = command.substr(i, pos-i);
-    // file = command.substr(pos);
 
    	// filter list of possible Commands by comparing the 
    	// prefixes with typed command
@@ -133,6 +130,7 @@ ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 	else return ProcessedInput{possibleCommands[0], 1, file};
 
 }
+
 
 void Interpreter::run() {
 	cout << *grid;
@@ -183,6 +181,7 @@ void Interpreter::run(std::istream &in) {
 	}
 }
 
+// bonus feature - key presses
 bool Interpreter::run(std::string key) {
     if (key == "q") {
         return false;
@@ -202,6 +201,7 @@ bool Interpreter::run(std::string key) {
     return true;
 }
 
+
 bool Interpreter::reset(std::string key) {
     if (key == "y") {
 
@@ -212,6 +212,7 @@ bool Interpreter::reset(std::string key) {
     }
     return false;
 }
+
 
 void Interpreter::operator()() {
     run();

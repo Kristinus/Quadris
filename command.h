@@ -9,7 +9,7 @@ protected:
 public:
 	Command(Grid *);
 	virtual void execute(int mult, std::string) = 0;
-	~Command();
+	virtual ~Command();
 };
 
 #endif 

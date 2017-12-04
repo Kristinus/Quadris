@@ -17,27 +17,25 @@ protected:
     Grid *grid = nullptr;
     char type;
     BlockType blockType;
-    bool isValidRotation(Block *b, std::vector<int> rotatedRow, std::vector<int> rotatedCol);
-	bool isValidCoordinate(int row , int col);
+    bool isValidRotation(Block *b, std::vector<int> rotatedRow, 
+    	std::vector<int> rotatedCol);
+	bool isValidCoordinate(int row , int col) const;
+	void move(int, int);
+
 public:
     Block(BlockType, int level, bool isHeavy=false);
-    Block(const Block&);
-    // Block(int col, int row, bool isHeavy, int level, std::vector<Cell> cells, Grid* theGrid);
-    // Block(bool isHeavy, int level, std::vector<Cell> cells);
-    virtual ~Block();
+    //Block(const Block&);
+    virtual Block* clone() const = 0;
+    virtual ~Block() = 0;
     void setGridPointer(Grid *);
     void displayNext(Observer<Info> *ob);
     void move();
     void rotate(int);
-    std::vector<Cell> getBlockCells();
-    bool isBlockHeavy();
-    int getLevel();
-    void move(int, int);
-	void setBlockCellStates(StateType s);
-	void setBlockCellTypes(BlockType);
-    int getBottomLeftCol();
-    int getBottomLeftRow();
-    void playBlock();
+    std::vector<Cell> getBlockCells() const;
+    bool isBlockHeavy() const;
+    int getLevel() const;
+    int getBottomLeftCol() const;
+    int getBottomLeftRow() const;
     void moveTo(int row, int col);
     void left(int x=1);
     void right(int x=1);
@@ -45,9 +43,9 @@ public:
     void clockwise(int x=1);
     void counterclockwise(int x =1);
     void updateSetCells(std::vector<size_t>);
-    virtual BlockType getBlockType();
+    virtual BlockType getBlockType() const;
 
-friend std::ostream &operator<<(std::ostream &out, Block *);
+    friend std::ostream &operator<<(std::ostream &out, Block *);
 };
 
 #endif

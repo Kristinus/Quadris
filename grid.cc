@@ -55,8 +55,8 @@ void Grid::initGrid() {
 
 	currentBlock = theLevel->createBlock();
 	currentBlock->setGridPointer(this);
-	currentBlock->moveTo(14, 0);
-	updateCells(currentBlock, StateType::MOVING);
+	currentBlock->moveTo(constants::MAX_ROW, constants::MIN_COL);
+	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 	nextBlock = theLevel->createBlock();
 	nextBlock->setGridPointer(this);
 	if(ob) nextBlock->displayNext(ob);
@@ -66,7 +66,7 @@ void Grid::initGrid() {
 // the game is over if the block to be played overlaps a piece that's set
 bool Grid::isOver() {
 	for (auto &c : currentBlock->getBlockCells()) {
-		if (theGrid[17 - c.getInfo().row][c.getInfo().col].getInfo().state 
+		if (theGrid[constants::GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].getInfo().state 
 			== StateType::STATIC) return true;
 	}
 return false;
@@ -107,8 +107,8 @@ double Grid::calculateDensity() {
 
 
 double Grid::getAverageHeights(std::vector<int> v) {      
-	double sum=0;
-	for(size_t i=0;i<v.size();i++) {
+	double sum = 0;
+	for(size_t i = 0;i<v.size();i++) {
 		sum+=v[i];
 
 	}
@@ -135,21 +135,18 @@ int Grid::getBumpiness() {
 
 std::vector<int> Grid::getHeights() {
 	std::vector<int> heights(11, 0);
-	//cout << "hi1" << endl;
-	//cout << theGrid[0][6].getInfo().row;
-	for (int row = 17; row >= 0; row--) {
-		for ( int col = 0; col < 11; col++) {
-				// record the index of the highest static block...if no block is there... height is 0
-			if (theGrid[17 - row][col].getInfo().state == StateType::STATIC) {
-					//cout << row << "|" << col << endl;
+	for (int row = constants::MAX_ROW; row >= constants::MIN_ROW; row--) {
+		for ( int col = constants::MIN_COL; col < constants::MAX_COL; col++) {
+
+				// record the index of the highest static block
+				// if no height is there, the height is zero
+			if (theGrid[constants::GRID_HEIGHT - 1 - row][col].getInfo().state == StateType::STATIC) {
 				if (row + 1 > heights[col]) {
 					heights[col] = row + 1;
 				}
 			}
 		}
 	}
-
-	//cout <<"hi2"<< endl;
 
 	return heights;
 }
@@ -167,52 +164,29 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, Block *b) {
 
 }
 
-// update cell Grid (TODO) refactor for setting block states
-void Grid::updateCells(Block *b, StateType s, bool shouldNotify) {
-	if (hintBlock != nullptr) {
 
-		// (TODO) refactor code
+void Grid::updateCells(Block *b, BlockType blocktype, StateType s, bool shouldNotify) {
+
+	// cannot be upudating the hint block
+	if (hintBlock != nullptr && blocktype != BlockType::HINT) {
 		for (auto &c: hintBlock->getBlockCells()) {
-			theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
-			theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
-
+			theGrid[constants::GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
+			theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].notifyObservers();
 		}
 		delete hintBlock;
 		hintBlock = nullptr;
-	}
-	b->setBlockCellStates(s);
-	for (auto &c : b->getBlockCells()) {
-		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
-		theGrid[17 - c.getInfo().row][c.getInfo().col].setState(s);
 
-		//(TODO) REFACTOR THIS PART
-		if (s == StateType::NONE) {
-			theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
-		}
+	}
+	for (auto &c : b->getBlockCells()) {
+		theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].setState(s);
+		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(blocktype);
 		if (shouldNotify) theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
-	}
-
-
-
-
-}
-
-void Grid::updateCells(Block *b) {
-	if (hintBlock != nullptr) {
-		for (auto &c: hintBlock->getBlockCells()) {
-			theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
-			theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
-		}
-		delete hintBlock;
-		hintBlock = nullptr;
-	}
-	for (auto &c : b->getBlockCells()) {
-		c.setBlock(b->getBlockType()); // is this necessary
-		theGrid[17 - c.getInfo().row][c.getInfo().col].setBlock(b->getBlockType());
-		theGrid[17 - c.getInfo().row][c.getInfo().col].notifyObservers();
+		
 	}
 
 }
+
+
 
 void notifyRow(std::vector<Cell> & row) {
 	for (auto &c : row) {
@@ -247,7 +221,7 @@ void Grid::deleteRow() {
 		for (int i = theGrid.size() - 1; i >= 0; i--) {
 			for (auto &c: theGrid[i]) {
 				if(c.getInfo().row < deletedRows[deletedRows.size()-1]) continue;
-				for(int r:deletedRows) {
+				for(size_t r:deletedRows) {
 					if(c.getInfo().row >= r)
 						c.setCoords(c.getInfo().row - 1, c.getInfo().col);
 				}
@@ -346,7 +320,7 @@ bool Grid::isValidMove(int colshift, int rowshift) {
 
 void Grid::deleteCurrentBlock() {
 	// (TODO) refector into currentblock code
-	for (int i = 0; i < currentBlock->getBlockCells().size(); i++) {
+	for (size_t i = 0; i < currentBlock->getBlockCells().size(); i++) {
 		int row = currentBlock->getBlockCells()[i].getInfo().row;
 		int col = currentBlock->getBlockCells()[i].getInfo().col;
 		theGrid[17 - row][col].setBlock(BlockType::NONE);
@@ -372,7 +346,8 @@ void Grid::left(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock);
+	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+
 	if (currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
@@ -390,7 +365,8 @@ void Grid::right(int x) {
 		}
 		shift++;
 	}
-	updateCells(currentBlock);
+updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+
 	if(currentBlock->isBlockHeavy()) down(1);
 	//playBlock(currentBlock);
 
@@ -418,8 +394,8 @@ void Grid::down(int x) {
 		}
 	}	
 
-	updateCells(currentBlock);
-	//playBlock(currentBlock);
+updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+
 }
 
 void Grid::rotateCW(int x) {
@@ -427,20 +403,14 @@ void Grid::rotateCW(int x) {
 
 	currentBlock->clockwise(x);
 
-	updateCells(currentBlock);
+	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+
 	if(currentBlock->isBlockHeavy()) down(1);
 
 }
 
 
 
-void Grid::unsetBlock(Block *block) {
-	//(TODO)
-	// for (auto cell : block->getBlockCells()) {
-	// 	theGrid[cell.getInfo().row][cell.getInfo().col].setState(StateType::NONE);
-	// }
-	// setBlocks.pop_back();
-}
 
 void Grid::drop(int x) {
 
@@ -450,7 +420,8 @@ void Grid::drop(int x) {
 			currentBlock->down();
 		}
 
-		updateCells(currentBlock, StateType::STATIC, true);
+			updateCells(currentBlock, currentBlock->getBlockType(), StateType::STATIC, true);
+
 		setBlocks.emplace_back(currentBlock);
 
 
@@ -469,7 +440,9 @@ void Grid::drop(int x) {
 		currentBlock = nextBlock;
 		currentBlock->setGridPointer(this);
 		currentBlock->moveTo(14,0);
-		updateCells(currentBlock);
+			updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+
+
 
 
 		//Makes next block
@@ -517,20 +490,20 @@ void Grid::restart() {
 }
 
 void Grid::rotateCCW(int x) {
-	updateCells(currentBlock, StateType::NONE);
+	deleteCurrentBlock();
 	while (x > 0) {
 		currentBlock->counterclockwise(x);
 		x--;
 
 	}
-	updateCells(currentBlock, StateType::MOVING);
-	//playBlock(currentBlock);
+	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+
 	if(currentBlock->isBlockHeavy()) down(1);
 }
 void Grid::levelUp(int x) {
 	for(int i=0; i<x; i++)
 		theLevel = theLevel->levelUp();
-	if(ob) ob->update();
+	if (ob) ob->update();
 }
 
 void Grid::levelDown(int x) {
@@ -552,7 +525,7 @@ int Grid::countHoles() {
 	int numHoles = 0; 
 	// for all the cells below the highest cell
 	
-	for (int i = 0; i < heights.size(); i++) {
+	for (size_t i = 0; i < heights.size(); i++) {
 		for (int row = 0; row < heights[i] - 1; row++) {
 			if (theGrid[17 - row][i].getInfo().state == StateType::NONE) {
 				numHoles++;
@@ -642,7 +615,8 @@ void Grid::hint() {
 				}
 
 				// temporarily set the block and calculate the priority score
-				updateCells(currentBlock, StateType::STATIC, shouldNotify);
+				updateCells(currentBlock, currentBlock->getBlockType(), StateType::STATIC, false);
+
 				double tempPriority = calculatePriority();
 
 				if (tempPriority > best.priority) {
@@ -654,7 +628,8 @@ void Grid::hint() {
 
 				// unset the block and move to original position for the next
 				// simulation of moves
-				updateCells(currentBlock, StateType::NONE, shouldNotify);
+					updateCells(currentBlock, BlockType::NONE, StateType::NONE, false);
+
 				currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 				horizontal++;
 
@@ -672,10 +647,10 @@ void Grid::hint() {
 
 	// one all the possible sequence of moves have been played,
 	// move the block to the original 
-	updateCells(currentBlock, StateType::NONE, shouldNotify);
+	updateCells(currentBlock, BlockType::NONE, StateType::NONE, false);
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
-	updateCells(currentBlock, StateType::MOVING);
-	hintBlock = new Block(*currentBlock);
+	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+	hintBlock = currentBlock->clone();
 
 	hintBlock->setGridPointer(this);
 	int numRotations = best.numRotations;
@@ -684,11 +659,10 @@ void Grid::hint() {
 	hintBlock->clockwise(numRotations);
 	hintBlock->moveTo(newBottomLeftRow, newBottomLeftCol);
 
-	// set the appropriate blocks to
-	for (auto &c: hintBlock->getBlockCells()) {
-		theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::HINT);
-		theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();
-	}
+	// set the appropriate blocks 
+	updateCells(hintBlock, BlockType::HINT, StateType::NONE, true);
+
+
 
 }
 
@@ -711,7 +685,7 @@ int Grid::getLevel() {
 // replaces the current block at play
 void Grid::replaceBlock(char type) {
 
-	Block *temp = new Block(*currentBlock);
+	Block *temp = currentBlock->clone();
 	int col = currentBlock->getBottomLeftCol();
 	int row = currentBlock->getBottomLeftRow();
 	deleteCurrentBlock();
@@ -719,11 +693,13 @@ void Grid::replaceBlock(char type) {
 	currentBlock->setGridPointer(this);
 	if(isValidMove(col, row)) {
 		currentBlock->moveTo(row, col);
-		updateCells(currentBlock);
+		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+
 	}
 	else {
 		currentBlock = temp;
-		updateCells(currentBlock);
+		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING,  true);
+
 	}
 }
 
@@ -736,7 +712,7 @@ void Grid::dropBlock(Block *block, int col) {
 		block->down();
 	}
 
-	updateCells(block, StateType::STATIC, true);
+	updateCells(block, block->getBlockType(), StateType::STATIC, true);
 	setBlocks.emplace_back(block);
 
 	deleteRow();
