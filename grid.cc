@@ -20,12 +20,11 @@ Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile)
 		theLevel->setCounter(-2);
 	}
 	theScore = new Score();
-	td = TextDisplay(this);
+	td = new TextDisplay(this);
 	//  std::vector<Block *> setBlocks;
 	//   ob = new GraphicsDisplay(this);
 	initGrid();	
 }
-
 
 
 std::vector<std::vector<Cell>> Grid::getGridCells() {
@@ -56,12 +55,8 @@ void Grid::initGrid() {
 
 	currentBlock = theLevel->createBlock();
 	currentBlock->setGridPointer(this);
-	currentBlock->moveTo(constants::START_BOTTOM_LEFT_ROW, constants::START_BOTTOM_LEFT_COL);
-	// for (auto c: currentBlock->getBlockCells()) {
-	// 	cout << "(" << c.getInfo().row << "," << c.getInfo().col << ")" << endl;
-	// }
+	currentBlock->moveTo(14, 0);
 	updateCells(currentBlock, StateType::MOVING);
-
 	nextBlock = theLevel->createBlock();
 	nextBlock->setGridPointer(this);
 	if(ob) nextBlock->displayNext(ob);
@@ -71,7 +66,7 @@ void Grid::initGrid() {
 // the game is over if the block to be played overlaps a piece that's set
 bool Grid::isOver() {
 	for (auto &c : currentBlock->getBlockCells()) {
-		if (theGrid[GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].getInfo().state 
+		if (theGrid[17 - c.getInfo().row][c.getInfo().col].getInfo().state 
 			== StateType::STATIC) return true;
 	}
 return false;
@@ -697,8 +692,7 @@ void Grid::hint() {
 	hintBlock->clockwise(numRotations);
 	hintBlock->moveTo(newBottomLeftRow, newBottomLeftCol);
 
-	//combine these two for loops (TODO)
-	//	hintBlock->setBlockCellTypes(BlockType::HINT);
+	// set the appropriate blocks to
 	for (auto &c: hintBlock->getBlockCells()) {
 		theGrid[17-c.getInfo().row][c.getInfo().col].setBlock(BlockType::HINT);
 		theGrid[17-c.getInfo().row][c.getInfo().col].notifyObservers();

@@ -10,6 +10,8 @@ namespace constants {
 	const int GRID_WIDTH = 11;
 	const int MIN_LEVEL = 0;
 	const int MAX_LEVEL = 4;
+	const int START_BOTTOM_LEFT_COL = 0;
+	const int START_BOTTOM_LEFT_ROW = 0;
 	const std::string DEFAULT_SCRIPT_FILE = "sequence.txt";
 	const std::vector<char> BLOCKS = {
 		'I','J','L','O','S','T','Z'
