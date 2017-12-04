@@ -20,9 +20,10 @@ protected:
     bool heavy = false;
     bool random = true;
     Block *generateFromFile(bool);
+
 public:
     Level(Grid *,int, std::string, bool);
-    void setDefaultSelector(int, int, int, int, int, int, int);
+    void setSelector(int, int, int, int, int, int, int);
     void setSeed(int);
     void setRandom(bool);
     void setFile(std::string);
@@ -36,7 +37,6 @@ public:
     virtual Level *levelDown() = 0;
     virtual void restart();
     virtual void setCounter(int);
-
 };
 
 #endif
