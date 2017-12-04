@@ -13,7 +13,6 @@ class Command;
 struct ProcessedInput;
 
 class Interpreter {
-	std::istream *in = &std::cin;
     std::map<std::string, std::shared_ptr<Command>> commandMap;
     std::map<std::string, std::string> keyMap;
     // GraphicsDisplay *gd = nullptr;

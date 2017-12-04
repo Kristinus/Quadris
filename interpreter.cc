@@ -136,8 +136,7 @@ ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 
 void Interpreter::run() {
 	cout << *grid;
-	run(*in);
-
+	run(cin);
 }
 
 void Interpreter::run(std::istream &in) {
