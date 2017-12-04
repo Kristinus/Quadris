@@ -18,8 +18,8 @@ Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile)
 		theLevel = theLevel->levelUp();
 		theLevel->setCounter(-2);
 	}
-	theScore = new Score();
-	td = new TextDisplay(this);
+	theScore = make_unique<Score>();
+	td = make_shared<TextDisplay>(this);
 	//  std::vector<Block *> setBlocks;
 	//   ob = new GraphicsDisplay(this);
 	initGrid();	
@@ -767,6 +767,7 @@ void Grid::hint() {
 	currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 	updateCells(currentBlock, StateType::MOVING);
 	hintBlock = new Block(*currentBlock);
+
 	hintBlock->setGridPointer(this);
 	int numRotations = best.numRotations;
 	int newBottomLeftCol = best.bottomLeftCol;
@@ -787,7 +788,7 @@ Block * Grid::getNextBlock() {
 	return nextBlock;
 }
 
-Score *Grid::getScore() {
+std::unique_ptr<Score> Grid::getScore() {
 	return theScore;
 }
 

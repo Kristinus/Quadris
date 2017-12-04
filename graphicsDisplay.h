@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "info.h"
+#include <memory>
 #include "observer.h"
 #include "window.h"
 class Grid;
@@ -12,7 +13,7 @@ class GraphicsDisplay: public Observer<Info> {
   Grid *grid;
   const int gridSize, winSize, cellSize;
   Xwindow xw;
-  Score *score;
+  std::unique_ptr<Score> score;
 
  public:
   GraphicsDisplay();

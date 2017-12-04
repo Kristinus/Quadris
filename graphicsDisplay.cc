@@ -3,6 +3,7 @@
 #include "subject.h"
 #include "grid.h"
 #include "score.h"
+#include <memory>
 using namespace std;
 
 GraphicsDisplay::GraphicsDisplay():
