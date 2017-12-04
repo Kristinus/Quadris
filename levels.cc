@@ -24,7 +24,6 @@ std::unique_ptr<Block>Level0::createBlock() {
 
 Level0::~Level0() {
     seq.close();
-    delete grid;
 }
 
 

@@ -6,5 +6,4 @@ Command::Command(Grid *g): grid{g} {
 
 
 Command::~Command() {
-    // delete grid;
 }
