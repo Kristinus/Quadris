@@ -188,16 +188,18 @@ bool Interpreter::run(std::string key) {
     if (key == "q") {
         return false;
     }
-    auto cmd = (keyMap.find(key))->second;
-    auto i = commandMap.find(cmd);
-    
-    (i->second)->execute(1,"");
-    
-    if (grid->isOver()) {
-        cout << "GAME OVER YOU LOSER" << endl;
-        return false;
+    if (keyMap.count(key) > 0) {
+        auto cmd = (keyMap.find(key))->second;
+        auto i = commandMap.find(cmd);
+        
+        (i->second)->execute(1,"");
+        
+        if (grid->isOver()) {
+            cout << "GAME OVER YOU LOSER" << endl;
+            return false;
+        }
+        cout << *grid;
     }
-    cout << *grid;
     return true;
 }
 

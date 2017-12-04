@@ -5,8 +5,8 @@
 
 using namespace std;
 
-Block::Block(BlockType blockType, int level, bool isHeavy/**, Grid * grid**/): isHeavy{isHeavy}, level{level}, 
-col{0}, row{0}, blockType{blockType}/**, grid {grid ? grid : nullptr} **/{
+Block::Block(BlockType blockType, int level, bool isHeavy): isHeavy{isHeavy}, level{level}, 
+col{0}, row{0}, blockType{blockType} {
 }
 
 
