@@ -133,7 +133,7 @@ int Grid::getBumpiness() {
 
 
 std::vector<int> Grid::getHeights() {
-	std::vector<int> heights(11, 0);
+	std::vector<int> heights(constants::MAX_COL, 0);
 	for (int row = constants::MAX_ROW; row >= constants::MIN_ROW; row--) {
 		for ( int col = constants::MIN_COL; col < constants::MAX_COL; col++) {
 
@@ -160,7 +160,6 @@ void Grid::updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType
 			theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].notifyObservers();
 		}
 		hintBlock = nullptr;
-
 	}
 	for (auto &c : b->getBlockCells()) {
 		theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].setState(s);
@@ -175,15 +174,10 @@ void Grid::updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType
 // checks for rows to be deleted, deletes them, and updates the grid
 void Grid::deleteRow() {
 	vector<size_t> deletedRows;
-
 	for (int i = theGrid.size() - 1; i >= constants::MIN_ROW; i--) {
 		if (isFilled(theGrid[i])) {
-			//(TODO) code a notify all cels function
 			deletedRows.emplace_back(constants::GRID_HEIGHT - 1 - i);
 			theGrid.erase(theGrid.begin() + i);
-			
-			//Best Hack
-			//(TODO) find a btter way
 			if (getLevel() == 4) {
 				theLevel->restart();
 			}
@@ -520,11 +514,9 @@ void Grid::hint() {
 					best.bottomLeftCol = currentBlock->getBottomLeftCol();
 					best.bottomLeftRow = currentBlock->getBottomLeftRow();
 				}
-
 				// unset the block and move to original position for the next
 				// simulation of moves
-					updateCells(currentBlock, BlockType::NONE, StateType::NONE, false);
-
+				updateCells(currentBlock, BlockType::NONE, StateType::NONE, false);
 				currentBlock->moveTo(oldBottomLeftRow,oldBottomLeftCol);
 				horizontal++;
 
@@ -568,7 +560,7 @@ void Grid::hold() {
 		if(isValidMove(holdBlock, col, row)) {
 			std::swap(currentBlock, holdBlock);
 			currentBlock->moveTo(row, col);
-			holdBlock->moveTo(0,0);
+			holdBlock->moveTo(constants::MIN_ROW, constants::MIN_COL);
 		}
 		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 	}
@@ -576,7 +568,7 @@ void Grid::hold() {
 		swap(currentBlock, holdBlock);
 		swap(currentBlock, nextBlock);
 		currentBlock->moveTo(constants::MAX_ROW, constants::MIN_COL);
-		holdBlock->moveTo(0,0);
+		holdBlock->moveTo(constants::MIN_ROW, constants::MIN_COL);
 		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 		nextBlock = theLevel->createBlock();
 
