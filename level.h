@@ -30,7 +30,7 @@ public:
     void setSeed(int);
     void setRandom(bool);
     void setFile(std::string);
-    bool isHeavy();
+    bool isHeavy() const;
     std::unique_ptr<Block> getBlock(char, int, bool);
     std::unique_ptr<Block> getBlock(BlockType, int, bool);
     virtual int getLevel() = 0;

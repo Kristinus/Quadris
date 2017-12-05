@@ -5,22 +5,10 @@
 
 using namespace std;
 
-void TextDisplay::createDict() {
-  dict[BlockType::I] = 'I';
-  dict[BlockType::J] = 'J';
-  dict[BlockType::L] = 'L';
-  dict[BlockType::O] = 'O';
-  dict[BlockType::S] = 'S';
-  dict[BlockType::T] = 'T';
-  dict[BlockType::Z] = 'Z';
-  dict[BlockType::NONE] = ' ';
-  dict[BlockType::HINT] = '?';
-  dict[BlockType::DOT] = '*';
-}
 
-
-TextDisplay::TextDisplay(): theDisplay{std::vector<std::vector<char>>(18, std::vector<char>(11, ' '))} {
-      createDict();
+TextDisplay::TextDisplay(): theDisplay{std::vector<std::vector<char>>
+  (constants::GRID_HEIGHT, std::vector<char>(constants::GRID_WIDTH, ' '))} {
+      dict = constants::TEXT_DICT;
 }
 
 
@@ -40,7 +28,8 @@ void TextDisplay::notify(Subject<Info> &whoNotified) {
 // Clears entire display
 void TextDisplay::clear() {
   theDisplay.clear();
-  theDisplay = std::vector<std::vector<char>>(18, std::vector<char>(11, ' '));
+  theDisplay = std::vector<std::vector<char>>
+  (constants::GRID_HEIGHT, std::vector<char>(constants::GRID_WIDTH, ' '));
 }
 
 
@@ -60,8 +49,8 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   out << "-----------" << std::endl;
 
   //Outputs the Grid
-  for(int r=td.theDisplay.size()-1; r>=0; r--) {
-    for(auto c:td.theDisplay[r]) {
+  for (int r = td.theDisplay.size()-1; r >= 0; r--) {
+    for (auto c:td.theDisplay[r]) {
       out << c;
     }
 

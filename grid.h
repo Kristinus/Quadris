@@ -34,7 +34,6 @@ class Grid {
 	bool isFilled(std::vector<Cell>);
 	void updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType state, bool shouldNotify);
 	double getAverageHeights(std::vector<int> v);
-	double getStandardDeviationHeights(std::vector<int> v);
 	std::vector<int> getHeights();
 	int countHoles();
 	double calculatePriority();
@@ -46,8 +45,8 @@ class Grid {
 public:
 	Grid(int startLevel, int seed, Observer<Info> *, std::string);
 	std::vector<std::vector<Cell>> getGridCells() const;
-	std::shared_ptr<Block> getNextBlock();
-	std::shared_ptr<Block> getHoldBlock();
+	std::shared_ptr<Block> getNextBlock() const;
+	std::shared_ptr<Block> getHoldBlock() const;
 	int getLevel() const;
 	void initGrid();
 	bool isOver();
