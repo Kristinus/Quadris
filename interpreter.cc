@@ -20,48 +20,11 @@ struct ProcessedInput {
 };
 
 
-void Interpreter::initCommandMap() {
-    commandMap["left"] = std::make_unique<LeftCommand>(grid.get());
-    commandMap["right"] = std::make_unique<RightCommand>(grid.get());
-    commandMap["down"] = std::make_unique<DownCommand>(grid.get());
-    commandMap["levelup"] = std::make_unique<LevelUpCommand>(grid.get());
-    commandMap["leveldown"] = std::make_unique<LevelDownCommand>(grid.get());
-    commandMap["norandom"] = std::make_unique<NoRandomCommand>(grid.get());
-    commandMap["random"] = std::make_unique<RandomCommand>(grid.get());
-    commandMap["sequence"] = std::make_unique<SequenceCommand>(grid.get(), this);
-    commandMap["clockwise"] = std::make_unique<ClockwiseCommand>(grid.get());
-    commandMap["counterclockwise"] = std::make_unique<CounterClockwiseCommand>(grid.get());
-    commandMap["drop"] =  std::make_unique<DropCommand>(grid.get());
-    commandMap["restart"] =  std::make_unique<RestartCommand>(grid.get());
-    commandMap["hint"] =  std::make_unique<HintCommand>(grid.get());
-    commandMap["I"] =  std::make_unique<ReplaceCommand>(grid.get(), 'I');
-    commandMap["J"] =  std::make_unique<ReplaceCommand>(grid.get(), 'J');
-    commandMap["L"] =  std::make_unique<ReplaceCommand>(grid.get(), 'L');
-    commandMap["O"] =  std::make_unique<ReplaceCommand>(grid.get(), 'O');
-    commandMap["S"] =  std::make_unique<ReplaceCommand>(grid.get(), 'S');
-    commandMap["T"] =  std::make_unique<ReplaceCommand>(grid.get(), 'T');
-    commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid.get(), 'Z'); 
-}
-
-
-void Interpreter::initKeyMap() {
-    keyMap["Q"] = "left";
-    keyMap["S"] = "right";
-    keyMap["T"] = "down";
-    keyMap["u"] = "levelup";
-    keyMap["i"] = "leveldown";
-    keyMap["R"] = "clockwise";
-    keyMap["space"] = "drop";
-    keyMap["r"] = "restart";
-    keyMap["h"] = "hint";
-}
-
-
 Interpreter::Interpreter(int seed, std::shared_ptr<Observer<Info>> ob, string scriptFile, int startLevel) {
 	grid = std::make_unique<Grid>(startLevel, seed, ob.get(), scriptFile);
-
-	initCommandMap();
-   	initKeyMap();
+	pImpl = std::make_unique<InterpreterImpl>();
+	pImpl->initCommandMap(this->commandMap, grid.get(), this);
+	pImpl->initKeyMap(this->keyMap);
 }
 
 // Checks if character is a valid integer digit
@@ -74,13 +37,13 @@ bool isDigit(char c) {
 ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 	if (command == "") throw InvalidInputException("Invalid Input: No Input Provided.");
 	
-   string digits = "";
+	string digits = "";
 	string typedCommand;
 	string file;
 	int res;
 	unsigned int i;
 	
-   for (i = 0; i < command.length(); i++) {
+	for (i = 0; i < command.length(); i++) {
 		if (isDigit(command[i])) {
 			digits += command[i];
 		} else {
@@ -88,7 +51,7 @@ ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 		}
 	}
 
-	vector<string> possibleCommands = constants::possibleCommands;
+	vector<string> possibleCommands = pImpl->possibleCommands;
 
 	int pos = command.find(' ');
 	typedCommand = command.substr(i, pos-i);
@@ -99,7 +62,7 @@ ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 		string possibleCommand = possibleCommands[i];
 		int partialCommandLen = typedCommand.length();
 		
-      if (typedCommand != possibleCommand.substr(0, partialCommandLen)) {
+		if (typedCommand != possibleCommand.substr(0, partialCommandLen)) {
 			possibleCommands.erase(possibleCommands.begin() + i);
 		}
 	}
@@ -156,14 +119,14 @@ std::istream &Interpreter::run(std::istream &in) {
 		string cmd = processedInput.command;
 		int mult = processedInput.multiplier;
 		
-      if (cmd == "quit") {
+		if (cmd == "quit") {
 			break;
 		}
 
 		if (commandMap.count(cmd) > 0) {
 			commandMap.find(cmd)->second->execute(mult, processedInput.file);
 			
-         if (grid->isOver()) {
+			if (grid->isOver()) {
 				cout << "GAME OVER YOU LOSER" << endl;           
 				gameOver = true;
 			}
@@ -182,45 +145,45 @@ std::istream &Interpreter::run(std::istream &in) {
 				cout << *grid;
 			}
 			else break;
-	   }
+		}
 	}
-   return in;
+	return in;
 }
 
 
 // BONUS FEATURE - Key Presses
 bool Interpreter::run(std::string key) {
-    if (key == "q") {
-        return false;
-    }
+	if (key == "q") {
+		return false;
+	}
 
-    if (keyMap.count(key) > 0) {
-        auto cmd = (keyMap.find(key))->second;
-        commandMap.find(cmd)->second->execute(1, "");
-        
-        if (grid->isOver()) {
-            cout << "GAME OVER YOU LOSER" << endl;
-            cout << "Press [y] to restart" << endl;
-            return false;
-        }
-    }
-    return true;
+	if (keyMap.count(key) > 0) {
+		auto cmd = (keyMap.find(key))->second;
+		commandMap.find(cmd)->second->execute(1, "");
+
+		if (grid->isOver()) {
+			cout << "GAME OVER YOU LOSER" << endl;
+			cout << "Press [y] to restart" << endl;
+			return false;
+		}
+	}
+	return true;
 }
 
 
 // Restarts Game
 bool Interpreter::reset(std::string key) {
-    if (key == "y") {
+	if (key == "y") {
         // Get the restart Command object and execute it
-        (commandMap.find("restart")->second)->execute(1,"");
-        cout << *grid;
-        return true;
-    }
-    return false;
+		(commandMap.find("restart")->second)->execute(1,"");
+		cout << *grid;
+		return true;
+	}
+	return false;
 }
 
 
 void Interpreter::operator()() {
-    run();
+	run();
 }
 

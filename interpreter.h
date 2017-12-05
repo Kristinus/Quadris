@@ -7,20 +7,22 @@
 #include <memory>
 #include "invalidinputexception.h"
 #include "grid.h"
+#include "interpreterimpl.h"
 
 template <typename InfoType> class Observer;
 class Info;
 class Command;
 struct ProcessedInput;
+class InterpreterImpl;
 
 class Interpreter {
     std::map<std::string, std::shared_ptr<Command>> commandMap;
     std::map<std::string, std::string> keyMap;
     std::unique_ptr<Grid> grid;
     bool gameOver = false;
-    void initCommandMap();
-    void initKeyMap();
+    std::unique_ptr<InterpreterImpl> pImpl;
     ProcessedInput parseCommand(std::istream &, std::string);
+
 
 public:
     Interpreter();
