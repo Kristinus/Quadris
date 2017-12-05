@@ -13,11 +13,9 @@ using namespace std;
 
 Grid::Grid(int startLevel, int seed, Observer<Info> *ob, std::string scriptFile): startLevel{startLevel}, ob{ob} {
 	theLevel = std::make_unique<Level0>(this, seed, scriptFile);
-	// theLevel = new Level0(this, seed, scriptFile);
 	while(theLevel->getLevel() < startLevel) {
 		std::unique_ptr<Level> temp(theLevel->levelUp());
 		std::swap (theLevel, temp);
-		// theLevel = theLevel->levelUp();
 	}
 	theLevel->setCounter(-2);
 	theScore = std::make_unique<Score>();
@@ -285,28 +283,6 @@ cout << setBlocks.size() << endl; **/
 		theScore->addToCurrentScore(pow(theLevel->getLevel() + deletedRows.size(), 2));
 	}
 }
-/**
-bool Grid::isValidMove(void (*f)(int), int mult) {
-
-	std::unique_ptr<Block>  cpy = currentBlock->clone();
-	cpy.setGridPointer(this);
-	while (mult > 0) {
-		f(1);
-		mult--;
-	}
-
-	for (auto &cell: cpy->getBlockCells()) {
-		int newrow = cell.getInfo().row;
-		int newcol = cell.getInfo().col;
-		if ((!(newcol >= 0 && newcol < 11 && newrow >= 0)) || 
-			(theGrid[17 - cell.getInfo().row][cell.getInfo().row].getInfo().state == StateType::STATIC)) {
-			cout << "INVALID MOVE!" << endl;
-			return false;
-		}
-	
-	}
-	return true;	
-} **/
 
 //For other blocks
 bool Grid::isValidMove(std::shared_ptr<Block> &block, int colshift, int rowshift) {
@@ -318,7 +294,6 @@ bool Grid::isValidMove(std::shared_ptr<Block> &block, int colshift, int rowshift
 
 		if ((!(newcol >= 0 && newcol < 11 && newrow >= 0)) || 
 			(theGrid[17 - newrow][newcol].getInfo().state == StateType::STATIC)) {
-			cout << "INVALID MOVE!" << endl;
 		return false;
 	}
 	
@@ -473,14 +448,10 @@ void Grid::restart() {
 	setBlocks.clear();
 
 	//Go back to level startLevel
-	while(getLevel()>startLevel) {
-		std::unique_ptr<Level> temp(theLevel->levelDown());
-		std::swap (theLevel, temp);
-	}
-	while(getLevel()<startLevel) {
-		std::unique_ptr<Level> temp(theLevel->levelUp());
-		std::swap (theLevel, temp);
-	}
+	if(startLevel < getLevel())
+		levelDown(getLevel()-startLevel);
+	else 
+		levelUp(startLevel-getLevel());
 	theLevel->restart();
 	theLevel->setCounter(-2);
 	
@@ -506,7 +477,10 @@ void Grid::rotateCCW(int x) {
 void Grid::levelUp(int x) {
 	for(int i=0; i<x; i++) {
 		std::unique_ptr<Level> temp(theLevel->levelUp());
-		std::swap (theLevel, temp);
+		if(!(theLevel.get()==temp.get()))
+			temp.release();
+		else
+			std::swap (theLevel, temp);
 	}
 	updateDisplays();
 }
@@ -514,7 +488,10 @@ void Grid::levelUp(int x) {
 void Grid::levelDown(int x) {
 	for(int i=0; i<x; i++) {
 		std::unique_ptr<Level> temp(theLevel->levelDown());
-		std::swap (theLevel, temp);
+		if(theLevel.get()==temp.get())
+			temp.release();
+		else
+			std::swap (theLevel, temp);
 	}
 	updateDisplays();
 }
