@@ -10,7 +10,7 @@ IBlock::IBlock(int level, bool isHeavy): Block(BlockType::I, level, isHeavy) {
     i.row = 0;
     i.state = StateType::NEXT;
     i.block = BlockType::I;
-    for(int c=0; c<4; c++) {
+    for(int c = 0; c < 4; c++) {
         i.col = c;
         cells.emplace_back(Cell(i));   
     }
@@ -20,7 +20,6 @@ std::unique_ptr<Block> IBlock::clone() const {
 	std::unique_ptr<IBlock> cpy (new IBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
-	cpy->grid = grid;
 	cpy->row = row;
 	cpy->col = col;
 	cpy->cells = cells;
@@ -56,7 +55,6 @@ std::unique_ptr<Block> JBlock::clone() const {
 	std::unique_ptr<JBlock> cpy (new JBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
-	cpy->grid = grid;
 	cpy->row = row;
 	cpy->col = col;
 	cpy->cells = cells;
@@ -91,7 +89,7 @@ std::unique_ptr<Block> LBlock::clone() const {
 	std::unique_ptr<LBlock> cpy (new LBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
-	cpy->grid = grid;
+	//cpy->grid = grid;
 	cpy->row = row;
 	cpy->col = col;
 	cpy->cells = cells;
@@ -124,7 +122,6 @@ std::unique_ptr<Block> OBlock::clone() const {
 	std::unique_ptr<OBlock> cpy (new OBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
-	cpy->grid = grid;
 	cpy->row = row;
 	cpy->col = col;
 	cpy->cells = cells;
@@ -162,7 +159,6 @@ std::unique_ptr<Block> SBlock::clone() const {
 	std::unique_ptr<SBlock> cpy (new SBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
-	cpy->grid = grid;
 	cpy->row = row;
 	cpy->col = col;
 	cpy->cells = cells;
@@ -199,7 +195,6 @@ std::unique_ptr<Block> TBlock::clone() const {
 	std::unique_ptr<TBlock> cpy (new TBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
-	cpy->grid = grid;
 	cpy->row = row;
 	cpy->col = col;
 	cpy->cells = cells;
@@ -234,7 +229,6 @@ std::unique_ptr<Block> ZBlock::clone() const {
 	std::unique_ptr<ZBlock> cpy (new ZBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
-	cpy->grid = grid;
 	cpy->row = row;
 	cpy->col = col;
 	cpy->cells = cells;
@@ -263,7 +257,6 @@ std::unique_ptr<Block> DotBlock::clone() const {
 	std::unique_ptr<DotBlock> cpy(new DotBlock(level, isHeavy));
 	cpy->type = type;
 	cpy->blockType = blockType;
-	cpy->grid = grid;
 	cpy->row = row;
 	cpy->col = col;
 	cpy->cells = cells;
