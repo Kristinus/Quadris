@@ -22,12 +22,11 @@ protected:
     BlockType blockType;
     bool isValidRotation(Block *b, std::vector<int> rotatedRow, 
     	std::vector<int> rotatedCol);
-	bool isValidCoordinate(int row , int col) const;
-	void move(int, int);
+	 bool isValidCoordinate(int row , int col) const;
+	 void move(int, int);
 
 public:
     Block(BlockType, int level, bool isHeavy=false);
-    //Block(const Block&);
     virtual std::unique_ptr<Block> clone() const = 0;
     virtual ~Block() = 0;
     void setGridPointer(Grid *);
