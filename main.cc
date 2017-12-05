@@ -104,6 +104,7 @@ int main(int argc, char *argv[]) {
       cout << "q_KEY: quit" << endl;
       cout << "r_KEY: restart" << endl;
       cout << "h_KEY: hint" << endl;
+      cout << "a_KEY: hint" << endl;
       
       gd->run(&in);
     }

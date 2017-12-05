@@ -10,7 +10,7 @@
 struct InterpreterImpl {
 	std::vector<std::string> possibleCommands {"left", "right", "down", "levelup", "leveldown", 
 	"norandom", "random", "sequence", "clockwise", "counterclockwise", "drop", "restart", 
-	"hint", "I", "J", "L", "O", "S", "Z", "T", "quit"};
+	"hint", "hold", "I", "J", "L", "O", "S", "Z", "T", "quit"};
 
 	void initKeyMap(std::map<std::string, std::string> &keyMap) {
 	    keyMap["Q"] = "left";
@@ -22,6 +22,7 @@ struct InterpreterImpl {
 	    keyMap["space"] = "drop";
 	    keyMap["r"] = "restart";
 	    keyMap["h"] = "hint";
+		keyMap["a"] = "hold";
 	}
 
 	void initCommandMap(std::map<std::string, std::shared_ptr<Command>> &commandMap, Grid * grid, Interpreter * interpreterptr) {
@@ -44,7 +45,8 @@ struct InterpreterImpl {
 	    commandMap["O"] =  std::make_unique<ReplaceCommand>(grid, 'O');
 	    commandMap["S"] =  std::make_unique<ReplaceCommand>(grid, 'S');
 	    commandMap["T"] =  std::make_unique<ReplaceCommand>(grid, 'T');
-	    commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid, 'Z'); 
+	    commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid, 'Z');
+		commandMap["hold"] =  std::make_unique<HoldCommand>(grid); 
 	}
 
 };
