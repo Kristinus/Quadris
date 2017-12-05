@@ -24,8 +24,8 @@ class Grid {
 	std::shared_ptr<Block> holdBlock;
 	std::shared_ptr<TextDisplay> td;
 	Observer<Info> *ob;
-
 	bool isRandom;
+
 	void updateDisplays();
 	bool isValidMove(std::shared_ptr<Block>& , int, int);
 	bool isValidMove(int, int);
@@ -33,14 +33,10 @@ class Grid {
 	int countCompleteLines();
 	bool isFilled(std::vector<Cell>);
 	void updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType state, bool shouldNotify);
-
-	double calculateSmoothness();
 	double getAverageHeights(std::vector<int> v);
 	double getStandardDeviationHeights(std::vector<int> v);
 	std::vector<int> getHeights();
 	int countHoles();
-	void moveTo(int, int, std::shared_ptr<Block> &);
-	double calculateDensity();
 	double calculatePriority();
 	int getBumpiness();
 	int countNumCellsOnWall();
@@ -49,14 +45,13 @@ class Grid {
 
 public:
 	Grid(int startLevel, int seed, Observer<Info> *, std::string);
-	std::vector<std::vector<Cell>> getGridCells();
+	std::vector<std::vector<Cell>> getGridCells() const;
 	std::shared_ptr<Block> getNextBlock();
 	std::shared_ptr<Block> getHoldBlock();
-	int getLevel();
+	int getLevel() const;
 	void initGrid();
 	bool isOver();
 	void deleteRow();
-	void deleteCurrentBlock();
 	void left(int);
 	void right(int);
 	void down(int);
@@ -73,7 +68,6 @@ public:
 	void dropBlock(std::shared_ptr<Block>, int);
 	void heavyMove();
 	void setRandomFile(std::string);
-	void playBlock(std::shared_ptr<Block> &);
 
 	friend std::ostream &operator<<(std::ostream &out, Grid &grid);
 };
