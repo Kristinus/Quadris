@@ -420,6 +420,7 @@ void Grid::setRandomFile(std::string file) {
 	theLevel->setFile(file);
 }
 
+
 int Grid::countHoles(const std::vector<int> &heights) {
 	int numHoles = 0; 
 	// for all the cells below the highest cell
@@ -458,6 +459,7 @@ int Grid::countNumCellsOnWall(){
 	}
 	return numCells;
 }
+
 
 // the higher the priority, the better the move
 // algorithm arbitrarily constructed and can be adjusted
@@ -546,7 +548,7 @@ void Grid::hint() {
 	updateCells(hintBlock, BlockType::HINT, StateType::NONE, true);
 }
 
-// BONUS FEATURE: save the current blcok and play the next block
+// BONUS FEATURE: save the current block and play the next block
 // or swap the current block with the block on hold
 void Grid::hold() {
 	updateCells(currentBlock, BlockType::NONE, StateType::NONE, true);
