@@ -102,8 +102,6 @@ int main(int argc, char *argv[]) {
       cout << "u_KEY: levelup" << endl;
       cout << "i_KEY: leveldown" << endl;
       cout << "q_KEY: quit" << endl;
-      cout << "_KEY: leveldown" << endl;
-      cout << "i_KEY: leveldown" << endl;
       cout << "r_KEY: restart" << endl;
       cout << "h_KEY: hint" << endl;
       

@@ -61,7 +61,7 @@ Interpreter::Interpreter(int seed, std::shared_ptr<Observer<Info>> ob, string sc
 	grid = std::make_unique<Grid>(startLevel, seed, ob.get(), scriptFile);
 
 	initCommandMap();
-   initKeyMap();
+   	initKeyMap();
 }
 
 // Checks if character is a valid integer digit

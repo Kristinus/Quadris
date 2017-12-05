@@ -85,9 +85,8 @@ void GraphicsDisplay::run(Interpreter *i) {
     usleep(100000);
     
     if (!running) {
-		cout << "Wanna play again? [yes/no]" << endl;
-		running = i->reset(xw.readInput());
-	 } 
+		  running = i->reset(xw.readInput());
+	  } 
   }
 }
 

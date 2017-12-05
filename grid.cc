@@ -84,7 +84,7 @@ bool Grid::isOver() {
 		if (theGrid[constants::GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].getInfo().state 
 			== StateType::STATIC) return true;
 	}
-return false;
+	return false;
 
 }
 
@@ -182,7 +182,7 @@ void Grid::moveTo(int bottomLeftRow, int bottomLeftCol, std::shared_ptr<Block> &
 
 void Grid::updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType s, bool shouldNotify) {
 
-	// cannot be upudating the hint block
+	//Removes hintBlock
 	if (hintBlock.get() != nullptr && blocktype != BlockType::HINT) {
 		for (auto &c: hintBlock->getBlockCells()) {
 			theGrid[constants::GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
@@ -433,7 +433,7 @@ void Grid::drop(int x) {
 			currentBlock->down();
 		}
 
-			updateCells(currentBlock, currentBlock->getBlockType(), StateType::STATIC, true);
+		updateCells(currentBlock, currentBlock->getBlockType(), StateType::STATIC, true);
 
 		setBlocks.emplace_back(currentBlock);
 
@@ -452,7 +452,8 @@ void Grid::drop(int x) {
 		currentBlock = std::move(nextBlock);
 		currentBlock->setGridPointer(this);
 		currentBlock->moveTo(14,0);
-		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+		if(!isOver())
+			updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 
 
 
