@@ -14,6 +14,7 @@ GraphicsDisplay::GraphicsDisplay(): gridSize{18}, winSize{600}, cellSize{winSize
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
   xw.drawString(11*cellSize+10,10,"Next:"); 
+  xw.drawString(11*cellSize+10,10+cellSize*3,"Hold:"); 
 }
 
 
@@ -43,9 +44,10 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
     colour = Xwindow::Brown;
 
   //If nextBlock
-  if(info.state == StateType::NEXT) {
+  if(info.state == StateType::NEXT)
     xw.fillRectangle((13+info.col) * cellSize, (1-info.row) * cellSize, cellSize, cellSize, colour);
-  } 
+  else if(info.state == StateType::HOLD)
+    xw.fillRectangle((13+info.col) * cellSize, (5-info.row) * cellSize, cellSize, cellSize, colour);
   else
     xw.fillRectangle(info.col * cellSize, 50 + (17 - info.row) * cellSize, cellSize, cellSize, colour);
 }
@@ -53,7 +55,7 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
 
 // Clears next block
 void GraphicsDisplay::clearNext() {
-  xw.fillRectangle(13 * cellSize, 0, cellSize*4, cellSize*2, Xwindow::White);
+  xw.fillRectangle(13 * cellSize, 0, cellSize*4, cellSize*8, Xwindow::White);
 }
 
 
@@ -65,6 +67,7 @@ void GraphicsDisplay::clear() {
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
   xw.drawString(11*cellSize+10,10,"Next:");
+  xw.drawString(11*cellSize+10,10+cellSize*3,"Hold:"); 
 }
 
 

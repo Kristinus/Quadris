@@ -70,6 +70,13 @@ void Grid::updateDisplays() {
 			c.attach(ob);
 			c.notifyObservers();
 		}
+		if(holdBlock) {
+			for (auto &c : holdBlock->getBlockCells()) {
+				c.setState(StateType::HOLD);
+				c.attach(ob);
+				c.notifyObservers();
+			}
+		}
 	}
 	
 }
@@ -645,30 +652,29 @@ void Grid::hint() {
 }
 
 void Grid::hold() {
+	updateCells(currentBlock, BlockType::NONE, StateType::NONE, true);
 	if(holdBlock) {
 		int col = currentBlock->getBottomLeftCol();
 		int row = currentBlock->getBottomLeftRow();
-		deleteCurrentBlock();
 		
-		if(isValidMove(nextBlock, col, row)) {
+		if(isValidMove(holdBlock, col, row)) {
 			std::swap(currentBlock, holdBlock);
-			std::swap(currentBlock, nextBlock);
 			currentBlock->moveTo(row, col);
+			holdBlock->moveTo(0,0);
 		}
 		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 	}
 	else {
-		deleteCurrentBlock();
 		swap(currentBlock, holdBlock);
 		swap(currentBlock, nextBlock);
 		currentBlock->moveTo(constants::MAX_ROW, constants::MIN_COL);
+		holdBlock->moveTo(0,0);
 		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 		
 		nextBlock = theLevel->createBlock();
-		nextBlock->setGridPointer(this);
-		
-		updateDisplays();
+		nextBlock->setGridPointer(this);	
 	}
+	updateDisplays();
 }
 
 std::shared_ptr<Block>  Grid::getNextBlock() {
@@ -732,6 +738,9 @@ std::ostream &operator<<(std::ostream &out, Grid &grid) {
 	out << "Hold:" << std::endl;
 	if(grid.getHoldBlock())
 		out << grid.getHoldBlock().get();
+	else	
+		out << "(NONE)" << std::endl;
+	out << "Input::";
 	return out;
 }
 
