@@ -130,3 +130,11 @@ void ReplaceCommand::execute(int m, std::string file) {
 
 /******************************************************************************/
 
+HoldCommand::HoldCommand(Grid *g): Command(g) {}
+
+
+void HoldCommand::execute(int m, std::string file) {
+    grid->hold();
+}
+
+/******************************************************************************/

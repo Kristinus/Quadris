@@ -67,11 +67,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
 
     out << std::endl;
   }
-
-  //Outputs Next
   out << "-----------" << std::endl;
-  out << "Next:" << std::endl;
-
   return out;
 }
 

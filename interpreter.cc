@@ -40,7 +40,8 @@ void Interpreter::initCommandMap() {
     commandMap["O"] =  std::make_unique<ReplaceCommand>(grid.get(), 'O');
     commandMap["S"] =  std::make_unique<ReplaceCommand>(grid.get(), 'S');
     commandMap["T"] =  std::make_unique<ReplaceCommand>(grid.get(), 'T');
-    commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid.get(), 'Z'); 
+    commandMap["Z"] =  std::make_unique<ReplaceCommand>(grid.get(), 'Z');
+	commandMap["hold"] = std::make_unique<HoldCommand>(grid.get());
 }
 
 
@@ -54,6 +55,7 @@ void Interpreter::initKeyMap() {
     keyMap["space"] = "drop";
     keyMap["r"] = "restart";
     keyMap["h"] = "hint";
+	keyMap["a"] = "hold";
 }
 
 

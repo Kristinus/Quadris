@@ -21,6 +21,7 @@ class Grid {
 	std::shared_ptr<Block> currentBlock;
 	std::shared_ptr<Block> nextBlock;
 	std::shared_ptr<Block> hintBlock;
+	std::shared_ptr<Block> holdBlock;
 	std::shared_ptr<TextDisplay> td;
 	Observer<Info> *ob;
 
@@ -50,6 +51,7 @@ public:
 	Grid(int startLevel, int seed, Observer<Info> *, std::string);
 	std::vector<std::vector<Cell>> getGridCells();
 	std::shared_ptr<Block> getNextBlock();
+	std::shared_ptr<Block> getHoldBlock();
 	int getLevel();
 	void initGrid();
 	bool isOver();
@@ -66,6 +68,7 @@ public:
 	void levelDown(int);
 	void random(bool);
 	void hint();
+	void hold();
 	void replaceBlock(char);
 	void dropBlock(std::shared_ptr<Block>, int);
 	void heavyMove();

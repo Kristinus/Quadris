@@ -100,9 +100,15 @@ public:
 
 class ReplaceCommand: public Command {
 	char type;
-
 public:
 	ReplaceCommand(Grid *, char);
+	void execute(int m, std::string) override;
+};
+
+
+class HoldCommand: public Command {
+public:
+	HoldCommand(Grid *);
 	void execute(int m, std::string) override;
 };
 

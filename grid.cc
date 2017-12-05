@@ -48,14 +48,12 @@ void Grid::initGrid() {
 		theGrid.insert(theGrid.begin(), row);
 	}
 	// theGrid = res; (TODO)
-	std::shared_ptr<Block> temp = theLevel->createBlock();
-	std::swap(currentBlock, temp);
+	currentBlock = theLevel->createBlock();
 	currentBlock->setGridPointer(this);
 	currentBlock->moveTo(constants::MAX_ROW, constants::MIN_COL);
 	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 	
-	temp = theLevel->createBlock();
-	std::swap(nextBlock, temp);
+	nextBlock = theLevel->createBlock();
 	nextBlock->setGridPointer(this);
 	
 	updateDisplays();
@@ -477,7 +475,7 @@ void Grid::rotateCCW(int x) {
 void Grid::levelUp(int x) {
 	for(int i=0; i<x; i++) {
 		std::unique_ptr<Level> temp(theLevel->levelUp());
-		if(!(theLevel.get()==temp.get()))
+		if(theLevel.get()==temp.get())
 			temp.release();
 		else
 			std::swap (theLevel, temp);
@@ -644,14 +642,41 @@ void Grid::hint() {
 
 	// set the appropriate blocks 
 	updateCells(hintBlock, BlockType::HINT, StateType::NONE, true);
-
-
-
 }
 
+void Grid::hold() {
+	if(holdBlock) {
+		int col = currentBlock->getBottomLeftCol();
+		int row = currentBlock->getBottomLeftRow();
+		deleteCurrentBlock();
+		
+		if(isValidMove(nextBlock, col, row)) {
+			std::swap(currentBlock, holdBlock);
+			std::swap(currentBlock, nextBlock);
+			currentBlock->moveTo(row, col);
+		}
+		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+	}
+	else {
+		deleteCurrentBlock();
+		swap(currentBlock, holdBlock);
+		swap(currentBlock, nextBlock);
+		currentBlock->moveTo(constants::MAX_ROW, constants::MIN_COL);
+		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
+		
+		nextBlock = theLevel->createBlock();
+		nextBlock->setGridPointer(this);
+		
+		updateDisplays();
+	}
+}
 
 std::shared_ptr<Block>  Grid::getNextBlock() {
 	return nextBlock;
+}
+
+std::shared_ptr<Block>  Grid::getHoldBlock() {
+	return holdBlock;
 }
 
 
@@ -662,7 +687,6 @@ int Grid::getLevel() {
 
 // replaces the current block at play
 void Grid::replaceBlock(char type) {
-
 	std::shared_ptr<Block> temp = currentBlock->clone();
 	int col = currentBlock->getBottomLeftCol();
 	int row = currentBlock->getBottomLeftRow();
@@ -683,6 +707,7 @@ void Grid::replaceBlock(char type) {
 	}
 }
 
+
 // drops a block all the way down to the lowest valid coordinate
 // used for Dot Block
 void Grid::dropBlock(std::shared_ptr<Block> block, int col) {
@@ -702,7 +727,11 @@ void Grid::dropBlock(std::shared_ptr<Block> block, int col) {
 
 std::ostream &operator<<(std::ostream &out, Grid &grid) {
 	out << *(grid.td.get());
+	out << "Next:" << std::endl;
 	out << grid.getNextBlock().get();
+	out << "Hold:" << std::endl;
+	if(grid.getHoldBlock())
+		out << grid.getHoldBlock().get();
 	return out;
 }
 
