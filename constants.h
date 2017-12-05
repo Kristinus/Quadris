@@ -2,6 +2,7 @@
 #define CONSTANTS_H
 
 #include <string>
+#include "info.h"
 #include <map>
 #include <vector>
 #include <string>
@@ -21,6 +22,19 @@ namespace constants {
 		'I','J','L','O','S','T','Z'
 	};
 	const std::string NO_INPUT = "Invalid Input: Please provide a command.";
+
+	const std::map<BlockType, char> TEXT_DICT = {
+		  {BlockType::I,'I'},
+		  {BlockType::J, 'J'},
+		  {BlockType::L, 'L'},
+		  {BlockType::O , 'O'},
+		  {BlockType::S ,'S'},
+		  {BlockType::T , 'T'},
+		  {BlockType::Z , 'Z'},
+		  {BlockType::NONE , ' '},
+		  {BlockType::HINT , '?'},
+		  {BlockType::DOT , '*'}
+	};
 }
 
 #endif

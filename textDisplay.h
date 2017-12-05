@@ -16,8 +16,6 @@ class TextDisplay: public Observer<Info> {
   std::map<BlockType, char> dict;
   int level, score, hiScore;
 
-  void createDict();
-
 public:
   TextDisplay();
   void notify(Subject<Info> &whoNotified) override;

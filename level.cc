@@ -104,7 +104,7 @@ void Level::setFile(std::string file) {
 }
 
 
-bool Level::isHeavy() {
+bool Level::isHeavy() const{
     return heavy;
 }
 

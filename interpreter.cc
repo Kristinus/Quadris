@@ -87,7 +87,7 @@ ProcessedInput Interpreter::parseCommand(std::istream &input, string command) {
 		input >> file;
 	}
 
-   // If a number was
+   // If a number was read, convert it to an integer
 	if (digits != "") {
 		istringstream iss{digits};
 		iss >> res; 
