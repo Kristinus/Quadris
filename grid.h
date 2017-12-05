@@ -35,9 +35,9 @@ class Grid {
 	void updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType state, bool shouldNotify);
 	double getAverageHeights(std::vector<int> v);
 	std::vector<int> getHeights();
-	int countHoles();
+	int countHoles(const std::vector<int> &);
 	double calculatePriority();
-	int getBumpiness();
+	int getBumpiness(const std::vector<int> &);
 	int countNumCellsOnWall();
 	int countNumCellsOnGround();
 	std::vector<Cell> getHintCells(std::shared_ptr<Block> &b, HintInfo i);

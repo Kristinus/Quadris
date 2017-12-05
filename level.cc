@@ -9,6 +9,7 @@ Level::Level(Grid *grid, int seed, std::string file, bool heavy): grid{grid}, se
 // Generates block from sequence file
 std::unique_ptr<Block> Level::generateFromFile(bool heavy) {
     char b;
+
     if(seq >> b) {
         return std::move(getBlock(b, getLevel(), heavy));
     }
@@ -85,7 +86,13 @@ void Level::setSeed(int seed) {
 // Sets the randomness of the level
 void Level::setRandom(bool flag) {
     random = flag;
-    if(!random) seq.open(randFile);
+    if(!random) {
+        seq.open(randFile);
+        if(!seq.is_open()) {
+            random = false;
+            seq.close();
+        }
+    }
     else seq.close();
 }
 

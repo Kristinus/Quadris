@@ -1,20 +1,23 @@
-#include <iostream>
 #include "graphicsDisplay.h"
 #include "subject.h"
 #include "interpreter.h"
-#include <memory>
+#include "constants.h"
 #include <unistd.h>
 
 using namespace std;
 
-GraphicsDisplay::GraphicsDisplay(): gridSize{18}, winSize{600}, cellSize{winSize/gridSize}, xw{650, 650} {
+GraphicsDisplay::GraphicsDisplay():
+  gridSize{constants::GRID_HEIGHT}, winSize{600}, cellSize{winSize/gridSize}, border{1}, colouredSize{cellSize-border*2},
+  x_offset{13*cellSize}, y_offset{50}, xw{650, 650} {
   xw.fillRectangle(0, 0, winSize, winSize, Xwindow::White);
-  xw.fillRectangle(11 * cellSize, 0, 1, 700, Xwindow::Black);
+  xw.fillRectangle(constants::GRID_WIDTH * cellSize, 0, 1, 700, Xwindow::Black);
+  xw.fillRectangle(0, y_offset + constants::GRID_HEIGHT*cellSize, 650, 10, Xwindow::Black);
   xw.drawString(10,10,"Level:");
   xw.drawString(10,20,"Score:");
   xw.drawString(10,30,"Hi Score:"); 
   xw.drawString(11*cellSize+10,10,"Next:"); 
   xw.drawString(11*cellSize+10,10+cellSize*3,"Hold:"); 
+  xw.drawString(winSize-225,winSize+40,"@2017:Bryan Kristiono, Monica Xu, Sarah Zhang"); 
 }
 
 
@@ -45,17 +48,17 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
 
   //If nextBlock
   if(info.state == StateType::NEXT)
-    xw.fillRectangle((13+info.col) * cellSize, (1-info.row) * cellSize, cellSize, cellSize, colour);
+    xw.fillRectangle(x_offset + info.col * cellSize + border, (1-info.row) * cellSize + border, colouredSize, colouredSize, colour);
   else if(info.state == StateType::HOLD)
-    xw.fillRectangle((13+info.col) * cellSize, (5-info.row) * cellSize, cellSize, cellSize, colour);
+    xw.fillRectangle(x_offset + info.col * cellSize + border, (5-info.row) * cellSize, colouredSize, colouredSize, colour);
   else
-    xw.fillRectangle(info.col * cellSize, 50 + (17 - info.row) * cellSize, cellSize, cellSize, colour);
+    xw.fillRectangle(info.col * cellSize, y_offset + (constants::GRID_HEIGHT - 1- info.row) * cellSize, colouredSize, colouredSize, colour);
 }
 
 
 // Clears next block
 void GraphicsDisplay::clearNext() {
-  xw.fillRectangle(13 * cellSize, 0, cellSize*4, cellSize*8, Xwindow::White);
+  xw.fillRectangle(x_offset, 0, cellSize*4, cellSize*8, Xwindow::White);
 }
 
 

@@ -28,7 +28,7 @@ public:
     virtual ~Level();
     void setSelector(int, int, int, int, int, int, int);
     void setSeed(int);
-    void setRandom(bool);
+    virtual void setRandom(bool);
     void setFile(std::string);
     bool isHeavy() const;
     std::unique_ptr<Block> getBlock(char, int, bool);

@@ -1,17 +1,15 @@
 #ifndef GRAPHICSDISPLAY_H
 #define GRAPHICSDISPLAY_H
 
-#include <iostream>
 #include <vector>
 #include "info.h"
-#include <memory>
 #include "observer.h"
 #include "window.h"
 
 class Interpreter;
 
 class GraphicsDisplay: public Observer<Info> {
-  const int gridSize, winSize, cellSize;
+  const int gridSize, winSize, cellSize, border, colouredSize, x_offset, y_offset;
   Xwindow xw;
 
 public:

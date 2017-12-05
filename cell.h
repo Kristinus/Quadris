@@ -8,7 +8,6 @@ class Block;
 
 class Cell: public Subject<Info> {
    Info info;
-   Block *parentBlock = nullptr;
 
 public:
    Cell(Info &info);
