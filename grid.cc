@@ -153,7 +153,7 @@ std::vector<int> Grid::getHeights() {
 
 void Grid::updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType s, bool shouldNotify) {
 
-	//Removes hintBlock
+	//Removes hintBlock after one move is played
 	if (hintBlock.get() != nullptr && blocktype != BlockType::HINT) {
 		for (auto &c: hintBlock->getBlockCells()) {
 			theGrid[constants::GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].setBlock(BlockType::NONE);
@@ -161,6 +161,9 @@ void Grid::updateCells(std::shared_ptr<Block> &b, BlockType blocktype, StateType
 		}
 		hintBlock = nullptr;
 	}
+
+	// updates the grid's cell states and block types
+	// if Block and statetype are none, this essentially deletes the block from the grid
 	for (auto &c : b->getBlockCells()) {
 		theGrid[constants::GRID_HEIGHT - 1  - c.getInfo().row][c.getInfo().col].setState(s);
 		theGrid[constants::GRID_HEIGHT - 1 - c.getInfo().row][c.getInfo().col].setBlock(blocktype);
