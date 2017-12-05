@@ -1,7 +1,7 @@
 #include "block.h"
-#include "grid.h"
 #include "info.h"
 #include "constants.h"
+#include "grid.h"
 
 using namespace std;
 
@@ -85,13 +85,8 @@ void Block::down(int x){
 }
 
 
-void Block::setGridPointer(Grid *theGrid) {
-	grid = theGrid;
-}
-
-
 // checks if coordinate is on grid and is unoccupied
-bool Block::isValidCoordinate(int row, int col) const {
+bool Block::isValidCoordinate(int row, int col, Grid *grid) const {
 	if ((col < 0) || (col >= constants::GRID_WIDTH) || (row < 0) || (row > constants::GRID_HEIGHT) || 
 		grid->getGridCells()[constants::GRID_HEIGHT - 1 - row][col].getInfo().state == StateType::STATIC) {	
 		return false;
@@ -118,7 +113,7 @@ void Block::moveTo(int bottomLeftRow, int bottomLeftCol) {
 
 // rotates the block 90 degrees in a specified direction
 // +1 for clockwise, -1 for counterclockwise
-void Block::rotate(int dir) {
+void Block::rotate(int dir, Grid *grid) {
 	std::vector<int> rotatedCol;
 	std::vector<int> rotatedRow;
 	int oldBottomLeftCol = col;
@@ -158,7 +153,7 @@ void Block::rotate(int dir) {
 
 	// ensure that the rotation is valid, otherwise
 	// do nothing
-	if (!isValidRotation(this, rotatedRow, rotatedCol)) {
+	if (!isValidRotation(this, rotatedRow, rotatedCol, grid)) {
 		return;
 	} else {
 		for (size_t i = 0; i < cells.size(); i++) {
@@ -173,14 +168,14 @@ void Block::rotate(int dir) {
 
 
 bool Block::isValidRotation(Block *b, std::vector<int> rotatedRow, 
-	std::vector<int> rotatedCol) {
+	std::vector<int> rotatedCol, Grid *grid) {
 
 	// Check that EACH rotated cell is valid
 	for (size_t i = 0; i < b->cells.size(); i++) {
 
       // Should be able to rotate onto hint blocks
       if (b->cells[i].getInfo().block != BlockType::HINT && 
-      	!isValidCoordinate(rotatedRow[i], rotatedCol[i])) {
+      	!isValidCoordinate(rotatedRow[i], rotatedCol[i], grid)) {
 			return false;
 	   }
    }
@@ -188,21 +183,21 @@ bool Block::isValidRotation(Block *b, std::vector<int> rotatedRow,
 }
 
 
-void Block::clockwise(int x) {
+void Block::clockwise(Grid *grid, int x) {
 	x = x % 4;
 
 	while (x > 0) {
-		rotate(1);
+		rotate(1, grid);
 		x--;
 	}
 }
 
 
-void Block::counterclockwise(int x) {
+void Block::counterclockwise(Grid *grid, int x) {
 	x = x % 4;
 
 	while (x > 0) {
-		rotate(-1);
+		rotate(-1, grid);
 		x--;
 	}
 }

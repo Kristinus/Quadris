@@ -50,13 +50,13 @@ void Grid::initGrid() {
 	// theGrid = res; (TODO)
 	std::shared_ptr<Block> temp = theLevel->createBlock();
 	std::swap(currentBlock, temp);
-	currentBlock->setGridPointer(this);
+	//currentBlock->setGridPointer(this);
 	currentBlock->moveTo(constants::MAX_ROW, constants::MIN_COL);
 	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 	
 	temp = theLevel->createBlock();
 	std::swap(nextBlock, temp);
-	nextBlock->setGridPointer(this);
+	//nextBlock->setGridPointer(this);
 	
 	updateDisplays();
 }
@@ -389,7 +389,7 @@ updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true)
 void Grid::rotateCW(int x) {
 	deleteCurrentBlock();
 
-	currentBlock->clockwise(x);
+	currentBlock->clockwise(this, x);
 
 	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 
@@ -425,7 +425,7 @@ void Grid::drop(int x) {
 
 		deleteRow();
 		currentBlock = std::move(nextBlock);
-		currentBlock->setGridPointer(this);
+		//currentBlock->setGridPointer(this);
 		currentBlock->moveTo(14,0);
 		if(!isOver())
 			updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
@@ -436,7 +436,7 @@ void Grid::drop(int x) {
 		//Makes next block
 		std::shared_ptr<Block> temp = theLevel->createBlock();
 		std::swap(nextBlock, temp);
-		nextBlock->setGridPointer(this);
+		//nextBlock->setGridPointer(this);
 
 		updateDisplays();
 		x--;
@@ -466,7 +466,7 @@ void Grid::restart() {
 void Grid::rotateCCW(int x) {
 	deleteCurrentBlock();
 	while (x > 0) {
-		currentBlock->counterclockwise(x);
+		currentBlock->counterclockwise(this, x);
 		x--;
 
 	}
@@ -617,7 +617,7 @@ void Grid::hint() {
 				horizontal++;
 
 			}
-			currentBlock->clockwise(1);
+			currentBlock->clockwise(this, 1);
 
 		}
 
@@ -635,11 +635,11 @@ void Grid::hint() {
 	updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
 	hintBlock = currentBlock->clone();
 
-	hintBlock->setGridPointer(this);
+	//hintBlock->setGridPointer(this);
 	int numRotations = best.numRotations;
 	int newBottomLeftCol = best.bottomLeftCol;
 	int newBottomLeftRow = best.bottomLeftRow;
-	hintBlock->clockwise(numRotations);
+	hintBlock->clockwise(this, numRotations);
 	hintBlock->moveTo(newBottomLeftRow, newBottomLeftCol);
 
 	// set the appropriate blocks 
@@ -670,7 +670,7 @@ void Grid::replaceBlock(char type) {
 	
 	
 	currentBlock = theLevel->getBlock(type, currentBlock->getLevel(), currentBlock->isBlockHeavy());
-	currentBlock->setGridPointer(this);
+	//currentBlock->setGridPointer(this);
 	if(isValidMove(col, row)) {
 		currentBlock->moveTo(row, col);
 		updateCells(currentBlock, currentBlock->getBlockType(), StateType::MOVING, true);
@@ -686,7 +686,7 @@ void Grid::replaceBlock(char type) {
 // drops a block all the way down to the lowest valid coordinate
 // used for Dot Block
 void Grid::dropBlock(std::shared_ptr<Block> block, int col) {
-	block->setGridPointer(this);
+	//block->setGridPointer(this);
 	block->moveTo(17,col);
 	while (isValidMove(block, 0, -1)) {
 		block->down();
