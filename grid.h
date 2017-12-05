@@ -36,9 +36,9 @@ class Grid {
 	double getAverageHeights(std::vector<int> v);
 	double getStandardDeviationHeights(std::vector<int> v);
 	std::vector<int> getHeights();
-	int countHoles();
+	int countHoles(const std::vector<int> &);
 	double calculatePriority();
-	int getBumpiness();
+	int getBumpiness(const std::vector<int> &);
 	int countNumCellsOnWall();
 	int countNumCellsOnGround();
 	std::vector<Cell> getHintCells(std::shared_ptr<Block> &b, HintInfo i);

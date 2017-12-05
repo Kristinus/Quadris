@@ -109,8 +109,7 @@ int Grid::countCompleteLines() {
 
 // higher the value, the more smooth it is (i.e. lower standard deviation)
 
-int Grid::getBumpiness() {
-	std::vector<int> heights = getHeights();
+int Grid::getBumpiness(const std::vector<int> &heights) {
 	int bumpiness = 0;
 	for (int i = 0; i < constants::GRID_WIDTH; i++) {
 		bumpiness += abs(heights[i]-heights[i+1]);
@@ -123,8 +122,8 @@ std::vector<int> Grid::getHeights() {
 	for (int row = constants::MAX_ROW; row >= constants::MIN_ROW; row--) {
 		for ( int col = constants::MIN_COL; col < constants::MAX_COL; col++) {
 
-				// record the index of the highest static block
-				// if no height is there, the height is zero
+			// record the index of the highest static block
+			// if no height is there, the height is zero
 			if (theGrid[constants::GRID_HEIGHT - 1 - row][col].getInfo().state == StateType::STATIC) {
 				if (row + 1 > heights[col]) {
 					heights[col] = row + 1;
@@ -433,8 +432,7 @@ void Grid::setRandomFile(std::string file) {
 	theLevel->setFile(file);
 }
 
-int Grid::countHoles() {
-	std::vector<int> heights = getHeights();
+int Grid::countHoles(const std::vector<int> &heights) {
 	int numHoles = 0; 
 	// for all the cells below the highest cell
 	
@@ -488,7 +486,7 @@ int Grid::countNumCellsOnWall(){
 // algorithm arbitrarily constructed and can be adjusted
 double Grid::calculatePriority() {
 	std::vector<int> heights = getHeights();
-	return -sqrt((getBumpiness())) - (2.5 * countHoles()) + (countCompleteLines() * 3.5) 
+	return -sqrt((getBumpiness(heights))) - (2.5 * countHoles(heights)) + (countCompleteLines() * 3.5) 
 	+  countNumCellsOnGround() + 0.5 * countNumCellsOnWall();
 }
 
