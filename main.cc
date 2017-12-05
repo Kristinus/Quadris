@@ -80,6 +80,12 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  //Check if scriptfile exists
+  ifstream ifs(scriptFile);
+  if(!ifs.is_open()) {
+    cerr << scriptFile << " - File does not exist" << endl;
+    return 1;
+  }
   // GraphicsDisplay *gd = nullptr;
   std::shared_ptr<GraphicsDisplay> gd;
   if(!textOnly || keyInput) {
